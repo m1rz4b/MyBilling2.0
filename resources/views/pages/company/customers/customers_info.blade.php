@@ -443,8 +443,8 @@
                   <div class="d-flex justify-content-center mt-4 mb-3">
                     <div class="d-flex align-items-center">
                       <p class="me-2 text-dark fw-bold">Service Type: </p>
-                      <input type="hidden" name="srv_type_id" value="0">
-                      <input class="form-check-input mt-0" type="checkbox" name="srv_type_id" id="srv_type_id" value="1" checked>
+                      <input type="hidden" name="srv_type_id" value="1">
+                      <input class="form-check-input mt-0" type="checkbox" name="srv_type_id" id="srv_type_id" value="1" checked disabled>
                       <p class="ms-2 text-dark fw-medium">Broadband</p>
                     </div>
                   </div>
@@ -458,14 +458,14 @@
                       <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="user_id" class="form-label fw-bold">Customer ID</label>
-                            <input type="text" class="form-control" id="user_id" name="user_id">
+                            <label for="user_id" class="form-label fw-bold">Customer ID <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="user_id" name="user_id" required>
                           </div>
                         </div>
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="password" class="form-label fw-bold">Password </label>
-                            <input type="password" class="form-control" id="password" name="password">
+                            <label for="password" class="form-label fw-bold">Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" id="password" name="password" required>
                           </div>
                         </div>
                         <div class="col-sm-4">

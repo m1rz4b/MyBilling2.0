@@ -71,12 +71,14 @@ class AccessLogController extends Controller
         $selectedMacAddress = $request->mac_address;
         $selectedIpAddress = $request->ip_address;
         $selectedNas = $request->nas;
-        // dd($request);
+
         $menus = Menu::get();
         $nowdate = Carbon::now()->format('Y-m-d');
         $customers = TrnClientsService::select('id', 'user_id')->get();
         $nas = Nas::select('id', 'shortname')->orderBy('shortname')->get();
-        $radaccts = Radacct::leftJoin('nas', 'nas.nasname', '=', 'radacct.nasipaddress')
+       
+	    $radaccts = Radacct::query()
+			->leftJoin('nas', 'nas.nasname', '=', 'radacct.nasipaddress')
             ->select([
                 'radacct.id',
                 'radacct.acctsessionid',
@@ -89,8 +91,6 @@ class AccessLogController extends Controller
                 'radacct.nasporttype',
                 'radacct.acctstarttime',
                 'radacct.acctstoptime',
-                // DB::raw("DATE_FORMAT(radacct.acctstarttime,'%m/%d/%Y %h:%i:%s') as acctstarttime"),
-                // DB::raw("DATE_FORMAT(radacct.acctstoptime,'%m/%d/%Y %h:%i:%s') as acctstoptime"),
                 'radacct.acctsessiontime',
                 'radacct.acctauthentic',
                 'radacct.connectinfo_start',
@@ -106,43 +106,39 @@ class AccessLogController extends Controller
                 'radacct.acctstartdelay',
                 'radacct.acctstopdelay',
                 'radacct.xascendsessionsvrkey',
+                'nas.id as nas_id',
                 'nas.nasname'
-            ]);
-            // ->orderBy('radacct.acctstarttime', 'desc');
+            ])
+             ->orderBy('radacct.acctstarttime', 'desc');
+		
+            if ($selectedStartDate && $selectedEndDate) {
+                $start_date = Carbon::parse($request->start_date);
+                $end_date = Carbon::parse($request->end_date);      
+                $radaccts->where(DB::raw('DATE_FORMAT(acctstarttime,"%Y-%m-%d")'),'>=',$selectedStartDate);
+                $radaccts->where(DB::raw('DATE_FORMAT(acctstarttime,"%Y-%m-%d")'),'<=', $selectedEndDate);
+            }
 
-        // if ($request->has('start_date') && $request->has('end_date')) {
-        //     // $start_date = Carbon::createFromFormat('m/d/Y', $request->start_date)->format('Y-m-d');
-        //     // $end_date = Carbon::createFromFormat('m/d/Y', $request->end_date)->format('Y-m-d');
+            if ($selectedCustomer>-1) {
+                $radaccts->where('username', $selectedCustomer);
+            }
 
-        //     $start_date = Carbon::parse($request->start_date);
-        //     $end_date = Carbon::parse($request->end_date);   
+            if ($selectedMacAddress) {
+                $radaccts->where('callingstationid', $selectedMacAddress);
+            }
 
-        //     $radaccts->whereBetween(DB::raw("DATE_FORMAT(acctstarttime, '%Y-%m-%d')"), [$start_date, $end_date]);
-        // }
+            if ($selectedIpAddress) {
+                $radaccts->where('framedipaddress', $selectedIpAddress);
+            }
 
-        // if ($selectedCustomer>-1) {
-        //     $radaccts->where('username', $selectedCustomer);
-        // }
+            if ($selectedNas>-1) {
+                $radaccts->where('nas.id', $selectedNas);
+            }
 
-        // if ($selectedMacAddress>-1) {
-        //     $radaccts->where('callingstationid', $request->mac_address);
-        // }
+            $radaccts = $radaccts->get();
 
-        // if ($selectedIpAddress>-1) {
-        //     $radaccts->where('framedipaddress', $request->ip_address);
-        // }
-
-        if ($selectedNas>-1) {
-            $radaccts->whereHas('nas', function ($q) use ($request) {
-                $q->where('id', $request->nas);
-            });
-        }
-        $radaccts = $radaccts->get();
-        // dd($radaccts);
-
-        // $radaccts = $radaccts->with('nas')
-        //     ->orderBy('acctstarttime', 'desc')
-        //     ->paginate(10);
+            // $radaccts = $radaccts->with('nas')
+            //     ->orderBy('acctstarttime', 'desc')
+            //     ->paginate(10);
 
         return view('pages.radius.accessLog', compact('menus', 'nowdate', 'customers', 'nas', 'radaccts', 'selectedCustomer', 'selectedMacAddress', 'selectedIpAddress', 'selectedNas'));
     }
@@ -155,7 +151,9 @@ class AccessLogController extends Controller
         //
     }
 
-    
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         //

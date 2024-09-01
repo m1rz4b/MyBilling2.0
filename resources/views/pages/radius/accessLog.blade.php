@@ -25,7 +25,7 @@
                         <select name="customer" id="customer" class="form-select form-control">
                             <option value="-1">Select a Customer</option>
                             @foreach ($customers as $customer)
-                                <option {{ $selectedCustomer==$customer->id ? 'selected' : '' }} value="{{ $customer->id }}">{{ $customer->user_id }}</option>
+                                <option {{ $selectedCustomer==$customer->id ? 'selected' : '' }} value="{{ $customer->user_id }}">{{ $customer->user_id }}</option>
                             @endforeach
                         </select>
                     </div>

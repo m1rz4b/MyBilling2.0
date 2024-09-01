@@ -114,6 +114,7 @@ class CustomerController extends Controller
         ->leftJoin('tbl_client_categories', 'tbl_client_categories.id', '=', 'customers.tbl_client_category_id')
         ->leftJoin('tbl_bill_types', 'tbl_bill_types.id', '=', 'trn_clients_services.tbl_bill_type_id')
         ->leftJoin('tbl_status_types', 'tbl_status_types.id', '=', 'trn_clients_services.tbl_status_type_id')
+        ->where('trn_clients_services.srv_type_id', 1)
         ->get();
         // dd($customers); 
 
@@ -238,6 +239,10 @@ class CustomerController extends Controller
         $previous_account_no = Customer::max('account_no');
         $updated_account_no = $previous_account_no + 1;
 
+        $request->validate([
+            'customer_name' => 'required|unique:customers,customer_name',
+        ]);
+
         $customer = Customer::create([
             "customer_name" => ($request->customer_name == null) ? '' : $request->customer_name,
             "father_or_husband_name" => ($request->father_or_husband_name == null) ? '' : $request->father_or_husband_name,
@@ -282,7 +287,7 @@ class CustomerController extends Controller
         if($request->srv_type_id){
             TrnClientsService::create([
             "customer_id" => $customer->id,
-            "srv_type_id" => 2,
+            "srv_type_id" => 1,
             "link_from" =>  ($request->link_from == null) ? '' : $request->link_from,
             "link_to" =>  ($request->link_to == null) ? '' : $request->link_to,
             "bandwidth" =>  ($request->bandwidth == null) ? '' : $request->bandwidth,

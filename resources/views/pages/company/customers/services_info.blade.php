@@ -93,7 +93,7 @@
                           <select onchange="addServices(this)" name="srv_type_id" id="srv_type_id" class="form-control form-select-sm">
                             <option value="">Select a Service</option>
                             @foreach ($service_types as $srv)
-                                <option {{ ($srv->id == 1) ? "selected" : "" }} value="{{ $srv->id }}">{{ $srv->srv_name }}</option>
+                                <option {{ ($srv->id == 2) ? "selected" : "" }} value="{{ $srv->id }}">{{ $srv->srv_name }}</option>
                             @endforeach
                           </select>
                         </div>
@@ -102,7 +102,7 @@
                   </fieldset>
 
                   {{-- Data Service/Other Service --}}
-                  <fieldset class="border rounded-3 p-3 theme-border d-none" id="add_data">
+                  <fieldset class="border rounded-3 p-3 theme-border" id="add_data">
                     <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Data Service/Other Service</legend>
                     {{-- Service Info --}}
                     <fieldset class="border rounded-3 p-3 theme-border mb-5">
@@ -241,10 +241,10 @@
                   </fieldset>
 
                   {{-- Broadband --}}
-                  <fieldset class="border rounded-3 p-3 theme-border" id="add_broadband">
-                    <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Broadband</legend>
+                  {{-- <fieldset class="border rounded-3 p-3 theme-border" id="add_broadband"> --}}
+                    {{-- <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Broadband</legend> --}}
                     {{-- Service Info --}}
-                    <fieldset class="border rounded-3 p-3 theme-border mb-5">
+                    {{-- <fieldset class="border rounded-3 p-3 theme-border mb-5">
                       <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Service Info</legend>
                       <div class="row">
                         <div class="col-sm-4">
@@ -286,10 +286,10 @@
                           </div>
                         </div>
                       </div>
-                    </fieldset>
+                    </fieldset> --}}
                   
                     {{-- Connection Info --}}
-                    <fieldset class="border rounded-3 p-3 theme-border mb-5">
+                    {{-- <fieldset class="border rounded-3 p-3 theme-border mb-5">
                       <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Connection Info</legend>
                       <div class="row">
                         <div class="col-sm-4">
@@ -377,10 +377,10 @@
                           </div>
                         </div>
                       </div>
-                    </fieldset>
+                    </fieldset> --}}
 
                     {{-- Billing Info --}}
-                    <fieldset class="border rounded-3 p-3 theme-border">
+                    {{-- <fieldset class="border rounded-3 p-3 theme-border">
                       <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Billing Info</legend>
                       <div class="row">
                         <div class="col-sm-4">
@@ -473,8 +473,8 @@
                           </div>
                         </div>
                       </div>
-                    </fieldset>
-                  </fieldset>
+                    </fieldset> --}}
+                  {{-- </fieldset> --}}
                   
                   {{-- Cable TV --}}
                   <fieldset class="border rounded-3 p-3 theme-border d-none" id="add_cable_tv">
@@ -686,145 +686,6 @@
                               </fieldset>
 
                               @if ($service->srv_type_id === 1)
-                                {{-- Data Service/Other Service --}}
-                                <fieldset class="border rounded-3 p-3 theme-border" id="edit_data{{ $service->srv_type_id }}">
-                                  <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Data Service/Other Service</legend>
-                                  {{-- Service Info --}}
-                                  <fieldset class="border rounded-3 p-3 theme-border mb-5">
-                                    <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Service Info</legend>
-                                    <div class="row">
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="link_from" class="form-label fw-bold">Link From</label>
-                                          <input type="text" class="form-control" id="link_from" name="link_from" value="{{ $service->link_from }}">
-                                        </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="link_to" class="form-label fw-bold">Link To</label>
-                                          <input type="text" class="form-control" id="link_to" name="link_to" value="{{ $service->link_to }}">
-                                        </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="bandwidth" class="form-label fw-bold">Bandwidth Capacity(K)</label>
-                                          <input type="text" class="form-control" id="bandwidth" name="bandwidth" value="{{ $service->bandwidth }}">
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div class="row">
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="unit_id" class="form-label fw-bold">Unit</label>
-                                          <select name="unit_id" id="unit_id" class="form-control">
-                                            <option value="">Select a Unit</option>
-                                            @foreach ($units as $unit)
-                                                <option {{ ($service->unit_id == $unit->id) ? "selected" : "" }} value="{{ $unit->id }}">{{ $unit->unit_display }}</option>
-                                            @endforeach
-                                          </select>
-                                        </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="unit_qty" class="form-label fw-bold">Quantity</label>
-                                          <input type="number" class="form-control" id="unit_qty" name="unit_qty" value="{{ $service->unit_qty }}">
-                                        </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="vat_rate" class="form-label fw-bold">VAT(%)</label>
-                                          <input type="number" class="form-control" id="vat_rate" name="vat_rate" value="{{ $service->vat_rate }}">
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div class="row">
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="rate_amnt" class="form-label fw-bold">Contact Amount</label>
-                                          <input type="number" class="form-control" id="rate_amnt" name="rate_amnt" value="{{ $service->rate_amnt }}">
-                                        </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="vat_amnt" class="form-label fw-bold">VAT Amount</label>
-                                          <input type="number" class="form-control" id="vat_amnt" name="vat_amnt" value="{{ $service->vat_amnt }}">
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </fieldset>
-
-                                  {{-- Billing Info --}}
-                                  <fieldset class="border rounded-3 p-3 theme-border">
-                                    <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Billing Info</legend>
-                                    <div class="row">
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="monthly_bill_data" class="form-label fw-bold">Monthly Bill </label>
-                                          <input type="text" class="form-control" id="monthly_bill_data" name="monthly_bill_data" value="{{ $service->monthly_bill }}">
-                                        </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <br>
-                                        <div class="mt-3">
-                                          <input type="hidden" name="include_vat_data" value="0">
-                                          <input type="checkbox" class="form-check-input" id="include_vat_data" name="include_vat_data" {{$service->include_vat == 1?'checked':''}} value="1">
-                                          <label for="include_vat_data" class="form-label fw-bold ms-1">Include VAT </label>
-                                        </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="bill_start_date_data" class="form-label fw-bold">Bill Start Date</label>
-                                          <input type="text" class="form-control datepicker-here digits" id="bill_start_date_data" name="bill_start_date_data" data-date-Format="yyyy-mm-dd" value="{{ $service->bill_start_date }}">
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div class="row">
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="tbl_bill_type_id_data" class="form-label fw-bold">Bill Type</label>
-                                          <select name="tbl_bill_type_id_data" id="tbl_bill_type_id_data" class="form-control">
-                                            <option value="">Select a Bill Type</option>
-                                            @foreach ($bill_types as $bill_type)
-                                                <option {{ ($service->tbl_bill_type_id == $bill_type->id) ? "selected" : "" }} value="{{ $bill_type->id }}">{{ $bill_type->bill_type_name }}</option>
-                                            @endforeach
-                                          </select>
-                                        </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="tbl_status_type_id_data" class="form-label fw-bold">Service Status </label>
-                                          <select name="tbl_status_type_id_data" id="tbl_status_type_id_data" class="form-control">
-                                            <option value="">Select a Service Status</option>
-                                            @foreach ($status_types as $status_type)
-                                                <option {{ ($service->tbl_status_type_id == $status_type->id) ? "selected" : "" }} value="{{ $status_type->id }}">{{ $status_type->inv_name }}</option>
-                                            @endforeach
-                                          </select>
-                                        </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <div class="mb-2">
-                                          <label for="remarks_data" class="form-label fw-bold">Remarks / Special Note </label>
-                                          <textarea class="form-control" id="remarks_data" name="remarks_data" rows="1">{{ $service->remarks }}</textarea>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div class="row">
-                                      <div class="col-sm-4">
-                                        <br>
-                                        <div class="mt-3">
-                                          <input type="hidden" name="greeting_sms_sent_data" value="0">
-                                          <input type="checkbox" class="form-check-input" id="greeting_sms_sent_data" name="greeting_sms_sent_data" {{$service->greeting_sms_sent == 1?'checked':''}} value="1">
-                                          <label for="greeting_sms_sent_data" class="form-label fw-bold ms-1">Send Greeting SMS? </label>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </fieldset>
-                                </fieldset>
-                              @elseif ($service->srv_type_id === 2)
                                 {{-- Broadband --}}
                                 <fieldset class="border rounded-3 p-3 theme-border" id="edit_broadband{{ $service->srv_type_id }}">
                                   <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Broadband</legend>
@@ -834,14 +695,14 @@
                                     <div class="row">
                                       <div class="col-sm-4">
                                         <div class="mb-2">
-                                          <label for="user_id" class="form-label fw-bold">Customer ID  </label>
-                                          <input type="text" class="form-control" id="user_id" name="user_id" value="{{ $service->user_id }}">
+                                          <label for="user_id" class="form-label fw-bold">Customer ID <span class="text-danger">*</span></label>
+                                          <input type="text" class="form-control" id="user_id" name="user_id" value="{{ $service->user_id }}" required>
                                         </div>
                                       </div>
                                       <div class="col-sm-4">
                                         <div class="mb-2">
-                                          <label for="password" class="form-label fw-bold">Password </label>
-                                          <input type="password" class="form-control" id="password" name="password" value="{{ $service->password }}">
+                                          <label for="password" class="form-label fw-bold">Password <span class="text-danger">*</span></label>
+                                          <input type="password" class="form-control" id="password" name="password" value="{{ $service->password }}" required>
                                         </div>
                                       </div>
                                       <div class="col-sm-4">
@@ -1053,6 +914,145 @@
                                     </div>
                                   </fieldset>
                                 </fieldset>
+                              @elseif ($service->srv_type_id === 2)
+                                {{-- Data Service/Other Service --}}
+                                <fieldset class="border rounded-3 p-3 theme-border" id="edit_data{{ $service->srv_type_id }}">
+                                  <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Data Service/Other Service</legend>
+                                  {{-- Service Info --}}
+                                  <fieldset class="border rounded-3 p-3 theme-border mb-5">
+                                    <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Service Info</legend>
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="link_from" class="form-label fw-bold">Link From</label>
+                                          <input type="text" class="form-control" id="link_from" name="link_from" value="{{ $service->link_from }}">
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="link_to" class="form-label fw-bold">Link To</label>
+                                          <input type="text" class="form-control" id="link_to" name="link_to" value="{{ $service->link_to }}">
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="bandwidth" class="form-label fw-bold">Bandwidth Capacity(K)</label>
+                                          <input type="text" class="form-control" id="bandwidth" name="bandwidth" value="{{ $service->bandwidth }}">
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="unit_id" class="form-label fw-bold">Unit</label>
+                                          <select name="unit_id" id="unit_id" class="form-control">
+                                            <option value="">Select a Unit</option>
+                                            @foreach ($units as $unit)
+                                                <option {{ ($service->unit_id == $unit->id) ? "selected" : "" }} value="{{ $unit->id }}">{{ $unit->unit_display }}</option>
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="unit_qty" class="form-label fw-bold">Quantity</label>
+                                          <input type="number" class="form-control" id="unit_qty" name="unit_qty" value="{{ $service->unit_qty }}">
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="vat_rate" class="form-label fw-bold">VAT(%)</label>
+                                          <input type="number" class="form-control" id="vat_rate" name="vat_rate" value="{{ $service->vat_rate }}">
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="rate_amnt" class="form-label fw-bold">Contact Amount</label>
+                                          <input type="number" class="form-control" id="rate_amnt" name="rate_amnt" value="{{ $service->rate_amnt }}">
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="vat_amnt" class="form-label fw-bold">VAT Amount</label>
+                                          <input type="number" class="form-control" id="vat_amnt" name="vat_amnt" value="{{ $service->vat_amnt }}">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </fieldset>
+
+                                  {{-- Billing Info --}}
+                                  <fieldset class="border rounded-3 p-3 theme-border">
+                                    <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Billing Info</legend>
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="monthly_bill_data" class="form-label fw-bold">Monthly Bill </label>
+                                          <input type="text" class="form-control" id="monthly_bill_data" name="monthly_bill_data" value="{{ $service->monthly_bill }}">
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <br>
+                                        <div class="mt-3">
+                                          <input type="hidden" name="include_vat_data" value="0">
+                                          <input type="checkbox" class="form-check-input" id="include_vat_data" name="include_vat_data" {{$service->include_vat == 1?'checked':''}} value="1">
+                                          <label for="include_vat_data" class="form-label fw-bold ms-1">Include VAT </label>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="bill_start_date_data" class="form-label fw-bold">Bill Start Date</label>
+                                          <input type="text" class="form-control datepicker-here digits" id="bill_start_date_data" name="bill_start_date_data" data-date-Format="yyyy-mm-dd" value="{{ $service->bill_start_date }}">
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="tbl_bill_type_id_data" class="form-label fw-bold">Bill Type</label>
+                                          <select name="tbl_bill_type_id_data" id="tbl_bill_type_id_data" class="form-control">
+                                            <option value="">Select a Bill Type</option>
+                                            @foreach ($bill_types as $bill_type)
+                                                <option {{ ($service->tbl_bill_type_id == $bill_type->id) ? "selected" : "" }} value="{{ $bill_type->id }}">{{ $bill_type->bill_type_name }}</option>
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="tbl_status_type_id_data" class="form-label fw-bold">Service Status </label>
+                                          <select name="tbl_status_type_id_data" id="tbl_status_type_id_data" class="form-control">
+                                            <option value="">Select a Service Status</option>
+                                            @foreach ($status_types as $status_type)
+                                                <option {{ ($service->tbl_status_type_id == $status_type->id) ? "selected" : "" }} value="{{ $status_type->id }}">{{ $status_type->inv_name }}</option>
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <div class="mb-2">
+                                          <label for="remarks_data" class="form-label fw-bold">Remarks / Special Note </label>
+                                          <textarea class="form-control" id="remarks_data" name="remarks_data" rows="1">{{ $service->remarks }}</textarea>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                        <br>
+                                        <div class="mt-3">
+                                          <input type="hidden" name="greeting_sms_sent_data" value="0">
+                                          <input type="checkbox" class="form-check-input" id="greeting_sms_sent_data" name="greeting_sms_sent_data" {{$service->greeting_sms_sent == 1?'checked':''}} value="1">
+                                          <label for="greeting_sms_sent_data" class="form-label fw-bold ms-1">Send Greeting SMS? </label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </fieldset>
+                                </fieldset>
                               @else
                                 {{-- Cable TV --}}
                                 <fieldset class="border rounded-3 p-3 theme-border" id="edit_cable_tv{{ $service->srv_type_id }}">
@@ -1175,21 +1175,28 @@
 
         function addServices(select){
           let dataSection = document.getElementById('add_data');
-          let broadbandSection = document.getElementById('add_broadband');
+          // let broadbandSection = document.getElementById('add_broadband');
           let cableTvSection = document.getElementById('add_cable_tv');
 
-          if(select.value==1){
-            broadbandSection.classList.remove("d-none");
-            dataSection.classList.add("d-none");
-            cableTvSection.classList.add("d-none");
-          } else if (select.value==2){
-            broadbandSection.classList.add("d-none");
+          // if(select.value==1){
+          //   broadbandSection.classList.remove("d-none");
+          //   dataSection.classList.add("d-none");
+          //   cableTvSection.classList.add("d-none");
+          // } else if (select.value==2){
+          //   broadbandSection.classList.add("d-none");
+          //   dataSection.classList.remove("d-none");
+          //   cableTvSection.classList.add("d-none");
+          // } else if (select.value==3){
+          //   cableTvSection.classList.remove("d-none");
+          //   dataSection.classList.add("d-none");
+          //   broadbandSection.classList.add("d-none");
+          // }
+          if(select.value==2){
             dataSection.classList.remove("d-none");
             cableTvSection.classList.add("d-none");
           } else if (select.value==3){
             cableTvSection.classList.remove("d-none");
             dataSection.classList.add("d-none");
-            broadbandSection.classList.add("d-none");
           }
         }
 
