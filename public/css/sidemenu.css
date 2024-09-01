@@ -1,0 +1,169 @@
+:root {
+    --default-text: #fff;
+    --hover-text: #abb9e8;
+    --menu-item-font-size: 0.9375rem;
+    --menu-arrow-icon-font-size: 0.825rem;
+    --sub-menu-item-color: #abb9e8;
+    --sub-menu-item-hover-color: #fff;
+    --menu-sub-item-font-size: 0.875rem;
+}
+
+.navbar-menu {
+    z-index: 1002;
+    bottom: 0;
+    margin-top: 0;
+    padding: 0 0 calc(70px + 25px) 0;
+    -webkit-transition: all .1s ease-out;
+    transition: all .1s ease-out
+}
+
+.navbar-menu .navbar-nav .nav-link {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .625rem 1.5rem;
+    color: var(--default-text);
+    font-size: var(--menu-item-font-size);
+}
+
+.navbar-menu .navbar-nav .nav-link.active {
+    color: var(--default-text)
+}
+
+.navbar-menu .navbar-nav .nav-link:hover {
+    color: var(--default-text)
+}
+
+.navbar-menu .navbar-nav .nav-link i {
+    display: inline-block;
+    min-width: 1.75rem;
+    font-size: 18px;
+    line-height: inherit
+}
+
+.navbar-menu .navbar-nav .nav-link svg {
+    width: 18px;
+    margin-right: .665rem;
+    color: var(--hover-text)
+}
+
+.navbar-menu .navbar-nav .nav-link .badge {
+    margin-left: auto;
+    margin-right: -2px;
+    z-index: 1
+}
+
+.navbar-menu .navbar-nav .nav-link:hover {
+    color: var(--hover-text)
+}
+
+.navbar-menu .navbar-nav .nav-link:hover .icon-dual {
+    color: var(--hover-text);
+    fill: rgba(64, 81, 137, .16)
+}
+
+.navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse]:after {
+    display: block;
+    /* content: "\f0142"; */
+    content: "\e649";
+    /* font-family: "Material Design Icons"; */
+    font-family: "themify";
+    margin-left: auto;
+    -webkit-transition: -webkit-transform .2s;
+    transition: -webkit-transform .2s;
+    transition: transform .2s;
+    transition: transform .2s, -webkit-transform .2s;
+    /* font-size: 1.05rem; */
+    font-size: var(--menu-arrow-icon-font-size);
+    position: absolute;
+    right: 18px;
+    color: var(--default-text)
+}
+
+.navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse]:hover:after {
+    color: var(--hover-text)
+}
+
+.navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse][aria-expanded=true] {
+    color: var(--hover-text)
+}
+
+.navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse][aria-expanded=true] .icon-dual {
+    color: var(--hover-text);
+    fill: rgba(64, 81, 137, .16)
+}
+
+.navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse][aria-expanded=true]:after {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    color: var(--hover-text)
+}
+
+.navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse][aria-expanded=true]:before {
+    opacity: 1;
+    background-color: var(--sub-menu-item-color);
+}
+
+.navbar-menu .navbar-nav .nav-link.collapsed.active::after {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg)
+}
+
+.navbar-menu .navbar-nav .nav-sm {
+    padding-left: 1.75rem
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link {
+    padding: .55rem 1.5rem !important;
+    color: #abb9e8;
+    white-space: none;
+    position: relative;
+    font-size: var(--menu-sub-item-font-size)
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link:before {
+    content: "";
+    width: 6px;
+    height: 1.5px;
+    background-color: var(--sub-menu-item-color);
+    position: absolute;
+    left: 2px;
+    top: 18px;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+    opacity: .5
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link:hover {
+    color: var(--default-text)
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link:hover:before {
+    background-color: var(--sub-menu-item-hover-color) !important;
+    opacity: 1
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link.active {
+    color: var(--hover-text)
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link.active:before {
+    background-color: var(--hover-text)
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-sm {
+    padding-left: 15px
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-sm .nav-link:before {
+    height: 5px;
+    width: 5px;
+    left: 5px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1px solid;
+    top: 17px
+}
