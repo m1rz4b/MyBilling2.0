@@ -579,32 +579,35 @@
 
         <div class="col-sm-12">
           <div class="p-3">
-            <div class="row">
-              <div class="col-sm-4 form-group">
-                <label for="customer" class="fw-bold">Customer</label>
-                <select class="select2 form-select form-select-sm id="customer" name="customer">
-                  <option selected>Select a Customer</option>
-                  @foreach ($customers as $customer)
-                      <option value="{{ $customer->id }}">{{ $customer->customer_name }}</option>
-                  @endforeach
-                </select>
+            <form action="{{ route('services.search') }}" method="POST" class="p-3">
+              @csrf
+              <div class="row">
+                <div class="col-sm-4 form-group">
+                  <label for="customer" class="fw-bold">Customer</label>
+                  <select class="select2 form-select form-select-sm id="customer" name="customer">
+                    <option value="-1" selected>Select a Customer</option>
+                    @foreach ($customers as $customer)
+                        <option {{ $selectedCustomer==$customer->id ? 'selected' : '' }} value="{{ $customer->id }}">{{ $customer->customer_name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                
+                <div class="col-sm-4 form-group">
+                  <label for="customer_status" class="fw-bold">Customer Status</label>
+                  <select class="select2 form-select form-select-sm" id="customer_status" name="customer_status">
+                    <option value="-1" selected>Select a Customer Status</option>
+                    @foreach ($status_types as $status_type)
+                        <option {{ $selectedCustomerStatus==$status_type->id ? 'selected' : '' }} value="{{ $status_type->id }}">{{ $status_type->inv_name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                
+                <div class="col-sm-2 d-flex d-sm-inline justify-content-end">
+                  <br class="d-none d-sm-block">
+                  <button class="btn btn-sm btn-success">Search</button>    
+                </div>
               </div>
-              
-              <div class="col-sm-4 form-group">
-                <label for="tbl_status_type_id" class="fw-bold">Customer Status</label>
-                <select class="select2 form-select form-select-sm" id="tbl_status_type_id" name="tbl_status_type_id">
-                  <option selected>Select a Customer Status</option>
-                  @foreach ($status_types as $status_type)
-                      <option value="{{ $status_type->id }}">{{ $status_type->inv_name }}</option>
-                  @endforeach
-                </select>
-              </div>
-              
-              <div class="col-sm-2 d-flex d-sm-inline justify-content-end">
-                <br class="d-none d-sm-block">
-                <button class="btn btn-sm btn-success">Search</button>    
-              </div>
-            </div>
+            </form>
 
             <div class="QA_table pb-0">
               <table class="table datatable compact">

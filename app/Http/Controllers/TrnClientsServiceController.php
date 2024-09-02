@@ -25,11 +25,12 @@ class TrnClientsServiceController extends Controller
      */
     public function index()
     {
+        $selectedCustomer = -1;
+        $selectedCustomerStatus = -1;
         $menus = Menu::get();
         $units = TblUnit::select('id','unit_display')->orderBy('unit_display', 'asc')->get();
         $client_services = TrnClientsService::select(
-            'trn_clients_services.*', 
-            // 'trn_clients_services.srv_type_id',
+            'trn_clients_services.*',
             'customers.id as cust_id', 
             'customers.customer_name', 
             'tbl_districts.name',
@@ -47,7 +48,6 @@ class TrnClientsServiceController extends Controller
         ->leftJoin('tbl_bill_types', 'tbl_bill_types.id', '=', 'trn_clients_services.tbl_bill_type_id')
         ->leftJoin('tbl_units', 'tbl_units.id', '=', 'trn_clients_services.unit_id')
         ->get();
-        // dd($client_services);
 
         $customers = Customer::select('id', 'customer_name','present_address')->orderBy('customer_name', 'desc')->get();
         $service_types = TblSrvType::select('id','srv_name')->orderBy('srv_name', 'asc')->get();
@@ -57,13 +57,6 @@ class TrnClientsServiceController extends Controller
         $boxes = Box::select('id', 'box_name')->orderBy('id', 'desc')->get();
         $bill_types = TblBillType::select('id', 'bill_type_name')->orderBy('bill_type_name', 'desc')->get();
         $invoice_types = InvoiceType::select('id', 'invoice_type_name')->orderBy('invoice_type_name', 'desc')->get();
-        // $client_types = TblClientType::selectRaw("tbl_client_types.id, CONCAT(tbl_client_types.name, ' => ', IFNULL(customers.user_id, 'Head Office')) AS package")
-        //     ->leftJoin('customers', function($join) {
-        //         $join->on('customers.id', '=', 'tbl_client_types.reseller_id')
-        //             ->where('customers.reseller_id', 0);
-        //     })
-        //     ->orderBy('tbl_client_types.id')
-        //     ->get();
         $client_types = TblClientType::get();
         $billing_statuses = BillingStatus::select('id', 'billing_status_name')->orderBy('billing_status_name', 'desc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'desc')->get();
@@ -81,7 +74,73 @@ class TrnClientsServiceController extends Controller
             'invoice_types', 
             'client_types',
             'billing_statuses',
-            'status_types'
+            'status_types',
+            'selectedCustomer',
+            'selectedCustomerStatus'
+        ));
+    }
+
+    public function search(Request $request)
+    {
+        $selectedCustomer = $request->customer;
+        $selectedCustomerStatus = $request->customer_status;
+
+        $menus = Menu::get();
+        $units = TblUnit::select('id','unit_display')->orderBy('unit_display', 'asc')->get();
+        $client_services = TrnClientsService::select(
+            'trn_clients_services.*',
+            'customers.id as cust_id', 
+            'customers.customer_name', 
+            'tbl_districts.name',
+            'tbl_srv_types.srv_name',
+            'tbl_vat_types.status_name',
+            'tbl_status_types.inv_name',
+            'tbl_bill_types.bill_type_name',
+            'tbl_units.unit_display'
+        )
+        ->leftJoin('customers', 'customers.id', '=', 'trn_clients_services.customer_id')
+        ->leftJoin('tbl_districts', 'tbl_districts.id', '=', 'trn_clients_services.district_id')
+        ->leftJoin('tbl_srv_types', 'tbl_srv_types.id', '=', 'trn_clients_services.srv_type_id')
+        ->leftJoin('tbl_vat_types', 'tbl_vat_types.id', '=', 'trn_clients_services.vat_type_id')
+        ->leftJoin('tbl_status_types', 'tbl_status_types.id', '=', 'trn_clients_services.tbl_status_type_id')
+        ->leftJoin('tbl_bill_types', 'tbl_bill_types.id', '=', 'trn_clients_services.tbl_bill_type_id')
+        ->leftJoin('tbl_units', 'tbl_units.id', '=', 'trn_clients_services.unit_id');
+        if ($selectedCustomer>-1) {
+            $client_services->where('customers.id', $selectedCustomer);
+        }
+        if ($selectedCustomerStatus>-1) {
+            $client_services->where('tbl_status_types.id', $selectedCustomerStatus);
+        }
+        $client_services = $client_services->get();
+
+        $customers = Customer::select('id', 'customer_name','present_address')->orderBy('customer_name', 'desc')->get();
+        $service_types = TblSrvType::select('id','srv_name')->orderBy('srv_name', 'asc')->get();
+        $bandwidth_plans = TblBandwidthPlan::select('id','bandwidth_plan')->orderBy('id', 'desc')->get();
+        $cable_types = TblCableType::select('id', 'cable_type')->orderBy('id', 'desc')->get();
+        $routers = TblRouter::select('id', 'router_name')->orderBy('router_name', 'desc')->get();
+        $boxes = Box::select('id', 'box_name')->orderBy('id', 'desc')->get();
+        $bill_types = TblBillType::select('id', 'bill_type_name')->orderBy('bill_type_name', 'desc')->get();
+        $invoice_types = InvoiceType::select('id', 'invoice_type_name')->orderBy('invoice_type_name', 'desc')->get();
+        $client_types = TblClientType::get();
+        $billing_statuses = BillingStatus::select('id', 'billing_status_name')->orderBy('billing_status_name', 'desc')->get();
+        $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'desc')->get();
+        return view("pages.company.customers.services_info", compact(
+            'menus', 
+            'units',
+            'client_services', 
+            'customers', 
+            'service_types', 
+            'bandwidth_plans',
+            'cable_types',
+            'routers',
+            'boxes', 
+            'bill_types', 
+            'invoice_types', 
+            'client_types',
+            'billing_statuses',
+            'status_types',
+            'selectedCustomer',
+            'selectedCustomerStatus'
         ));
     }
 

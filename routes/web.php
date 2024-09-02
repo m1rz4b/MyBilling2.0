@@ -80,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('customers', CustomerController::class);
     Route::post('customers/search', [CustomerController::class, 'search'])->name('customers.search');
     Route::resource('services', TrnClientsServiceController::class);
+    Route::post('services/search', [TrnClientsServiceController::class, 'search'])->name('services.search');
 
     // Global Setup Module
     Route::resource('blockreason', BlockReasonController::class);

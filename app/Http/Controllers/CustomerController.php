@@ -180,7 +180,6 @@ class CustomerController extends Controller
     }
     public function search(Request $request)
     {
-        // dd($request);
         $selectedCustomer = $request->customer;
         $selectedCustomerCategory = $request->customer_category;
         $selectedCustomerStatus = $request->customer_status;
