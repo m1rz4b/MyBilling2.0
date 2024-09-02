@@ -78,6 +78,7 @@ Route::middleware(['auth'])->group(function () {
     // Company Setup
     Route::get('/', [HomeController::class, 'index']);
     Route::resource('customers', CustomerController::class);
+    Route::post('customers/search', [CustomerController::class, 'search'])->name('customers.search');
     Route::resource('services', TrnClientsServiceController::class);
 
     // Global Setup Module

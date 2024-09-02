@@ -52,7 +52,6 @@
   <div class="main_content_iner">
     <div class="container-fluid p-0">
       <div class="row justify-content-center">
-        
         {{-- Customers header --}}
         <div class="">
           <div class="px-4 py-1 theme_bg_1 d-flex justify-content-between">
@@ -694,38 +693,37 @@
           </div>
         </div>
 
-        <form action="">
-          
         
         <div class="col-sm-12">
-          <div class="p-3">
+          <form action="{{ route('customers.search') }}" method="POST" class="p-3">
+            @csrf
             <div class="row">
               <div class="col-sm-4 mb-2">
-                <label for="customerid" class="form-label fw-bold">Customer</label>
-                <select class="select2 form-select" id="customerid" name="customerid">
-                  <option selected>Select a Customer</option>
-                  @foreach ($customers as $cust)
-                      <option value="{{ $cust->id }}">{{ $cust->customer_name }}</option>
+                <label for="customer" class="form-label fw-bold">Customer</label>
+                <select class="select2 form-select" id="customer" name="customer">
+                  <option value="-1" selected>Select a Customer</option>
+                  @foreach ($customers_dropdown as $cust)
+                      <option {{ $selectedCustomer==$cust->customer_id ? 'selected' : '' }} value="{{ $cust->customer_id }}">{{ $cust->customer_name }}</option>
                   @endforeach
                 </select>
               </div>
               
               <div class="col-sm-4 mb-2">
-                <label for="customertypeid" class="form-label fw-bold">Customer Category</label>
-                <select class="select2 form-select" id="customertypeid" name="customertypeid">
-                  <option selected>Select a Customer Category</option>
+                <label for="customer_category" class="form-label fw-bold">Customer Category</label>
+                <select class="select2 form-select" id="customer_category" name="customer_category">
+                  <option value="-1" selected>Select a Customer Category</option>
                   @foreach ($client_categories as $client_category)
-                      <option value="{{ $client_category->id }}">{{ $client_category->name }}</option>
+                      <option {{ $selectedCustomerCategory==$client_category->id ? 'selected' : '' }} value="{{ $client_category->id }}">{{ $client_category->name }}</option>
                   @endforeach                      
                 </select>
               </div>
               
               <div class="col-sm-4 mb-2">
-                <label for="tbl_status_type_id" class="form-label fw-bold">Customer Status</label>
-                <select class="select2 form-select" id="tbl_status_type_id" name="tbl_status_type_id">
-                  <option selected>Select a Customer Status</option>
+                <label for="customer_status" class="form-label fw-bold">Customer Status</label>
+                <select class="select2 form-select" id="customer_status" name="customer_status">
+                  <option value="-1" selected>Select a Customer Status</option>
                   @foreach ($status_types as $status_type)
-                      <option value="{{ $status_type->id }}">{{ $status_type->inv_name }}</option>
+                      <option {{ $selectedCustomerStatus==$status_type->id ? 'selected' : '' }} value="{{ $status_type->id }}">{{ $status_type->inv_name }}</option>
                   @endforeach
                 </select>
               </div>    
@@ -733,31 +731,31 @@
 
             <div class="row">
               <div class="col-sm-4 mb-2">
-                <label for="packageid" class="form-label fw-bold">Package</label>
-                <select class="select2 form-select" id="packageid" name="packageid">
-                  <option selected>Select a Package</option>
+                <label for="package" class="form-label fw-bold">Package</label>
+                <select class="select2 form-select" id="package" name="package">
+                  <option value="-1" selected>Select a Package</option>
                   @foreach ($client_types as $client_type)
-                      <option value="{{ $client_type->id }}">{{ $client_type->name }}</option>
+                      <option {{ $selectedPackage==$client_type->id ? 'selected' : '' }} value="{{ $client_type->id }}">{{ $client_type->name }}</option>
                   @endforeach 
                 </select>
               </div> 
               
               <div class="col-sm-4 mb-2">
-                <label for="zoneid" class="form-label fw-bold">Zone</label>
-                <select class="select2 form-select" id="zoneid" name="zoneid">
-                  <option selected>Select a Zone</option>
+                <label for="zone" class="form-label fw-bold">Zone</label>
+                <select class="select2 form-select" id="zone" name="zone">
+                  <option value="-1" selected>Select a Zone</option>
                   @foreach ($zones as $zone)
-                      <option value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
+                      <option {{ $selectedZone==$zone->id ? 'selected' : '' }} value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
                   @endforeach
                 </select>
               </div>
               
               <div class="col-sm-4 mb-2">
-                <label for="subzone_id" class="form-label fw-bold">Sub Zone</label>
-                <select class="select2 form-select" id="subzone_id" name="subzone_id">
-                  <option selected>Select a Sub Zone</option>
+                <label for="subzone" class="form-label fw-bold">Sub Zone</label>
+                <select class="select2 form-select" id="subzone" name="subzone">
+                  <option value="-1" selected>Select a Sub Zone</option>
                   @foreach ($subzones as $subzone)
-                      <option value="{{ $subzone->id }}">{{ $subzone->subzone_name }}</option>
+                      <option {{ $selectedSubZone==$subzone->id ? 'selected' : '' }} value="{{ $subzone->id }}">{{ $subzone->subzone_name }}</option>
                   @endforeach
                 </select>
               </div>
@@ -768,436 +766,434 @@
             </div>
           </form>
 
-
-            <div class="QA_table pb-0">
-              <table class="table datatable compact">
-                <thead>
+          <div class="QA_table p-3 pb-0">
+            <table class="table datatable compact">
+              <thead>
+                <tr>
+                  <th scope="col">Sl</th>
+                  <th scope="col">User ID</th>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">IP Address</th>
+                  <th scope="col">Mobile</th>
+                  <th scope="col">Package</th>
+                  <th scope="col">Client Status</th>
+                  <th scope="col">Bill Start Date</th>
+                  <th scope="col">Client Cateory</th>
+                  <th scope="col">Bill Type</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                @php $slNumber = 1 @endphp
+                @foreach ($customers as $cust)
                   <tr>
-                    <th scope="col">Sl</th>
-                    <th scope="col">User ID</th>
-                    <th scope="col">Customer Name</th>
-                    <th scope="col">IP Address</th>
-                    <th scope="col">Mobile</th>
-                    <th scope="col">Package</th>
-                    <th scope="col">Client Status</th>
-                    <th scope="col">Bill Start Date</th>
-                    <th scope="col">Client Cateory</th>
-                    <th scope="col">Bill Type</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @php $slNumber = 1 @endphp
-                  @foreach ($customers as $cust)
-                    <tr>
-                      <td style="color: black; font-size: small;">{{ $slNumber++ }}</td>
-                      <td style="color: black; font-size: small;">{{ $cust->user_id }}</td>
-                      <td style="color: black; font-size: small;">{{ $cust->customer_name }}</td>
-                      <td style="color: black; font-size: small;">{{ $cust->ip_number }}</td>
-                      <td style="color: black; font-size: small;">{{ $cust->mobile1 }}</td>
-                      <td style="color: black; font-size: small;">{{ $cust->package }}</td>
-                      <td style="color: black; font-size: small;">{{ $cust->inv_name }}</td>
-                      <td style="color: black; font-size: small;">{{ $cust->bill_start_date }}</td>
-                      <td style="color: black; font-size: small;">{{ $cust->client_type_name }}</td>
-                      <td style="color: black; font-size: small;">{{ $cust->bill_type_name }}</td>
-                      <td>
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Action
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCustomerModal{{ $cust->customer_id }}">Edit</a>
-                              <a class="dropdown-item" href="#" onclick="window.print()">Print</a>
-                            </div>
+                    <td style="color: black; font-size: small;">{{ $slNumber++ }}</td>
+                    <td style="color: black; font-size: small;">{{ $cust->user_id }}</td>
+                    <td style="color: black; font-size: small;">{{ $cust->customer_name }}</td>
+                    <td style="color: black; font-size: small;">{{ $cust->ip_number }}</td>
+                    <td style="color: black; font-size: small;">{{ $cust->mobile1 }}</td>
+                    <td style="color: black; font-size: small;">{{ $cust->package }}</td>
+                    <td style="color: black; font-size: small;">{{ $cust->inv_name }}</td>
+                    <td style="color: black; font-size: small;">{{ $cust->bill_start_date }}</td>
+                    <td style="color: black; font-size: small;">{{ $cust->client_type_name }}</td>
+                    <td style="color: black; font-size: small;">{{ $cust->bill_type_name }}</td>
+                    <td>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCustomerModal{{ $cust->customer_id }}">Edit</a>
+                            <a class="dropdown-item" href="#" onclick="window.print()">Print</a>
                           </div>
-                      </td>
-                    </tr>
-
-                    {{-- edit modal --}}
-                    <div class="modal fade" id="editCustomerModal{{ $cust->customer_id }}" tabindex="-1"
-                      aria-labelledby="editCustomerModalLabel{{ $cust->customer_id }}" aria-hidden="true">
-                      <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                          <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
-                            <h1 class="modal-title fs-5 text-white" id="editCustomerModalLabel{{ $cust->customer_id }}">Edit Customer</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                              aria-label="Close" style="filter: invert(100%);"></button>
-                          </div>
-                          
-                          <form class="" method="POST" action="{{ route('customers.update', ['customer' => $cust->customer_id]) }}">
-                            @csrf
-                            @method('PUT')
-                            <div class="modal-body">
-
-                              {{-- Customer Basic Information --}}
-                              <fieldset class="border rounded-3 p-3 theme-border mb-5">
-                                <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Customer Basic Information</legend>
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="customer_name" class="form-label fw-bold">Customer Name <span class="text-danger">*</span> </label>
-                                      <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ $cust->customer_name }}" required>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="father_or_husband_name" class="form-label fw-bold">Father Name/Husband Name</label>
-                                      <input type="text" class="form-control" id="father_or_husband_name" name="father_or_husband_name" value="{{ $cust->father_or_husband_name }}">
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="mother_name" class="form-label fw-bold">Mother Name </label>
-                                      <input type="text" class="form-control" id="mother_name" name="mother_name" value="{{ $cust->mother_name }}">
-                                    </div>
-                                  </div>
-                                </div>
-                                                                    
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="mobile1" class="form-label fw-bold">Mobile-1<span class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" id="mobile1" name="mobile1" value="{{ $cust->mobile1 }}" required>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="mobile2" class="form-label fw-bold">Mobile-2</label>
-                                      <input type="text" class="form-control" id="mobile2" name="mobile2" value="{{ $cust->mobile2 }}">
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="phone" class="form-label fw-bold">Phone</label>
-                                      <input type="text" class="form-control" id="phone" name="phone" value="{{ $cust->phone }}">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="gender" class="form-label fw-bold">Gender </label>
-                                      <select name="gender" id="gender" class="form-control">
-                                        <option {{ $cust->gender == "1" ? "selected" : "" }} value="1">Male</option>
-                                        <option {{ $cust->gender == "2" ? "selected" : "" }} value="2">Female</option>
-                                        <option {{ $cust->gender == "3" ? "selected" : "" }} value="3">Others</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="blood_group" class="form-label fw-bold">Blood Group </label>
-                                      <select name="blood_group" id="blood_group" class="form-control">
-                                        <option {{ $cust->blood_group == "1" ? "selected" : "" }} value="1">A + (Positive)</option>
-                                        <option {{ $cust->blood_group == "2" ? "selected" : "" }} value="2">A - (Negative)</option>
-                                        <option {{ $cust->blood_group == "3" ? "selected" : "" }} value="3">B + (Positive)</option>
-                                        <option {{ $cust->blood_group == "4" ? "selected" : "" }} value="4">B - (Negative)</option>
-                                        <option {{ $cust->blood_group == "5" ? "selected" : "" }} value="5">AB + (Positive)</option>
-                                        <option {{ $cust->blood_group == "6" ? "selected" : "" }} value="6">AB - (Negative)</option>
-                                        <option {{ $cust->blood_group == "7" ? "selected" : "" }} value="7">O + (Positive)</option>
-                                        <option {{ $cust->blood_group == "8" ? "selected" : "" }} value="8">O - (Negative)</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="date_of_birth" class="form-label fw-bold">Date Of Birth </label>
-                                      <input type="text" class="form-control datepicker-here digits" id="date_of_birth" name="date_of_birth" placeholder="dd/mm/yy" data-date-Format="yyyy-mm-dd" value="{{ $cust->date_of_birth }}">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="reg_form_no" class="form-label fw-bold">Registration form Number </label>
-                                      <input type="text" class="form-control" id="reg_form_no" name="reg_form_no" value="{{ $cust->reg_form_no }}">
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="occupation" class="form-label fw-bold">Occupation </label>
-                                      <input type="text" class="form-control" id="occupation" name="occupation" value="{{ $cust->occupation }}">
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="contract_person" class="form-label fw-bold">Contract Person </label>
-                                      <input class="form-control" id="contract_person" name="contract_person" value="{{ $cust->contract_person }}">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="nid_number" class="form-label fw-bold">NID Number</label>
-                                      <input type="text" class="form-control" id="nid_number" name="nid_number" value="{{ $cust->nid_number }}">
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="email" class="form-label fw-bold">Email</label>
-                                      <input type="text" class="form-control" id="email" name="email" value="{{ $cust->email }}">
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="fb_id" class="form-label fw-bold">Facebook ID </label>
-                                      <input type="text" class="form-control" id="fb_id" name="fb_id" value="{{ $cust->fb_id }}">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="road_no" class="form-label fw-bold">Road No</label>
-                                      <input type="text" class="form-control" id="road_no" name="road_no" value="{{ $cust->road_no }}">
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="house_flat_no" class="form-label fw-bold">House No</label>
-                                      <input type="text" class="form-control" id="house_flat_no" name="house_flat_no" value="{{ $cust->house_flat_no }}">
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="area_id" class="form-label fw-bold">Area</label>
-                                      <select name="area_id" id="area_id" class="form-control">
-                                        @foreach ($areas as $area)
-                                            <option {{ ($cust->area_id == $area->id) ? "selected" : "" }} value="{{ $area->id }}">{{ $area->area_name }}</option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                                    
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="district_id" class="form-label fw-bold">District</label>
-                                      <select name="district_id" id="district_id" class="form-control">
-                                        @foreach ($districts as $district)
-                                            <option {{ ($cust->district_id == $district->id) ? "selected" : "" }} value="{{ $district->id }}">{{ $district->name }}</option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="upazila_id" class="form-label fw-bold">Upazila</label>
-                                      <select name="upazila_id" id="upazila_id" class="form-control">
-                                        @foreach ($upazilas as $upazila)
-                                            <option {{ ($cust->upazila_id == $upazila->id) ? "selected" : "" }} value="{{ $upazila->id }}">{{ $upazila->name }}</option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="zone_id" class="form-label fw-bold">Zone</label>
-                                      <select name="zone_id" id="zone_id" class="form-control">
-                                        @foreach ($zones as $zone)
-                                            <option {{ ($cust->tbl_zone_id == $zone->id) ? "selected" : "" }} value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                                    
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="subzone_id" class="form-label fw-bold">Sub Zone </label>
-                                      <select name="subzone_id" id="subzone_id" class="form-control">
-                                        @foreach ($subzones as $subzone)
-                                            <option {{ ($cust->subzone_id == $subzone->id) ? "selected" : "" }} value="{{ $subzone->id }}">{{ $subzone->subzone_name }}</option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="latitude" class="form-label fw-bold">Latitude </label>
-                                      <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $cust->latitude }}">
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="longitude" class="form-label fw-bold">Longitude </label>
-                                      <input type="text" class="form-control" id="longitude" name="longitude" value="{{ $cust->longitude }}">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="business_type_id" class="form-label fw-bold">Business Type </label>
-                                      <select name="business_type_id" id="business_type_id" class="form-control">
-                                        @foreach ($business_types as $business_type)
-                                            <option {{ ($cust->business_type_id == $business_type->id) ? "selected" : "" }} value="{{ $business_type->id }}">{{ $business_type->business_name }}</option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="connection_employee_id" class="form-label fw-bold">Employee Connection </label>
-                                      <select name="connection_employee_id" id="connection_employee_id" class="form-control">
-                                        @foreach ($employees as $employee)
-                                            <option {{ ($cust->connection_employee_id == $employee->id) ? "selected" : "" }} value="{{ $employee->id }}">{{ $employee->emp_name }}</option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="reference_by" class="form-label fw-bold">Reference By </label>
-                                      <input type="text" class="form-control" id="reference_by" name="reference_by" value="{{ $cust->reference_by }}">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="present_address" class="form-label fw-bold">Present Address</label>
-                                      <textarea class="form-control" id="present_address" name="present_address">{{ $cust->present_address }}</textarea>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="permanent_address" class="form-label fw-bold">Permanent Address </label>
-                                      <textarea class="form-control" id="permanent_address" name="permanent_address">{{ $cust->permanent_address }}</textarea>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="remarks" class="form-label fw-bold">Remarks / Special Note </label>
-                                      <textarea class="form-control" id="remarks" name="remarks">{{ $cust->remarks }}</textarea>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="vat_status" class="form-label fw-bold">VAT Status </label>
-                                      <select readonly name="vat_status" id="vat_status" class="form-control">
-                                        <option selected value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </fieldset>
-
-                              {{-- Upload Picture --}}
-                              <fieldset class="border rounded-3 p-3 theme-border mb-5">
-                                <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Upload Picture</legend>
-                                <div class="d-flex justify-content-between">
-                                  <div class="col-lg-3">
-                                    <div class="white_box">
-                                        <h5 class="">Profile Picture</h5>
-                                        <div class="avatar-upload">
-                                            <div class="avatar-edit">
-                                                <input type='file' id="profile_pic" name="profile_pic" accept=".png, .jpg, .jpeg" />
-                                                <label for="profile_pic"></label>
-                                            </div>
-                                            <div class="avatar-preview">
-                                                <div id="imagePreview"
-                                                    style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQioKINfcXK55EtAkOsFMG_CnHibqyNRI-tiPq_fGUVig&s);">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-lg-3">
-                                    <div class="white_box h-100">
-                                        <h5 class="mb-0">NID / Birth Certificate Picture</h5>
-                                        <div class="avatar-upload">
-                                            <div class="avatar-edit">
-                                                <input type='file' id="nid_pic" name="nid_pic" accept=".png, .jpg, .jpeg" />
-                                                <label for="nid_pic"></label>
-                                            </div>
-                                            <div class="avatar-preview">
-                                                <div id="imagePreview"
-                                                    style="background-image: url(https://png.pngtree.com/png-vector/20221021/ourmid/pngtree-id-card-templateidentity-document-stock-icon-employee-sign-registered-vector-png-image_39834212.png);">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-lg-3">
-                                    <div class="white_box h-100">
-                                        <h5 class="mb-0">Registration Form Picture</h5>
-                                        <div class="avatar-upload">
-                                            <div class="avatar-edit">
-                                                <input type='file' id="reg_form_pic" name="reg_form_pic" accept=".png, .jpg, .jpeg" />
-                                                <label for="reg_form_pic"></label>
-                                            </div>
-                                            <div class="avatar-preview">
-                                                <div id="imagePreview"
-                                                    style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfE5MgZNS1cCgi6bQLQdD7dgxK7aGqIa3yJQ&usqp=CAU);">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </fieldset>
-
-                              {{-- Service information --}}
-                              <fieldset class="border rounded-3 p-3 theme-border">
-                                <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Service Information</legend>
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="account_no" class="form-label fw-bold">A/C No.</label><br>
-                                      <span class="text-danger"><small>Customer ID automatically generated after save</small></span>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="tbl_client_category_id" class="form-label fw-bold">Client Category </label>
-                                      <select name="tbl_client_category_id" id="tbl_client_category_id" class="form-control">
-                                        @foreach ($client_categories as $client_category)
-                                            <option {{ ($cust->client_category == $client_category->id) ? "selected" : "" }} value="{{ $client_category->id }}">{{ $client_category->name }}</option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <div class="mb-2">
-                                      <label for="sub_office_id" class="form-label fw-bold">Branch</label>
-                                      <select name="sub_office_id" id="sub_office_id" class="form-control">
-                                        @foreach ($sub_offices as $sub_office)
-                                            <option {{ ($cust->sub_office == $sub_office->id) ? "selected" : "" }} value="{{ $sub_office->id }}">{{ $sub_office->name }}</option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </fieldset>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                              <button class="btn btn-sm btn-success" type="submit" onclick="this.disabled=true;this.form.submit();">Submit</button>
-                            </div>
-                          </form>
                         </div>
+                    </td>
+                  </tr>
+
+                  {{-- edit modal --}}
+                  <div class="modal fade" id="editCustomerModal{{ $cust->customer_id }}" tabindex="-1"
+                    aria-labelledby="editCustomerModalLabel{{ $cust->customer_id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                      <div class="modal-content">
+                        <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
+                          <h1 class="modal-title fs-5 text-white" id="editCustomerModalLabel{{ $cust->customer_id }}">Edit Customer</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close" style="filter: invert(100%);"></button>
+                        </div>
+                        
+                        <form class="" method="POST" action="{{ route('customers.update', ['customer' => $cust->customer_id]) }}">
+                          @csrf
+                          @method('PUT')
+                          <div class="modal-body">
+
+                            {{-- Customer Basic Information --}}
+                            <fieldset class="border rounded-3 p-3 theme-border mb-5">
+                              <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Customer Basic Information</legend>
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="customer_name" class="form-label fw-bold">Customer Name <span class="text-danger">*</span> </label>
+                                    <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ $cust->customer_name }}" required>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="father_or_husband_name" class="form-label fw-bold">Father Name/Husband Name</label>
+                                    <input type="text" class="form-control" id="father_or_husband_name" name="father_or_husband_name" value="{{ $cust->father_or_husband_name }}">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="mother_name" class="form-label fw-bold">Mother Name </label>
+                                    <input type="text" class="form-control" id="mother_name" name="mother_name" value="{{ $cust->mother_name }}">
+                                  </div>
+                                </div>
+                              </div>
+                                                                  
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="mobile1" class="form-label fw-bold">Mobile-1<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="mobile1" name="mobile1" value="{{ $cust->mobile1 }}" required>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="mobile2" class="form-label fw-bold">Mobile-2</label>
+                                    <input type="text" class="form-control" id="mobile2" name="mobile2" value="{{ $cust->mobile2 }}">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="phone" class="form-label fw-bold">Phone</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" value="{{ $cust->phone }}">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="gender" class="form-label fw-bold">Gender </label>
+                                    <select name="gender" id="gender" class="form-control">
+                                      <option {{ $cust->gender == "1" ? "selected" : "" }} value="1">Male</option>
+                                      <option {{ $cust->gender == "2" ? "selected" : "" }} value="2">Female</option>
+                                      <option {{ $cust->gender == "3" ? "selected" : "" }} value="3">Others</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="blood_group" class="form-label fw-bold">Blood Group </label>
+                                    <select name="blood_group" id="blood_group" class="form-control">
+                                      <option {{ $cust->blood_group == "1" ? "selected" : "" }} value="1">A + (Positive)</option>
+                                      <option {{ $cust->blood_group == "2" ? "selected" : "" }} value="2">A - (Negative)</option>
+                                      <option {{ $cust->blood_group == "3" ? "selected" : "" }} value="3">B + (Positive)</option>
+                                      <option {{ $cust->blood_group == "4" ? "selected" : "" }} value="4">B - (Negative)</option>
+                                      <option {{ $cust->blood_group == "5" ? "selected" : "" }} value="5">AB + (Positive)</option>
+                                      <option {{ $cust->blood_group == "6" ? "selected" : "" }} value="6">AB - (Negative)</option>
+                                      <option {{ $cust->blood_group == "7" ? "selected" : "" }} value="7">O + (Positive)</option>
+                                      <option {{ $cust->blood_group == "8" ? "selected" : "" }} value="8">O - (Negative)</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="date_of_birth" class="form-label fw-bold">Date Of Birth </label>
+                                    <input type="text" class="form-control datepicker-here digits" id="date_of_birth" name="date_of_birth" placeholder="dd/mm/yy" data-date-Format="yyyy-mm-dd" value="{{ $cust->date_of_birth }}">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="reg_form_no" class="form-label fw-bold">Registration form Number </label>
+                                    <input type="text" class="form-control" id="reg_form_no" name="reg_form_no" value="{{ $cust->reg_form_no }}">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="occupation" class="form-label fw-bold">Occupation </label>
+                                    <input type="text" class="form-control" id="occupation" name="occupation" value="{{ $cust->occupation }}">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="contract_person" class="form-label fw-bold">Contract Person </label>
+                                    <input class="form-control" id="contract_person" name="contract_person" value="{{ $cust->contract_person }}">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="nid_number" class="form-label fw-bold">NID Number</label>
+                                    <input type="text" class="form-control" id="nid_number" name="nid_number" value="{{ $cust->nid_number }}">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="email" class="form-label fw-bold">Email</label>
+                                    <input type="text" class="form-control" id="email" name="email" value="{{ $cust->email }}">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="fb_id" class="form-label fw-bold">Facebook ID </label>
+                                    <input type="text" class="form-control" id="fb_id" name="fb_id" value="{{ $cust->fb_id }}">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="road_no" class="form-label fw-bold">Road No</label>
+                                    <input type="text" class="form-control" id="road_no" name="road_no" value="{{ $cust->road_no }}">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="house_flat_no" class="form-label fw-bold">House No</label>
+                                    <input type="text" class="form-control" id="house_flat_no" name="house_flat_no" value="{{ $cust->house_flat_no }}">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="area_id" class="form-label fw-bold">Area</label>
+                                    <select name="area_id" id="area_id" class="form-control">
+                                      @foreach ($areas as $area)
+                                          <option {{ ($cust->area_id == $area->id) ? "selected" : "" }} value="{{ $area->id }}">{{ $area->area_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                                  
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="district_id" class="form-label fw-bold">District</label>
+                                    <select name="district_id" id="district_id" class="form-control">
+                                      @foreach ($districts as $district)
+                                          <option {{ ($cust->district_id == $district->id) ? "selected" : "" }} value="{{ $district->id }}">{{ $district->name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="upazila_id" class="form-label fw-bold">Upazila</label>
+                                    <select name="upazila_id" id="upazila_id" class="form-control">
+                                      @foreach ($upazilas as $upazila)
+                                          <option {{ ($cust->upazila_id == $upazila->id) ? "selected" : "" }} value="{{ $upazila->id }}">{{ $upazila->name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="zone_id" class="form-label fw-bold">Zone</label>
+                                    <select name="zone_id" id="zone_id" class="form-control">
+                                      @foreach ($zones as $zone)
+                                          <option {{ ($cust->tbl_zone_id == $zone->id) ? "selected" : "" }} value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                                  
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="subzone_id" class="form-label fw-bold">Sub Zone </label>
+                                    <select name="subzone_id" id="subzone_id" class="form-control">
+                                      @foreach ($subzones as $subzone)
+                                          <option {{ ($cust->subzone_id == $subzone->id) ? "selected" : "" }} value="{{ $subzone->id }}">{{ $subzone->subzone_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="latitude" class="form-label fw-bold">Latitude </label>
+                                    <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $cust->latitude }}">
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="longitude" class="form-label fw-bold">Longitude </label>
+                                    <input type="text" class="form-control" id="longitude" name="longitude" value="{{ $cust->longitude }}">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="business_type_id" class="form-label fw-bold">Business Type </label>
+                                    <select name="business_type_id" id="business_type_id" class="form-control">
+                                      @foreach ($business_types as $business_type)
+                                          <option {{ ($cust->business_type_id == $business_type->id) ? "selected" : "" }} value="{{ $business_type->id }}">{{ $business_type->business_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="connection_employee_id" class="form-label fw-bold">Employee Connection </label>
+                                    <select name="connection_employee_id" id="connection_employee_id" class="form-control">
+                                      @foreach ($employees as $employee)
+                                          <option {{ ($cust->connection_employee_id == $employee->id) ? "selected" : "" }} value="{{ $employee->id }}">{{ $employee->emp_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="reference_by" class="form-label fw-bold">Reference By </label>
+                                    <input type="text" class="form-control" id="reference_by" name="reference_by" value="{{ $cust->reference_by }}">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="present_address" class="form-label fw-bold">Present Address</label>
+                                    <textarea class="form-control" id="present_address" name="present_address">{{ $cust->present_address }}</textarea>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="permanent_address" class="form-label fw-bold">Permanent Address </label>
+                                    <textarea class="form-control" id="permanent_address" name="permanent_address">{{ $cust->permanent_address }}</textarea>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="remarks" class="form-label fw-bold">Remarks / Special Note </label>
+                                    <textarea class="form-control" id="remarks" name="remarks">{{ $cust->remarks }}</textarea>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="vat_status" class="form-label fw-bold">VAT Status </label>
+                                    <select readonly name="vat_status" id="vat_status" class="form-control">
+                                      <option selected value="Yes">Yes</option>
+                                      <option value="No">No</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </fieldset>
+
+                            {{-- Upload Picture --}}
+                            <fieldset class="border rounded-3 p-3 theme-border mb-5">
+                              <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Upload Picture</legend>
+                              <div class="d-flex justify-content-between">
+                                <div class="col-lg-3">
+                                  <div class="white_box">
+                                      <h5 class="">Profile Picture</h5>
+                                      <div class="avatar-upload">
+                                          <div class="avatar-edit">
+                                              <input type='file' id="profile_pic" name="profile_pic" accept=".png, .jpg, .jpeg" />
+                                              <label for="profile_pic"></label>
+                                          </div>
+                                          <div class="avatar-preview">
+                                              <div id="imagePreview"
+                                                  style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQioKINfcXK55EtAkOsFMG_CnHibqyNRI-tiPq_fGUVig&s);">
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                  <div class="white_box h-100">
+                                      <h5 class="mb-0">NID / Birth Certificate Picture</h5>
+                                      <div class="avatar-upload">
+                                          <div class="avatar-edit">
+                                              <input type='file' id="nid_pic" name="nid_pic" accept=".png, .jpg, .jpeg" />
+                                              <label for="nid_pic"></label>
+                                          </div>
+                                          <div class="avatar-preview">
+                                              <div id="imagePreview"
+                                                  style="background-image: url(https://png.pngtree.com/png-vector/20221021/ourmid/pngtree-id-card-templateidentity-document-stock-icon-employee-sign-registered-vector-png-image_39834212.png);">
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                  <div class="white_box h-100">
+                                      <h5 class="mb-0">Registration Form Picture</h5>
+                                      <div class="avatar-upload">
+                                          <div class="avatar-edit">
+                                              <input type='file' id="reg_form_pic" name="reg_form_pic" accept=".png, .jpg, .jpeg" />
+                                              <label for="reg_form_pic"></label>
+                                          </div>
+                                          <div class="avatar-preview">
+                                              <div id="imagePreview"
+                                                  style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfE5MgZNS1cCgi6bQLQdD7dgxK7aGqIa3yJQ&usqp=CAU);">
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </fieldset>
+
+                            {{-- Service information --}}
+                            <fieldset class="border rounded-3 p-3 theme-border">
+                              <legend class="float-none w-auto px-3 theme-text fs-5 fw-semibold">Service Information</legend>
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="account_no" class="form-label fw-bold">A/C No.</label><br>
+                                    <span class="text-danger"><small>Customer ID automatically generated after save</small></span>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="tbl_client_category_id" class="form-label fw-bold">Client Category </label>
+                                    <select name="tbl_client_category_id" id="tbl_client_category_id" class="form-control">
+                                      @foreach ($client_categories as $client_category)
+                                          <option {{ ($cust->client_category == $client_category->id) ? "selected" : "" }} value="{{ $client_category->id }}">{{ $client_category->name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="mb-2">
+                                    <label for="sub_office_id" class="form-label fw-bold">Branch</label>
+                                    <select name="sub_office_id" id="sub_office_id" class="form-control">
+                                      @foreach ($sub_offices as $sub_office)
+                                          <option {{ ($cust->sub_office == $sub_office->id) ? "selected" : "" }} value="{{ $sub_office->id }}">{{ $sub_office->name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                            <button class="btn btn-sm btn-success" type="submit" onclick="this.disabled=true;this.form.submit();">Submit</button>
+                          </div>
+                        </form>
                       </div>
                     </div>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
+                  </div>
+                @endforeach
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

@@ -26,6 +26,7 @@ use App\Models\TblClientCategory;
 use App\Models\TblSuboffice;
 use App\Models\TblCableType;
 use App\Models\TrnClientsService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
 
@@ -37,6 +38,13 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        $selectedCustomer = -1;
+        $selectedCustomerCategory = -1;
+        $selectedCustomerStatus = -1;
+        $selectedPackage = -1;
+        $selectedZone = -1;
+        $selectedSubZone = -1;
+
         $menus = Menu::get();
         $customers = Customer::select(
             'customers.id as customer_id',
@@ -118,6 +126,7 @@ class CustomerController extends Controller
         ->get();
         // dd($customers); 
 
+        $customers_dropdown = Customer::select('id as customer_id', 'customer_name')->orderBy('customer_name', 'desc')->get();
         $zones = TblZone::get();
         $subzones = SubZone::get();
         $areas = Area::get();
@@ -141,6 +150,7 @@ class CustomerController extends Controller
             compact(
                 'menus',
                 'customers',
+                'customers_dropdown',
                 'zones',
                 'subzones',
                 'areas',
@@ -158,13 +168,125 @@ class CustomerController extends Controller
                 'employees',
                 'client_categories',
                 'sub_offices',
-                'cable_types'
+                'cable_types',
+                'selectedCustomer',
+                'selectedCustomerCategory',
+                'selectedCustomerStatus',
+                'selectedPackage',
+                'selectedZone',
+                'selectedSubZone'
             )
         );
     }
-    public function search()
+    public function search(Request $request)
     {
+        // dd($request);
+        $selectedCustomer = $request->customer;
+        $selectedCustomerCategory = $request->customer_category;
+        $selectedCustomerStatus = $request->customer_status;
+        $selectedPackage = $request->package;
+        $selectedZone = $request->zone;
+        $selectedSubZone = $request->subzone;
+
         $menus = Menu::get();
+        $customers = Customer::select(
+            'customers.id as customer_id',
+            'customers.customer_name',
+            'customers.father_or_husband_name',
+            'customers.mother_name',
+            'customers.gender',
+            'customers.blood_group',
+            'customers.date_of_birth',
+            'customers.reg_form_no',
+            'customers.occupation',
+            'customers.vat_status',
+            'customers.nid_number',
+            'customers.email',
+            'customers.fb_id',
+            'customers.mobile1',
+            'customers.mobile2',
+            'customers.phone',
+            'customers.road_no',
+            'customers.house_flat_no',
+            'customers.area_id',
+            'customers.district_id',
+            'customers.upazila_id',
+            'customers.tbl_zone_id',
+            'customers.subzone_id',
+            'customers.latitude',
+            'customers.longitude',
+            'customers.present_address',
+            'customers.permanent_address',
+            'customers.remarks',
+            'customers.business_type_id',
+            'customers.connection_employee_id',
+            'customers.reference_by',
+            'customers.contract_person',
+            'customers.profile_pic',
+            'customers.nid_pic',
+            'customers.reg_form_pic',
+            'customers.account_no',
+            'customers.tbl_client_category_id',
+            'customers.sub_office_id',
+
+            'trn_clients_services.id as service_id',
+            'trn_clients_services.srv_type_id',
+            'trn_clients_services.user_id',
+            'trn_clients_services.password',
+            'trn_clients_services.bandwidth_plan_id',
+            'trn_clients_services.installation_date',
+            'trn_clients_services.remarks',
+            'trn_clients_services.type_of_connectivity',
+            'trn_clients_services.router_id',
+            'trn_clients_services.device',
+            'trn_clients_services.mac_address',
+            'trn_clients_services.ip_number',
+            'trn_clients_services.box_id',
+            'trn_clients_services.cable_req',
+            'trn_clients_services.no_of_core',
+            'trn_clients_services.core_color',
+            'trn_clients_services.fiber_code',
+            'trn_clients_services.tbl_bill_type_id',
+            'trn_clients_services.invoice_type_id',
+            'trn_clients_services.bill_start_date',
+            'trn_clients_services.tbl_client_type_id',
+            'trn_clients_services.monthly_bill',
+            'trn_clients_services.billing_status_id',
+            'trn_clients_services.tbl_status_type_id',
+            'trn_clients_services.include_vat',
+            'trn_clients_services.greeting_sms_sent',
+            'tbl_client_types.name as package',
+            'tbl_client_categories.name as client_type_name',
+            'tbl_status_types.inv_name',
+            'tbl_bill_types.bill_type_name'
+        )
+        ->leftJoin('trn_clients_services', 'customers.id', '=', 'trn_clients_services.customer_id')
+        ->leftJoin('tbl_client_types', 'tbl_client_types.id', '=', 'trn_clients_services.tbl_client_type_id')
+        ->leftJoin('tbl_client_categories', 'tbl_client_categories.id', '=', 'customers.tbl_client_category_id')
+        ->leftJoin('tbl_bill_types', 'tbl_bill_types.id', '=', 'trn_clients_services.tbl_bill_type_id')
+        ->leftJoin('tbl_status_types', 'tbl_status_types.id', '=', 'trn_clients_services.tbl_status_type_id')
+        ->where('trn_clients_services.srv_type_id', 1);
+        if ($selectedCustomer>-1) {
+            $customers->where('customer_id', $selectedCustomer);
+        }
+        if ($selectedCustomerCategory>-1) {
+            $customers->where('tbl_client_categories.id', $selectedCustomerCategory);
+        }
+        if ($selectedCustomerStatus>-1) {
+            $customers->where('tbl_status_types.id', $selectedCustomerStatus);
+        }
+        if ($selectedPackage>-1) {
+            $customers->where('tbl_client_types.id', $selectedPackage);
+        }
+        if ($selectedZone>-1) {
+            $customers->where('customers.tbl_zone_id', $selectedZone);
+        }
+        if ($selectedSubZone>-1) {
+            $customers->where('customers.subzone_id', $selectedSubZone);
+        }
+        $customers = $customers->get();
+
+        $customers_dropdown = Customer::select('id as customer_id', 'customer_name')->orderBy('customer_name', 'desc')->get();
         $zones = TblZone::get();
         $subzones = SubZone::get();
         $areas = Area::get();
@@ -183,7 +305,39 @@ class CustomerController extends Controller
         $client_categories = TblClientCategory::select('id', 'name')->orderBy('name', 'desc')->get();
         $sub_offices = TblSuboffice::select('id', 'name')->orderBy('name', 'desc')->get();
         $cable_types = TblCableType::select('id', 'cable_type')->orderBy('id', 'desc')->get();
-        
+
+        return view(
+            'pages.company.customers.customers_info',
+            compact(
+                'menus',
+                'customers',
+                'customers_dropdown',
+                'zones',
+                'subzones',
+                'areas',
+                'invoice_types',
+                'status_types',
+                'client_types',
+                'bill_types',
+                'districts',
+                'upazilas',
+                'routers',
+                'business_types',
+                'bandwidth_plans',
+                'billing_statuses',
+                'boxes',
+                'employees',
+                'client_categories',
+                'sub_offices',
+                'cable_types',
+                'selectedCustomer',
+                'selectedCustomerCategory',
+                'selectedCustomerStatus',
+                'selectedPackage',
+                'selectedZone',
+                'selectedSubZone'
+            )
+        );
     }
     public function getUpazilaByDistrict($disctrictid)
     {
