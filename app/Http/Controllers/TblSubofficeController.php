@@ -14,7 +14,7 @@ class TblSubofficeController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $suboffices = TblSuboffice::get();
         return view('pages.setup.suboffice', compact('menus', 'suboffices'));
     }

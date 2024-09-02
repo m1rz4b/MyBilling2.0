@@ -10,7 +10,7 @@ class TblWeekendController extends Controller
 {
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $weekends = TblWeekend::get();
         return view('pages.hrm.weeklyHolidays', compact('menus', 'weekends'));
     }

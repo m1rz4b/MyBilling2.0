@@ -14,14 +14,14 @@ class TblScheduleController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $schedules = TblSchedule::get();
         return view('pages.hrm.shift', compact('menus', 'schedules'));
     }
 
     public function shiftschdlIndex()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $hrm_tblshifts = HrmTblShift::get();
         return view('pages.hrm.shiftSchedule', compact('menus', 'hrm_tblshifts'));
     }

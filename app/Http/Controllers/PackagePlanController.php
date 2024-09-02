@@ -15,7 +15,7 @@ class PackagePlanController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $client_types = TblClientType::get();
         $customers = Customer::select('id', 'customer_name')
             ->where('tbl_client_category_id', 3)

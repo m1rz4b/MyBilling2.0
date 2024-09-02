@@ -14,7 +14,7 @@ class MasEmployeeController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $mas_employees =  MasEmployee::select
             (
                 'mas_employees.id',
@@ -54,7 +54,7 @@ class MasEmployeeController extends Controller
     public function woPin()
     {
         //
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $wopinemployees = DB::table('mas_employees')
             ->leftjoin('mas_departments', 'mas_employees.department_id', '=', 'mas_departments.id')
             ->leftjoin('mas_designation', 'mas_employees.designation_id', '=', 'mas_designation.id')

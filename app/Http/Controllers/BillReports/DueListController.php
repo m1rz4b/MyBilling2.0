@@ -57,7 +57,7 @@ class DueListController extends Controller
 		$selectedcategory = -1;
 		
 
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
         $client_category = TblClientCategory::select('id', 'name')->orderBy('name', 'asc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();
@@ -157,7 +157,7 @@ class DueListController extends Controller
 		$selectedBranch = $request->branch;
 		$selectedcategory = $request->client_category;
 
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
         $client_category = TblClientCategory::select('id', 'name')->orderBy('name', 'asc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();

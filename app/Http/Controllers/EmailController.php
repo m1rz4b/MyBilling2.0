@@ -20,7 +20,7 @@ class EmailController extends Controller
     public function index()
     {
         //
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $email_setups = TblEmailSetup::get();
         $departments = MasDepartment::get();
         return view('pages.sms&Email.emailSetup', compact('menus', 'email_setups', 'departments'));
@@ -28,28 +28,28 @@ class EmailController extends Controller
 
     public function email_and_sms()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $customers = Customer::get();
         return view('pages.sms&Email.emailAndSms', compact('menus', 'customers'));
     }
 
     public function email_log()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $emaillogs = TblEmailLog::get();
         return view('pages.sms&Email.emailLog', compact('menus', 'emaillogs'));
     }
 
     public function email_send()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $sendemails = Email::get();
         return view('pages.sms&Email.emailSend', compact('menus', 'sendemails'));
     }
 
     public function email_template()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $emailtemplates = TblEmailTemplate::get();
         return view('pages.sms&Email.emailTemplate', compact('menus', 'emailtemplates'));
     }

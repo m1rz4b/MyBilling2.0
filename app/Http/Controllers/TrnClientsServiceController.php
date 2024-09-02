@@ -25,9 +25,7 @@ class TrnClientsServiceController extends Controller
      */
     public function index()
     {
-        $selectedCustomer = -1;
-        $selectedCustomerStatus = -1;
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $units = TblUnit::select('id','unit_display')->orderBy('unit_display', 'asc')->get();
         $client_services = TrnClientsService::select(
             'trn_clients_services.*',
@@ -50,7 +48,7 @@ class TrnClientsServiceController extends Controller
         ->get();
 
         $customers = Customer::select('id', 'customer_name','present_address')->orderBy('customer_name', 'desc')->get();
-        $service_types = TblSrvType::select('id','srv_name')->orderBy('srv_name', 'asc')->get();
+        $service_types = TblSrvType::select('id','srv_name')->where('srv_name','!=','Broadband')->orderBy('srv_name', 'asc')->get();
         $bandwidth_plans = TblBandwidthPlan::select('id','bandwidth_plan')->orderBy('id', 'desc')->get();
         $cable_types = TblCableType::select('id', 'cable_type')->orderBy('id', 'desc')->get();
         $routers = TblRouter::select('id', 'router_name')->orderBy('router_name', 'desc')->get();

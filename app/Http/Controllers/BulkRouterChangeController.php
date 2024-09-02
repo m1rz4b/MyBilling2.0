@@ -21,7 +21,7 @@ class BulkRouterChangeController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $routers = TblRouter::orderBy('router_ip', 'asc')->get();
         $client_types = TblClientType::orderBy('name', 'asc')->get();
         $zones = TblZone::orderBy('zone_name', 'asc')->get();
@@ -99,7 +99,7 @@ class BulkRouterChangeController extends Controller
         $selectedClientType = $request->client_type;
         $selectedStatus = $request->status;
 
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $routers = TblRouter::orderBy('router_ip', 'asc')->get();
         $client_types = TblClientType::orderBy('name', 'asc')->get();
         $zones = TblZone::orderBy('zone_name', 'asc')->get();

@@ -20,25 +20,21 @@
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             line-height: 1.5 !important;
         }
-        @media print {
-           .noprint {
-              visibility: hidden;
-           }
-        }
+        
     </style>
     
     <div class="main_content_iner mt-0">
         
         <div class="container-fluid p-0 sm_padding_15px">
-            <div class="noprint">
+            <div class="">
                 <div class="px-4 py-1 theme_bg_1">
                     <h5 class="mb-0 text-white text-center">Monthly Invoice</h5>
                 </div>
             </div>
 
-            <form action="{{ route('monthlyinvoices.show') }}" method="get">
+            <form action="{{ route('monthlyinvoices.show') }}" method="post">
                 @csrf
-                <div class="m-3 noprint">
+                <div class="m-3 ">
                     <div class="row mb-3">
 					 <div class="col-sm-4 form-group">
                     
@@ -56,7 +52,7 @@
                 </div>
 
 
-                <div class="col-sm-4 form-group noprint">
+                <div class="col-sm-4 form-group ">
                  
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
@@ -68,7 +64,7 @@
                         </select>
                     </div>
                 </div>
-                  <div class="col-sm-4 noprint">
+                  <div class="col-sm-4 ">
 				    <div class="input-group input-group-sm flex-nowrap">
                             <select name="zone" id="zone" class="form-select form-select-sm form-control">
                                 <option value="-1">Select a Zone</option>
@@ -79,7 +75,7 @@
                      </div>
                    </div>
 
-                    <div class="col-sm-4 noprint">
+                    <div class="col-sm-4 ">
                         <div class="input-group input-group-sm flex-nowrap">
                             <select class="select2 form-select form-select-sm" id="branch" name="branch">
                                 <option value="-1" selected>Select a Branch</option>
@@ -89,7 +85,7 @@
                             </select>
                         </div>
                     </div>
-                        <div class="col-sm-4 noprint">
+                        <div class="col-sm-4 ">
                             <select name="client_category" id="client_category" class="select2 form-select form-select-sm form-control">
                                 <option value="-1">Select a Client Category</option>
                                 @foreach ($client_category as $category)
@@ -98,11 +94,11 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-sm-4 noprint">
-                            <button type="button" class="btn btn-sm btn-primary me-2"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Search</button>
-                            <a class="btn btn-danger btn-sm text-white me-2" href="{{ route('monthly_invoices_pdf') }}"><i class="fa-solid fa-file-pdf me-1"></i>PDF</a>
-                            <a class="btn btn-warning btn-sm text-white me-2" onclick="window.print()"><i class="fa-solid fa-print me-1"></i>Print</a>
-                            <a class="btn btn-success btn-sm"><i class="fa-regular fa-file-excel me-1"></i>Excel</a>
+                        <div class="col-sm-4 ">
+                            <button type="submit" name="action" class="btn btn-sm btn-primary me-2" value="search"><i class="fa-solid fa-magnifying-glass me-1"></i>Search</button>
+                            <button type="submit" name="action" class="btn btn-danger btn-sm text-white me-2" value="pdf" ><i class="fa-solid fa-file-pdf me-1"></i>PDF</button>
+                            <button type="submit" name="action" class="btn btn-success btn-sm text-white me-2" value="excel" ><i class="fa-regular fa-file-excel me-1"></i>Excel</button>
+                            
                         </div>
                     </div>
                 </div>

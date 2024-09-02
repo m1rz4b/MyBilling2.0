@@ -27,7 +27,7 @@ class UserStatusReportController extends Controller
         $selectedCurrentStatus = -1;
         $selectedCustomer = -1;
 
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
         $client_types = TblClientType::select('id', 'name')->orderBy('name', 'asc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();
@@ -118,7 +118,7 @@ class UserStatusReportController extends Controller
         $selectedCurrentStatus = $request->current_status;
         $selectedCustomer = $request->customer;
 
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
         $client_types = TblClientType::select('id', 'name')->orderBy('name', 'asc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();

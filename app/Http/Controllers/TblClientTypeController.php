@@ -16,7 +16,7 @@ class TblClientTypeController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $packages = TblClientType::get();
         $customers = Customer::where('tbl_client_category_id', 3)
             ->orderBy('id')

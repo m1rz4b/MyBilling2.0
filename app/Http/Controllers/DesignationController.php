@@ -14,7 +14,7 @@ class DesignationController extends Controller
     public function index()
     {
         //
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $designations = Designation::get();
         return view("pages.setup.designation", compact("menus", "designations"));
     }

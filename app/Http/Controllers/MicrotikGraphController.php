@@ -15,7 +15,7 @@ class MicrotikGraphController extends Controller
     public function index()
     {
         //
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $mikrotiks = MicrotikGraph::get();
         $routers = TblRouter::get();
         return view("pages.setup.mikrotikGraph", compact("menus", "mikrotiks", "routers"));

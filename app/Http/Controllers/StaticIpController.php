@@ -14,7 +14,7 @@ class StaticIpController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $stat_ips = StaticIp::get();
         return view("pages.radius.staticIp", compact("menus","stat_ips"));
     }

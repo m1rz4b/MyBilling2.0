@@ -14,7 +14,7 @@ class VariablesController extends Controller
     public function index()
     {
         //
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $variables = Variables::all();
         return view("pages.setup.variables", compact("menus", "variables"));
     }

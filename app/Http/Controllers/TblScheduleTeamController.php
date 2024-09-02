@@ -14,7 +14,7 @@ class TblScheduleTeamController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $scheduleteams = TblScheduleTeam::get();
         $companies = DB::table('tbl_company')
                     ->select('company_name')

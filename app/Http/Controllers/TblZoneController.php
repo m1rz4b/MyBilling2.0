@@ -14,7 +14,7 @@ class TblZoneController extends Controller
     public function index()
     {
         //
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $zones = TblZone::get();
         return view("pages.setup.zone", compact("menus", "zones"));
     }
