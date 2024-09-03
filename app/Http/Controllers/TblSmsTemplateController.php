@@ -13,7 +13,7 @@ class TblSmsTemplateController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $sms_templates = TblSmsTemplate::get();
         return view('pages.sms&Email.smsTemplate', compact('menus', 'sms_templates'));
     }

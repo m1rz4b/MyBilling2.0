@@ -21,7 +21,7 @@ class TblRouterController extends Controller
     public function index()
     {
         //
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $routers = TblRouter::get();
         return view("pages.radius.router", compact("menus", "routers"));
     }

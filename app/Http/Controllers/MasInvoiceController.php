@@ -38,7 +38,7 @@ class MasInvoiceController extends Controller
     //Function for displaying invoice generation page
     public function monthlyInvoiceCreate()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         //$mas_invoices = MasInvoice::paginate(18);
         $branches = TblSuboffice::where('status',1)->get();
         //dump($branches->toSql());
@@ -49,7 +49,7 @@ class MasInvoiceController extends Controller
     //invoice generation 
     public function monthlyInvoiceStore(Request $request)
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         //$mas_invoices = MasInvoice::get();
         $branches = TblSuboffice::where('status',1)->get();;
 
@@ -61,12 +61,7 @@ class MasInvoiceController extends Controller
             'month' => 'required|not_in:-1',
         ]);
 
-        // $messages = [
-        //     'same' => 'The :attribute and :other must match.',
-        //     'size' => 'The :attribute must be exactly :size.',
-        //     'between' => 'The :attribute value :input is not between :min - :max.',
-        //     'in' => 'The :attribute must be one of the following types: :values',
-        // ];
+        
 
         //get user id
         $userid = Auth::id();
@@ -135,7 +130,7 @@ class MasInvoiceController extends Controller
             //*****************************************************	
             //Process Start for genereal user 
             //*****************************************************
-       // Will generate bill :  Only active client from trn_clients_services,  not Pre-paid, service type not HotSpot
+        // Will generate bill :  Only active client from trn_clients_services,  not Pre-paid, service type not HotSpot
 
         $customerResult = Customer::select([
             'customers.id',
@@ -164,9 +159,9 @@ class MasInvoiceController extends Controller
             $customerResult->whereNotIn('trn_clients_services.id',$listOfService);;
             }
                
-     //   dd($customerResult->toSql());
+        //   dd($customerResult->toSql());
         $customerResult = $customerResult->get();
-    //    dd($customerResult);
+        //    dd($customerResult);
         //dd($customerResult);
         foreach($customerResult as $customerRow){
             
@@ -193,7 +188,7 @@ class MasInvoiceController extends Controller
             
 
 
-        //    dd($customerRow);
+         //    dd($customerRow);
 
             if($customerRow->tbl_bill_type_id==2)
 			{
@@ -215,7 +210,7 @@ class MasInvoiceController extends Controller
                 $invnum=pick("mas_invoices","MAX(invoice_number) as max_inv","");
                 $invnum=($invnum[0]->max_inv)+1;
             }
-// dd($invnum);
+            // dd($invnum);
             $extra_bill=pick("trn_invoices","Sum(extra_bill) as extra_bill","serv_id='".$customerRow->serv_id."' AND client_id='".$customerRow->id."' AND MONTH(from_date) = '".$pinvoiceMonth."' AND YEAR(from_date) = '".$pinvoiceYear."' ");
             $extra_bill = $extra_bill[0]->extra_bill;
             
@@ -230,7 +225,7 @@ class MasInvoiceController extends Controller
             $sarrear=pick("mas_invoices","Sum(mas_invoices.total_bill-(collection_amnt+vat_adjust_ment+discount_amnt+other_adjustment)) as arrear","customer_id='".$customerRow->id."' and serv_id='".$customerRow->serv_id."'"); 
             $sarrear=$sarrear[0]->arrear; 
 			
-	//	dd($customerRow->id,$customerRow->serv_id,$sarrear);		
+	        //	dd($customerRow->id,$customerRow->serv_id,$sarrear);		
 		
             if($sarrear>0){
 				$sarrear=$sarrear;
@@ -269,7 +264,7 @@ class MasInvoiceController extends Controller
             $bill_amount =1000;
             //$total_bill =1000;
 
-        //    dd($start_year ,$inv_year ,$start_month,$inv_month,$rate_amnt);
+            //    dd($start_year ,$inv_year ,$start_month,$inv_month,$rate_amnt);
             if (intval($start_year) == intval($inv_year) && intval($start_month) == intval($inv_month)) {
                 $dayG=dateDifference($customerRow->bill_start_date , $last_dateG , '%a' )+1;
             
@@ -302,7 +297,7 @@ class MasInvoiceController extends Controller
                     'pre_arrear' => $sarrear
                 ]);
 
-       //         dd($insertInvoice);
+                //         dd($insertInvoice);
                 $last_idG = pick('mas_invoices','MAX(id) as id',"")[0]->id;
                 if ($last_idG==null) {
                     $last_idG = 0;
@@ -334,9 +329,9 @@ class MasInvoiceController extends Controller
                     'unit' => $client_type,
                     'invoice_date' => $invoiceDate,
                 ];
-         //       dd($invoiceData);
+                //       dd($invoiceData);
                 $result =  DB::table('trn_invoices')->insert($invoiceData);
-             //   dd($result);
+                //   dd($result);
 				
 
                 $updateInvoice = DB::table('trn_invoices')
@@ -396,7 +391,7 @@ class MasInvoiceController extends Controller
                ]);
 				
 				
-//dd($insertInvoice);
+                //dd($insertInvoice);
 			$last_idG = pick('mas_invoices','MAX(id) as id',"")[0]->id;
                 if ($last_idG==null) {
                     $last_idG = 0;
@@ -450,7 +445,7 @@ class MasInvoiceController extends Controller
 				
             }
 			else {
-				return;
+				die;
 			}
 
 
@@ -580,7 +575,7 @@ class MasInvoiceController extends Controller
     //Show invoice update page
     public function monthlyInvoiceUpdate()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         //$mas_invoices = MasInvoice::get();
         $customers = Customer::orderBy('id')->get()->take(1000);
 
@@ -903,7 +898,7 @@ class MasInvoiceController extends Controller
             }
 
 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         //$mas_invoices = MasInvoice::get();
         $customers = Customer::orderBy('id')->get()->take(100);
 
@@ -913,7 +908,7 @@ class MasInvoiceController extends Controller
     //Show Edit Invoice Page
     public function editInvoice()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $mas_invoices = MasInvoice::with('Customer', 'TblInvoiceCat')->get();
         $customers = Customer::orderBy('id')->get();
 
@@ -925,7 +920,7 @@ class MasInvoiceController extends Controller
     {
         $customerid = $request->client;
         //dd($customerid);
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $mas_invoices = MasInvoice::with('Customer', 'TblInvoiceCat')->where('customer_id',$customerid)->get();
         //dd($mas_invoices);
         $customers = Customer::orderBy('id')->get();
@@ -937,7 +932,7 @@ class MasInvoiceController extends Controller
     //Show Invoice Collection Page
     public function invoiceCollection()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $mas_invoices = MasInvoice::with('TblSrvType')->get();
         $customers = Customer::orderBy('id')->get();
         $dates = Carbon::now();
@@ -949,7 +944,7 @@ class MasInvoiceController extends Controller
     //Show Invoice Collection Home 
     public function invoiceCollectionHome()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $customers = Customer::get()->take(2000);
         //dd($customers);
         $dates = Carbon::now();
@@ -983,7 +978,7 @@ class MasInvoiceController extends Controller
                         ->get();
        
         //dd($invoices->invoiceobjet_id);
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $customers = Customer::where('id',$cboDebtor)->get();
         //dd($customers);
         $dates = Carbon::now();
@@ -1148,7 +1143,7 @@ class MasInvoiceController extends Controller
             }
         }
 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $customers = Customer::get()->take(2000);
         $dates = Carbon::now();
         return redirect('/invoicecollectionhome')->with('success', 'Collection added successfully');
@@ -1169,6 +1164,7 @@ class MasInvoiceController extends Controller
 
         $result = MasCollection::select(
             'mas_collections.created_by',
+            'mas_collections.money_reciept',
             'customers.customer_name',
             DB::raw('SUM(CASE WHEN mas_collections.pay_type = "C" THEN mas_collections.coll_amount + mas_collections.adv_rec ELSE 0 END) AS ccollamnt'),
             DB::raw('SUM(CASE WHEN mas_collections.pay_type = "Q" THEN mas_collections.coll_amount + mas_collections.adv_rec ELSE 0 END) AS qcollamnt'),
@@ -1177,7 +1173,7 @@ class MasInvoiceController extends Controller
             'mas_collections.remarks'
         )
         ->leftJoin('customers', 'customers.id', '=', 'mas_collections.customer_id')
-        ->groupBy('mas_collections.created_by', 'customers.customer_name', 'mas_collections.remarks');
+        ->groupBy('mas_collections.created_by', 'customers.customer_name', 'mas_collections.remarks','mas_collections.money_reciept');
 
         // if ($selectedCollector>-1) {
         //     $result->where('mas_collections.collection_date', $selectedCollector);
@@ -1188,7 +1184,7 @@ class MasInvoiceController extends Controller
         //dd($result);
 
         //dd($selectedDay);
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $nisl_mas_members = NislMasMember::orderby('username')->get();
         $client_categories = TblClientCategory::orderby('name')->get();
         $zones = TblZone::orderby('zone_name')->get();
@@ -1200,7 +1196,7 @@ class MasInvoiceController extends Controller
 
     public function advanceInformation()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $customers = Customer::get();
         $advancebills = AdvanceBill::get();
         return view('pages.billing.advanceInformation', compact('menus', 'customers', 'advancebills'));
@@ -1208,7 +1204,7 @@ class MasInvoiceController extends Controller
 
     public function renew()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $customers = Customer::get();
         $dates = Carbon::now();
         return view('pages.billing.renewCustomer', compact('menus', 'customers', 'dates'));
@@ -1216,7 +1212,7 @@ class MasInvoiceController extends Controller
 
     public function otherInv()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $customers = Customer::get();
         $invoices = MasInvoice::get();
         return view('pages.billing.otherInvoice', compact('menus', 'customers', 'invoices'));

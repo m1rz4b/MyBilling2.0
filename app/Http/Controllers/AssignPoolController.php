@@ -22,7 +22,7 @@ class AssignPoolController extends Controller
         $nas = [];
         $mikrotik_rate_limit = [];
         $framed_pool = [];
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
 
         $rad_group_reply = RadGroupReply::leftJoin('radgroupcheck', 'radgroupcheck.groupname', '=', 'radgroupreply.groupname')
             ->leftJoin('tbl_client_types', 'tbl_client_types.id', '=', 'radgroupreply.groupname',)

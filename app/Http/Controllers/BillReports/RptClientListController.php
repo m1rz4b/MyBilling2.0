@@ -58,7 +58,7 @@ class RptClientListController extends Controller
 		$selectedcategory = -1;
 		
 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
         $client_category = TblClientCategory::select('id', 'name')->orderBy('name', 'asc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();
@@ -160,7 +160,7 @@ class RptClientListController extends Controller
 		$selectedBranch = $request->branch;
 		$selectedcategory = $request->client_category;
 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
         $client_category = TblClientCategory::select('id', 'name')->orderBy('name', 'asc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();

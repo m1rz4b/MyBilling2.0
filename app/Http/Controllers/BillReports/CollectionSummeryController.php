@@ -52,7 +52,7 @@ class CollectionSummeryController extends Controller
 		$selectedcategory = -1;
 		
 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
         $client_category = TblClientCategory::select('id', 'name')->orderBy('name', 'asc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();
@@ -76,7 +76,7 @@ class CollectionSummeryController extends Controller
 		$ccond.=" And customers.subzone_id = '".$selectedBranch."'";
 		 }
 		 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
         $client_category = TblClientCategory::select('id', 'name')->orderBy('name', 'asc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();
@@ -166,7 +166,7 @@ class CollectionSummeryController extends Controller
 		$ccond.=" And customers.subzone_id = '".$selectedBranch."'";
 		 }
 		 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
         $client_category = TblClientCategory::select('id', 'name')->orderBy('name', 'asc')->get();
         $status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();

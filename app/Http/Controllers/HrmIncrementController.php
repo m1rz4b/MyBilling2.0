@@ -16,7 +16,7 @@ class HrmIncrementController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
 
         $hrm_increments = HrmIncrement::select(
             'hrm_increments.id',

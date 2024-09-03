@@ -79,175 +79,76 @@
 
       <div class="navbar-menu ">
         <ul class="navbar-nav">
-          {{-- <li class="nav-item">
-            <a href="#sidebarDashboard" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboard">
-              <i class="fa-solid fa-chart-line"></i>
-              <span>Dashboard</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarDashboard">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <a href="/" class="nav-link">Index</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/customers" class="nav-link">Customers</a>
-                </li>
 
-                <li class="nav-item">
-                  <a href="#sidebarDirectory" class="nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebarDirectory"><span>Directory</span></a>
-                  <div class="collapse menu-dropdown" id="sidebarDirectory">
-                    <ul class="nav nav-sm flex-column">
-                      <li class="nav-item">
-                        <a href="index.html" class="nav-link">Sub Menu-1</a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="add_new_client.html" class="nav-link">Sub Menu-2</a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#submenu" class="nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="submenu">Sub Menu-3</a>
-                        <div class="collapse menu-dropdown" id="submenu">
-                          <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                              <a href="#" class="nav-link">
-                                  Level 3.1
-                              </a>
-                            </li>
-                            <li class="nav-item">
-                              <a href="#" class="nav-link">
-                                  Level 3.2
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </li> --}}
 
-          @foreach ($menus as $menu)
-            @if ($menu->is_parent==1)
+          @foreach ($menus as $levelZero)
+            @if ($levelZero->is_parent==1 && $levelZero->level==0)
               <li class="nav-item">
-                <a href="#sidebarMenu-{{$menu->id}}" class="nav-link has-arrow" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebarMenu-{{$menu->id}}">
-                  {!!$menu->icon!!}
-                  <span>{{ $menu->name }}</span>
+                <a href="#levelOneMenu{{ $levelZero->id }}" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="levelOneMenu{{ $levelZero->id }}">
+                  {!! $levelZero->icon !!}
+                  <span>{{ $levelZero->name }}</span>
                 </a>
-                <div class="collapse menu-dropdown" id="sidebarMenu-{{$menu->id}}">
+                <div class="collapse menu-dropdown" id="levelOneMenu{{ $levelZero->id }}">
                   <ul class="nav nav-sm flex-column">
-                    @foreach ($menus as $childmenu)
-                      @if ($childmenu->pid == $menu->id)
+                    @foreach ($menus as $levelOne)
+                      @if ($levelOne->is_parent==1 && $levelOne->level==1 && $levelOne->pid==$levelZero->id)
                         <li class="nav-item">
-                          <a href="{{ url($childmenu->route) }}" class="nav-link has-arrow" aria-expanded="false">{{ $childmenu->name }}</a>
-                        </li>
-                      @endif
-                    @endforeach
-                  </ul>
-                </div>
-              </li>
-              @elseif($menu->is_parent==0 && $menu->level==0)
-                <li class="nav-item">
-                  <a href="{{ url($menu->route) }}" class="nav-link has-arrow" aria-expanded="false">
-                      <span>{{ $menu->name }}</span> 
-                  </a>
-                </li>
-              @endif
-          @endforeach
-
-          {{-- @foreach ($menus as $menu)
-            @if ($menu->is_parent==1)
-              <li class="nav-item">
-                <a href="#sidebarMenu-{{$menu->id}}" class="nav-link has-arrow" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebarMenu-{{$menu->id}}">
-                  {!!$menu->icon!!}
-                  <span>{{ $menu->name }}</span>
-                </a>
-                <div class="collapse menu-dropdown" id="sidebarMenu-{{$menu->id}}">
-                  <ul class="nav nav-sm flex-column">
-                    @foreach ($menus as $childmenu)
-                      @if ($childmenu->pid == $menu->id)
-                        <li class="nav-item">
-                          <a href="{{ url($childmenu->route) }}" class="nav-link has-arrow" aria-expanded="false">{{ $childmenu->name }}</a>
-                        </li>
-                      @elseif ($childmenu->pid != $menu->id && $childmenu->level==2)
-                        <li class="nav-item">
-                          <a href="#sidebarSubMenu-{{$childmenu->id}}" class="nav-link has-arrow" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebarSubMenu-{{$childmenu->id}}">
-                            <span>{{ $childmenu->name }}</span>
-                          </a>
-                          <div class="collapse menu-dropdown" id="sidebarSubMenu-{{$childmenu->id}}">
+                          <a href="#levelTwoMenu{{ $levelOne->id }}" class="nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="levelTwoMenu{{ $levelOne->id }}"><span>{{ $levelOne->name }}</span></a>
+                          <div class="collapse menu-dropdown" id="levelTwoMenu{{ $levelOne->id }}">
                             <ul class="nav nav-sm flex-column">
-                              @foreach ($menus as $grandChildmenu)
-                                @if ($grandChildmenu->pid == $childmenu->id)
+                              @foreach ($menus as $levelTwo)
+                                @if ($levelTwo->is_parent==1 && $levelTwo->level==2 && $levelTwo->pid==$levelOne->id)
                                   <li class="nav-item">
-                                    <a href="{{ url($grandChildmenu->route) }}" class="nav-link has-arrow" aria-expanded="false">{{ $grandChildmenu->name }}</a>
+                                    <a href="#levelThreeMenu{{ $levelTwo->id }}" class="nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="levelThreeMenu{{ $levelTwo->id }}">{{ $levelTwo->name }}</a>
+                                    <div class="collapse menu-dropdown" id="levelThreeMenu{{ $levelTwo->id }}">
+                                      <ul class="nav nav-sm flex-column">
+                                        @foreach ($menus as $levelThree)
+                                          @if ($levelThree->is_parent==0 && $levelThree->level==3  && $levelThree->pid==$levelTwo->id)
+                                            <li class="nav-item">
+                                              <a href="{{ url($levelThree->route) }}" class="nav-link">
+                                                  {{ $levelThree->name }}
+                                              </a>
+                                            </li>                              
+                                          @endif
+                                        @endforeach
+                                      </ul>
+                                    </div>
+                                  </li>
+                                @elseif($levelTwo->is_parent==0 && $levelTwo->level==2 && $levelTwo->pid==$levelOne->id)
+                                  <li class="nav-item">
+                                    <a href="{{ url($levelTwo->route) }}" class="nav-link">{{ $levelTwo->name }}</a>
                                   </li>
                                 @endif
                               @endforeach
                             </ul>
                           </div>
                         </li>
+                      @elseif($levelOne->is_parent==0 && $levelOne->level==1 && $levelOne->pid==$levelZero->id)
+                        <li class="nav-item">
+                          <a href="{{ url($levelOne->route) }}" class="nav-link">{{ $levelOne->name }}</a>
+                        </li>
                       @endif
                     @endforeach
+                    
                   </ul>
                 </div>
               </li>
-
-            @elseif($menu->is_parent==0 && $menu->level==0)
+            @elseif($levelZero->is_parent==0 && $levelZero->level==0)
               <li class="nav-item">
-                <a href="{{ url($menu->route) }}" class="nav-link has-arrow" aria-expanded="false">
-                    <span>{{ $menu->name }}</span> 
+                <a href="{{ url($levelZero->route) }}" class="nav-link">
+                  {!! $levelZero->icon !!}
+                  <span>{{ $levelZero->name}}</span> 
                 </a>
               </li>
             @endif
-          @endforeach --}}
+          @endforeach
+
+          
+
+          
+
         </ul>
       </div>
-
-      {{-- <ul id="sidebar_menu">
-        <li class="mm-active">
-          <a href="/" aria-expanded="false">
-            <img src="{{url('img/menu-icon/dashboard.svg') }}" alt />
-            <span>Dashboard</span>
-          </a>
-          <ul>
-            <!-- <li><a class="active" href="index.html">Directory</a></li> -->
-            <li>
-                <a class="has-arrow" href="#" aria-expanded="false">Directory</a>
-                <ul>
-                    <li><a href="index.html">Sub Menu-1</a></li>
-                    <li><a href="add_new_client.html">Sub Menu-2</a></li>
-                    <li><a href="index_2.html">Sub Menu-3</a></li>
-                </ul>
-            </li>
-            <li><a href="add_new_client.html">Add New Client</a></li>
-            <li><a href="index_2.html">Default</a></li>
-          </ul>
-        </li>
-        @foreach ($menus as $menu)
-          @if ($menu->is_parent==1)
-            <li>
-              <a href="#" class="has-arrow" aria-expanded="false">
-                <img src="img/menu-icon/dashboard.svg" alt />
-                <span>{{ $menu->name }}</span>
-              </a>
-              <ul>
-                @foreach ($menus as $childmenu)
-                  @if ($childmenu->pid == $menu->id)
-                    <li><a href="{{ url($childmenu->route) }}">{{ $childmenu->name }}</a></li>
-                  @endif
-                @endforeach
-              </ul>
-            </li>
-          @elseif($menu->is_parent==0 && $menu->level==0)
-            <li>
-              <a href="{{ url($menu->route)  }}" aria-expanded="false">
-                <img src="{{url('img/menu-icon/dashboard.svg') }}" alt />
-                  <span>{{ $menu->name }}</span> 
-              </a>
-            </li>
-          @endif
-        @endforeach
-      </ul> --}}
     </nav>
     
     <!-- Sidebar End-->
@@ -386,4 +287,6 @@
           </div>
         </div>
       </div>
+
+
 

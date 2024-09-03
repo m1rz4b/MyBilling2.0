@@ -14,7 +14,7 @@ class AreaController extends Controller
     public function index()
     {
         //
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $areas = Area::get();
         return view("pages.setup.area", compact("menus", "areas"));
     }

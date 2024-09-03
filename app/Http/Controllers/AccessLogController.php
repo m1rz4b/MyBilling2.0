@@ -21,7 +21,7 @@ class AccessLogController extends Controller
         $selectedMacAddress = '';
         $selectedIpAddress = '';
         $selectedNas = -1;
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $nowdate = Carbon::now()->format('Y-m-d');
         $customers = TrnClientsService::select('id', 'user_id')->get();
         $nas = Nas::select('id', 'shortname')->orderBy('shortname')->get();
@@ -72,7 +72,7 @@ class AccessLogController extends Controller
         $selectedIpAddress = $request->ip_address;
         $selectedNas = $request->nas;
 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $nowdate = Carbon::now()->format('Y-m-d');
         $customers = TrnClientsService::select('id', 'user_id')->get();
         $nas = Nas::select('id', 'shortname')->orderBy('shortname')->get();

@@ -13,7 +13,7 @@ class HrmLevelController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $hrmlevels = HrmLevel::get();
         return view('pages.hrm.level', compact('menus', 'hrmlevels'));
     }

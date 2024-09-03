@@ -17,7 +17,7 @@ class HrmShiftSetupController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         // $shiftSetups = HrmShiftSetup::with('TblScheduleTeam', 'HrmTblShift', 'TblShiftTeam')->get();
         $shiftSetups = DB::table('hrm_shift_setup')
                         ->select('hrm_shift_setup.id', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'hrm_tbl_shift.shift_name', 'tbl_schedule_team.team_name', 'tbl_shift_team.level', 'hrm_shift_setup.status')

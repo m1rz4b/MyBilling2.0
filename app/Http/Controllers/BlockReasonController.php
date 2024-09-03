@@ -14,7 +14,7 @@ class BlockReasonController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $block_reasons = BlockReason::get();
         return view('pages.setup.blockReason', compact('menus', 'block_reasons'));
     }

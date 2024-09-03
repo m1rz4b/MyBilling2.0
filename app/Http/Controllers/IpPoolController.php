@@ -15,7 +15,7 @@ class IpPoolController extends Controller
     public function index()
     {
         //
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $ip_pools = IpPool::get();
         $routers = TblRouter::get();
         return view("pages.radius.ipPool", compact("menus", "ip_pools", "routers"));

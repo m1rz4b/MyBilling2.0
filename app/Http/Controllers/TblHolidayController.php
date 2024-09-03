@@ -13,7 +13,7 @@ class TblHolidayController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $holidays = TblHoliday::get();
         return view('pages.hrm.holiday', compact('menus', 'holidays'));
     }

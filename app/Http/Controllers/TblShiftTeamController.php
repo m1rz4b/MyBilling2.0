@@ -15,7 +15,7 @@ class TblShiftTeamController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $shiftTeams = TblShiftTeam::get();
         $scheduleteams = TblScheduleTeam::get();
         $employees = MasEmployee::get();

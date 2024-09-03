@@ -13,7 +13,7 @@ class IpController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $ips = Ip::get();
         return view('pages.radius.ip', compact('menus', 'ips'));
     }

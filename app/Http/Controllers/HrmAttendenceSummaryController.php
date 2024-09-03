@@ -17,7 +17,7 @@ class HrmAttendenceSummaryController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $employees = MasEmployee::get();
         $suboffices = TblSuboffice::get();
         $departments = MasDepartment::get();

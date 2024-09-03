@@ -13,7 +13,7 @@ class LeaveTypeController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $leavetypes = LeaveType::get();
         return view('pages.hrm.leaveType', compact('menus', 'leavetypes'));
     }

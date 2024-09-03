@@ -47,7 +47,7 @@ class ClientControlController extends Controller
         $status = -1;
         $customer = -1;
         
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $customer_dropdown = Customer::select('customer_name', 'id')->orderBy('customer_name', 'asc')->get();
         $customers = Customer::select(
             'customers.id as customer_id',
@@ -194,7 +194,7 @@ class ClientControlController extends Controller
 
     public function search(Request $request)
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
 
         $customer_dropdown = Customer::select('customer_name', 'id')->orderBy('customer_name', 'asc')->get();
 

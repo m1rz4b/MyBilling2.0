@@ -25,7 +25,9 @@ class TrnClientsServiceController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $selectedCustomer = -1;
+        $selectedCustomerStatus = -1;
+        $menus = Menu::get();
         $units = TblUnit::select('id','unit_display')->orderBy('unit_display', 'asc')->get();
         $client_services = TrnClientsService::select(
             'trn_clients_services.*',

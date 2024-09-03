@@ -138,17 +138,17 @@
                         </thead>
                         @foreach ($result as $r)
                             <tr>
-                                <th scope="col">{{ $count++ }}</th>
-                                <th scope="col">{{ $r->created_by }}</th>
-                                <th scope="col">Clients Name</th>
-                                <th scope="col">Money Rec. No.</th>
-                                <th scope="col">Bank Name</th>
-                                <th scope="col">Cheque No.</th>
-                                <th scope="col">Cash(BDT)</th>
-                                <th scope="col">Cheque(BDT)</th>
-                                <th scope="col">Deposit(BDT)</th>
-                                <th scope="col">Total(BDT)</th>
-                                <th scope="col">Remarks</th>
+                                <td scope="col">{{ $count++ }}</td>
+                                <td scope="col">{{ $r->created_by }}</td>
+                                <td scope="col">{{ $r->customer_name }}</td>
+                                <td scope="col">{{ $r->money_receipt }}</td>
+                                <td scope="col">{{ $r->qcollamnt }}</td>
+                                <td scope="col">{{ $r->dcollamnt }}</td>
+                                <td scope="col">{{ $r->collamnt }}</td>
+                                <td scope="col">{{ $r->created_by }}</td>
+                                <td scope="col">{{ $r->created_by }}</td>
+                                <td scope="col">{{ $r->created_by }}</td>
+                                <td scope="col">{{ $r->remarks }}</td>
                             </tr>
                         @endforeach
                     </table>

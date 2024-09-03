@@ -46,7 +46,7 @@ class CustomerController extends Controller
         $selectedZone = -1;
         $selectedSubZone = -1;
 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
 
         $customers = Customer::select(
             'customers.id as customer_id',
@@ -190,7 +190,7 @@ class CustomerController extends Controller
         $selectedZone = $request->zone;
         $selectedSubZone = $request->subzone;
 
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $customers = Customer::select(
             'customers.id as customer_id',
             'customers.customer_name',
@@ -343,7 +343,7 @@ class CustomerController extends Controller
     }
     public function getUpazilaByDistrict($disctrictid)
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $customers = Customer::with('InvoiceType', 'TblZone')->get();
         $districts = TblDistrict::get();
         $upazilas = Upazila::get();

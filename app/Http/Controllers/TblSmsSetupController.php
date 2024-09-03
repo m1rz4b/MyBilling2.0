@@ -13,7 +13,7 @@ class TblSmsSetupController extends Controller
      */
     public function index()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         $sms_setup = TblSmsSetup::get();
         return view('pages.sms&Email.smsSetup', compact('menus', 'sms_setup'));
     }
