@@ -42,6 +42,7 @@ use App\Http\Controllers\HrmAttendenceSummaryController;
 use App\Http\Controllers\HrmIncrementController;
 use App\Http\Controllers\TrnClientsServiceController;
 use App\Http\Controllers\PackagePlanController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BillReports\MonthlyInvoiceController;
 use App\Http\Controllers\BillReports\ClientLedgerController;
 use App\Http\Controllers\BillReports\DailyBillCollectionController;
@@ -95,6 +96,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('mikrotikgraph', MicrotikGraphController::class);
     Route::resource('variables', VariablesController::class);
     Route::resource('zone', TblZoneController::class);
+    Route::resource('menu', MenuController::class);
 
     // Radius Module
     Route::resource('ip', IpController::class);

@@ -155,7 +155,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="mb-2">
                                                 <label for="" class="form-label">Category: </label>
                                                 <input type="text" class="form-control form-control-sm" id="" name="">
@@ -170,7 +170,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="mb-2">
                                                 <label for="" class="form-label">Product: </label>
                                                 <input type="text" class="form-control form-control-sm" id="" name="">
@@ -185,7 +185,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="mb-2">
                                                 <label for="" class="form-label">Quantity Remaining: </label>
                                                 <input type="text" class="form-control form-control-sm" id="" name="" disabled>
@@ -233,103 +233,103 @@
                     </div>
                 </div>
 
-                {{-- view modal --}}
-                <div class="modal fade" id="viewOtherInvModal{{ $invoice->id }}" tabindex="-1"
-                    aria-labelledby="viewOtherInvModalLabel{{ $invoice->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
-                                <h1 class="modal-title fs-5 text-white" id="viewOtherInvModalLabel{{ $invoice->id }}">View Invoice</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close" style="filter: invert(100%);"></button>
-                            </div>
-                            {{-- action="{{ route('area.store') }}" --}}
-                            <form class="" method="POST" >
-                                @csrf
-                                <div class="modal-body">
-                                    <div class="QA_table">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="text-center">Customer Name</th>
-                                                    <th scope="col" class="text-center">Invoice Date</th>
-                                                    <th scope="col" class="text-center">Work Order Ref.</th>
-                                                    <th scope="col" class="text-center">Next Invoice Date</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    @foreach ($customers as $customer)
-                                                        @if ($customer->id == $invoice->client_id)
-                                                            <td class="text-center">{{ $customer->customer_name }}</td>
-                                                        @endif
-                                                    @endforeach
-                                                    <td class="text-center">{{ $invoice->invoice_date }}</td>
-                                                    <td class="text-center">{{ $invoice->work_order }}</td>
-                                                    <td class="text-center">{{ $invoice->next_inv_date }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div class="QA_table">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="text-center">Category</th>
-                                                    <th scope="col" class="text-center">Product</th>
-                                                    <th scope="col" class="text-center">Description</th>
-                                                    <th scope="col" class="text-center">Billing Period</th>
-                                                    <th scope="col" class="text-center">Price/Rate (BDT)</th>
-                                                    <th scope="col" class="text-center">Quantity</th>
-                                                    <th scope="col" class="text-center">Unit</th>
-                                                    <th scope="col" class="text-center">Amount (BDT)</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="text-center">sdaf123</td>
-                                                    <td class="text-center">sdaf123</td>
-                                                    <td class="text-center">sdaf123</td>
-                                                    <td class="text-center">123</td>
-                                                    <td class="text-center">123</td>
-                                                    <td class="text-center">2</td>
-                                                    <td class="text-center">3</td>
-                                                    <td class="text-center">123</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="7" class="text-end">Sub Total: </td>
-                                                    <td class="text-center">123</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="7" class="text-end">Discount: </td>
-                                                    <td class="text-center">12</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="7" class="text-end">VAT: 0 %</td>
-                                                    <td class="text-center">0</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="7" class="text-end">Total Bill: </td>
-                                                    <td class="text-center">111</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="7" class="text-end">Advance Received: </td>
-                                                    <td class="text-center">0</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                                    <button class="btn btn-sm btn-success" type="submit" onclick="this.disabled=true;this.form.submit();">Edit</button>
-                                </div>
-                            </form>
+            {{-- view modal --}}
+            <div class="modal fade" id="viewOtherInvModal{{ $invoice->id }}" tabindex="-1"
+                aria-labelledby="viewOtherInvModalLabel{{ $invoice->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
+                            <h1 class="modal-title fs-5 text-white" id="viewOtherInvModalLabel{{ $invoice->id }}">View Invoice</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close" style="filter: invert(100%);"></button>
                         </div>
+                        {{-- action="{{ route('area.store') }}" --}}
+                        <form class="" method="POST" >
+                            @csrf
+                            <div class="modal-body">
+                                <div class="QA_table">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="text-center">Customer Name</th>
+                                                <th scope="col" class="text-center">Invoice Date</th>
+                                                <th scope="col" class="text-center">Work Order Ref.</th>
+                                                <th scope="col" class="text-center">Next Invoice Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                @foreach ($customers as $customer)
+                                                    @if ($customer->id == $invoice->client_id)
+                                                        <td class="text-center">{{ $customer->customer_name }}</td>
+                                                    @endif
+                                                @endforeach
+                                                <td class="text-center">{{ $invoice->invoice_date }}</td>
+                                                <td class="text-center">{{ $invoice->work_order }}</td>
+                                                <td class="text-center">{{ $invoice->next_inv_date }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="QA_table">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="text-center">Category</th>
+                                                <th scope="col" class="text-center">Product</th>
+                                                <th scope="col" class="text-center">Description</th>
+                                                <th scope="col" class="text-center">Billing Period</th>
+                                                <th scope="col" class="text-center">Price/Rate (BDT)</th>
+                                                <th scope="col" class="text-center">Quantity</th>
+                                                <th scope="col" class="text-center">Unit</th>
+                                                <th scope="col" class="text-center">Amount (BDT)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center">sdaf123</td>
+                                                <td class="text-center">sdaf123</td>
+                                                <td class="text-center">sdaf123</td>
+                                                <td class="text-center">123</td>
+                                                <td class="text-center">123</td>
+                                                <td class="text-center">2</td>
+                                                <td class="text-center">3</td>
+                                                <td class="text-center">123</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7" class="text-end">Sub Total: </td>
+                                                <td class="text-center">123</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7" class="text-end">Discount: </td>
+                                                <td class="text-center">12</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7" class="text-end">VAT: 0 %</td>
+                                                <td class="text-center">0</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7" class="text-end">Total Bill: </td>
+                                                <td class="text-center">111</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7" class="text-end">Advance Received: </td>
+                                                <td class="text-center">0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                                <button class="btn btn-sm btn-success" type="submit" onclick="this.disabled=true;this.form.submit();">Edit</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+            </div>
             @endforeach
                 
 
@@ -379,7 +379,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-2">
                                             <label for="" class="form-label">Category: </label>
-                                            <input type="text" class="form-control form-control-sm" id="" name="">
+                                            <input type="text" class="form-control form-control-sm" id="prod_category" name="prod_category">
                                         </div>
                                         <div class="mb-2">
                                             <label for="" class="form-label">Description: </label>
@@ -461,6 +461,29 @@
         $(document).ready(function() {
             $('.select2').select2({
                 
+            });
+            $('#prod_category').select2({
+            ajax: {
+                url: 'https://api.github.com/orgs/select2/repos',
+                dataType: 'json',
+
+                data: function (params) {
+                var query = {
+                    search: params.term,
+                    type: 'cat_search'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+                },
+                processResult:function (data) {
+                    result:data
+                },
+                cache:true,
+                placeholder:'select category',
+                minimumInputLength:1
+                
+            }
             });
         });
     </script>

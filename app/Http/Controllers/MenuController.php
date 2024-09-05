@@ -13,6 +13,9 @@ class MenuController extends Controller
     public function index()
     {
         //
+        $menus = Menu::get();
+        $allmenu = Menu::withoutGlobalScopes()->orderBy('level')->get();
+        return view("pages.setup.menu", compact("menus",'allmenu'));
     }
 
     /**
@@ -29,6 +32,19 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->validate([
+            'name' => 'required',
+            'pid' => 'required',
+            'route' => 'required',
+            'level' => 'required',
+            'serial' => 'required',
+            'is_parent' => 'required',
+            'status' => 'required'
+        ]);
+        //dd($data);
+        $menu = Menu::create($data);
+        
+        return redirect()->route("menu.index") -> with('success', 'Menu added successfully');
     }
 
     /**
@@ -53,6 +69,19 @@ class MenuController extends Controller
     public function update(Request $request, Menu $menu)
     {
         //
+        $data = $request->validate([
+            'name' => 'required',
+            'pid' => 'required',
+            'route' => 'required',
+            'level' => 'required',
+            'serial' => 'required',
+            'is_parent' => 'required',
+            'status' => 'required'
+        ]);
+        $menu->update($data);
+
+
+        return redirect()->route("menu.index") -> with('success', 'Menu updated successfully');
     }
 
     /**
@@ -61,5 +90,8 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         //
+        $dmenu = Menu::find($menu -> id);
+        $dmenu->delete();
+        return redirect() -> route("menu.index") -> with('success', 'Menu deleted successfully');
     }
 }
