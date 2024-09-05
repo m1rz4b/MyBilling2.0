@@ -111,6 +111,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('servicelog', [ClientControlController::class, 'serviceLog'])->name('clientcontrol.servicelog');
 
     Route::resource('ippool', IpPoolController::class);
+    Route::post('importRouter', [IpPoolController::class, 'importRouter'])->name('ippool.importRouter');
+    Route::post('ippool/{search}', [IpPoolController::class, 'search'])->name('ippool.search');
+    
     Route::resource('router', TblRouterController::class);
     Route::resource('bulkrouterchange', BulkRouterChangeController::class);
     //Route::get('bulkrouterchange', [BulkRouterChangeController::class, 'show'])->name('bulkrouterchange.show');
@@ -184,17 +187,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('roles', [HomeController::class, 'roles_page']);
 
     // HRM Setup
+    Route::resource('leavetype', LeaveTypeController::class);
     Route::resource('holiday', TblHolidayController::class);
     Route::resource('weeklyholiday', TblWeekendController::class);
-    Route::resource('leavetype', LeaveTypeController::class);
     Route::get('empwopin', [MasEmployeeController::class, 'woPin'])->name('empwopin.woPin');
     Route::put('empwopin/{empwopin}', [MasEmployeeController::class, 'woPinUpdate'])->name('empwopin.woPinUpdate');
     Route::resource('shift', TblScheduleController::class);
+    Route::resource('scheduleteam', TblScheduleTeamController::class);
     Route::get('shiftschedule', [TblScheduleController::class, 'shiftschdlIndex'])->name('shiftschedule.shiftschdlIndex');
     Route::post('shiftschedule', [TblScheduleController::class, 'shiftschdlStore'])->name('shiftschedule.shiftschdlStore');
     Route::put('shiftschedule/{shiftschedule}', [TblScheduleController::class, 'shiftschdlUpdate'])->name('shiftschedule.shiftschdlUpdate');
     Route::resource('hrmlevel', HrmLevelController::class);
-    Route::resource('scheduleteam', TblScheduleTeamController::class);
     Route::resource('shiftteam', TblShiftTeamController::class);
     Route::resource('shiftsetup', HrmShiftSetupController::class);
 

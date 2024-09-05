@@ -762,7 +762,7 @@
             </div>
 
             <div class="d-flex justify-content-end">
-              <button class="btn btn-sm btn-success">Search</button>    
+              <button class="btn btn-sm btn-primary"><i class="fa-solid fa-magnifying-glass me-1"></i>Search</button>    
             </div>
           </form>
 

@@ -56,21 +56,25 @@
                     <h5 class="mb-0 text-white">IP Pool</h5>
                 </div>
             </div>
-            
-            <div class="QA_table p-3 pb-0">
-                {{-- <a class="btn_1 p-2 mb-3" href="#" data-bs-toggle="modal" data-bs-target="#addRouterModal">Add New Router</a> --}}
-                <div class="ip_pool_router_search">
-                    <label for="router_select" class="my-auto">Router</label>
-                    <select name="router_select" id="router_select" class="w-25 select2">
-                        <option value="">Select a Router</option>
 
+            <div class="row p-3 pb-0">
+                <div class="col-sm-4 form-group">
+                    <label for="router_select" class="my-auto">Router</label>
+                    <select name="router_select" id="router_select" class="select2 form-select form-select-sm">
+                        <option value="">Select a Router</option>
                         @foreach ($routers as $router)
                             <option value="{{ $router->id }}">{{ $router->router_name }}</option>
                         @endforeach
-                        
                     </select>
-                    <button class="btn_1" type="submit">Search</button>
                 </div>
+
+                <div class="col-sm-2 d-flex d-sm-inline justify-content-end">
+                    <br class="d-none d-sm-block">
+                    <button onclick="search()" class="btn btn-sm btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass me-1"></i>Search</button>
+                </div>
+            </div>
+
+            <div class="QA_table p-3 pb-0">
                 <label class="fw-bold">IP Pool in Software</label>
                 <table class="table">
                     <thead>
@@ -80,7 +84,7 @@
                             <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="ippool_list">
                         
                         @php $slNumber = 1 @endphp
                         @foreach ($ip_pools as $ip_pool)
@@ -130,8 +134,22 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="QA_table p-3 pb-0 d-none" id="router_info_table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Range</th>
+                            <th scope="col" class="text-center">Import</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                    </tbody>
+                </table>
+            </div>
         </div>
-        {{-- </form> --}}
     </div>
 
     <script>
@@ -140,5 +158,89 @@
                 
             });
         });
+
+        const search = () => {
+            const id = document.getElementById('router_select').value;
+              
+            $.ajax({
+                url: `{{ url('ippool/'.'${id}') }}`,
+                type: 'POST',
+                dataType: "json",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    router: id,
+                },
+                success: function(data) {
+                    data = data.data;
+                    for (res of data) {
+                        const name = res.name;
+                        const ranges = res.ranges;
+                        // const routerId = res['.id'];
+                        // let id = routerId.replace('*', '');
+
+                        const tbody = document.getElementById("tbody");
+                        const row = document.createElement('tr');
+                        const routerInfo = document.getElementById("router_info_table");
+                        routerInfo.classList.remove('d-none');
+                        row.innerHTML = `
+                            <td>${name}</td>
+                            <td>${ranges}</td>
+                            <td class="text-center text-nowrap" width='10%'>
+                                <button href="#" class="btn btn-sm btn-info text-white" data-name="${name}" data-ranges="${ranges}" onclick="importRouter(this)" data-bs-toggle="modal" data-bs-target="#deleteIpPoolModal">
+                                    <i class="fa fa-cloud-download me-1" aria-hidden="true"></i>Import
+                                </button>
+                            </td>
+                        `
+                        tbody.appendChild(row);
+                    }
+                }
+            });
+        }
+
+        const importRouter = (e) => {
+            const routerId = document.getElementById('router_select').value;
+            const routerName = e.getAttribute('data-name');
+            const routerRanges = e.getAttribute('data-ranges');    
+            
+            $.ajax({
+                type: "POST",
+                url: `{{ url('importRouter') }}`,
+                dataType: "json",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    routerId: routerId,
+                    routerName: routerName,
+                    routerRanges : routerRanges
+                },
+                success: function (response)
+                {   
+                    // console.log(response);
+                    
+                    data = response.data;
+                    // console.log(data);
+                    
+
+                        
+                        const routerId = data.router_id;
+                        const name = data.name;
+                        const ranges = data.ranges;
+                        // console.log(routerId, name, ranges);
+                        
+                        const tbody = document.getElementById("ippool_list");
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${response.count}</td>
+                            <td>${name}</td>
+                            <td class="text-center text-nowrap" width='10%'>
+                                <button href="#" class="btn_1 danger text-center py-2" data-bs-toggle="modal" data-bs-target="#deleteIpPoolModal{{ $ip_pool->id }}">
+                                    Delete
+                                </button>
+                            </td>
+                        `
+                        tbody.appendChild(row);
+                    
+                }
+            });
+        }
     </script>
 @endsection

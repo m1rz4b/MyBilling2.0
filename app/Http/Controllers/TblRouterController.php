@@ -169,8 +169,6 @@ class TblRouterController extends Controller
 
     public function apiCheckPost(int $router)
     {
-        
-
         $router = TblRouter::where('id',$router)->first();
         //dd($router);
 

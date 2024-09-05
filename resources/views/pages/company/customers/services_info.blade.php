@@ -579,12 +579,12 @@
 
         <div class="col-sm-12">
           <div class="p-3">
-            <form action="{{ route('services.search') }}" method="POST" class="p-3">
+            <form action="{{ route('services.search') }}" method="POST">
               @csrf
               <div class="row">
                 <div class="col-sm-4 form-group">
                   <label for="customer" class="fw-bold">Customer</label>
-                  <select class="select2 form-select form-select-sm id="customer" name="customer">
+                  <select class="select2 form-select form-select-sm" id="customer" name="customer">
                     <option value="-1" selected>Select a Customer</option>
                     @foreach ($customers as $customer)
                         <option {{ $selectedCustomer==$customer->id ? 'selected' : '' }} value="{{ $customer->id }}">{{ $customer->customer_name }}</option>
@@ -604,7 +604,7 @@
                 
                 <div class="col-sm-2 d-flex d-sm-inline justify-content-end">
                   <br class="d-none d-sm-block">
-                  <button class="btn btn-sm btn-success">Search</button>    
+                  <button class="btn btn-sm btn-primary"><i class="fa-solid fa-magnifying-glass me-1"></i>Search</button> 
                 </div>
               </div>
             </form>
