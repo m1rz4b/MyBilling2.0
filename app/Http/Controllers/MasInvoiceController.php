@@ -7,6 +7,7 @@ use App\Models\BillType;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\MasInvoice;
+use App\Models\MasCollection;
 use App\Models\Menu;
 use App\Models\TrnClientsService;
 use App\Models\TblSrvType;
@@ -37,7 +38,7 @@ class MasInvoiceController extends Controller
     //Function for displaying invoice generation page
     public function monthlyInvoiceCreate()
     {
-        $menus = Menu::where('status',1)->get();
+        $menus = Menu::get();
         //$mas_invoices = MasInvoice::paginate(18);
         $branches = TblSuboffice::where('status',1)->get();
         //dump($branches->toSql());
@@ -60,12 +61,7 @@ class MasInvoiceController extends Controller
             'month' => 'required|not_in:-1',
         ]);
 
-        // $messages = [
-        //     'same' => 'The :attribute and :other must match.',
-        //     'size' => 'The :attribute must be exactly :size.',
-        //     'between' => 'The :attribute value :input is not between :min - :max.',
-        //     'in' => 'The :attribute must be one of the following types: :values',
-        // ];
+        
 
         //get user id
         $userid = Auth::id();
@@ -108,8 +104,8 @@ class MasInvoiceController extends Controller
             }
 
             ///////////////////////Process bill for service Start////////////////////////
-            
-            $processSql="SELECT `serv_id` as pserv_id FROM `mas_invoices` WHERE `invoice_date`='".$invoiceDate."' AND `tbl_invoice_cat_id` = 1";
+          //  dd($invoiceDate);
+            $processSql="SELECT serv_id as pserv_id FROM mas_invoices WHERE invoice_date='".$invoiceDate."' AND tbl_invoice_cat_id = 1";
             //dd($processSql);
             $processResult = DB::select($processSql);
             //dd($processResult);
@@ -123,6 +119,7 @@ class MasInvoiceController extends Controller
             //dd($listOfService);
             $hasval=count($listOfService);
             //dd($listOfService);
+			// dd($hasval);
 
             
 
@@ -133,7 +130,7 @@ class MasInvoiceController extends Controller
             //*****************************************************	
             //Process Start for genereal user 
             //*****************************************************
-       // Will generate bill :  Only active client from trn_clients_services,  not Pre-paid, service type not HotSpot
+        // Will generate bill :  Only active client from trn_clients_services,  not Pre-paid, service type not HotSpot
 
         $customerResult = Customer::select([
             'customers.id',
@@ -162,15 +159,14 @@ class MasInvoiceController extends Controller
             $customerResult->whereNotIn('trn_clients_services.id',$listOfService);;
             }
                
-        //dd($customerResult->toSql());
+        //   dd($customerResult->toSql());
         $customerResult = $customerResult->get();
-        //dd($customerResult);
+        //    dd($customerResult);
         //dd($customerResult);
         foreach($customerResult as $customerRow){
             
             $client_type =  $customerRow->client_type;
-            $id = $customerRow->id;
-            
+            $id = $customerRow->id;   
             $rate_amnt = $customerRow->monthly_bill;
             //$vat_amnt =round(($rate_amnt*$vatper/($vatper+100)),2);
             $vat_amnt =$customerRow->vat_amnt;
@@ -192,7 +188,7 @@ class MasInvoiceController extends Controller
             
 
 
-            //dd($customerRow);
+         //    dd($customerRow);
 
             if($customerRow->tbl_bill_type_id==2)
 			{
@@ -203,7 +199,7 @@ class MasInvoiceController extends Controller
 
             $ctype=$customerRow->client_type;
 
-            $invnums=pick("mas_invoices","MAX(invoice_number) as max_inv"," client_id='".$customerRow->id."' and invoice_period='".$invoice_period."' and invoice_cat='Monthly'");
+            $invnums=pick("mas_invoices","MAX(invoice_number) as max_inv"," customer_id='".$customerRow->id."' and invoice_period='".$invoice_period."' and invoice_cat='Monthly'");
             $invnums=$invnums[0]->max_inv;
 
             
@@ -214,8 +210,8 @@ class MasInvoiceController extends Controller
                 $invnum=pick("mas_invoices","MAX(invoice_number) as max_inv","");
                 $invnum=($invnum[0]->max_inv)+1;
             }
-
-            $extra_bill=pick("trn_invoices","Sum(extra_bill) as extra_bill","serv_id='".$srv_id."' AND client_id='".$id."' AND MONTH(from_date) = '".$pinvoiceMonth."' AND YEAR(from_date) = '".$pinvoiceYear."' ");
+            // dd($invnum);
+            $extra_bill=pick("trn_invoices","Sum(extra_bill) as extra_bill","serv_id='".$customerRow->serv_id."' AND client_id='".$customerRow->id."' AND MONTH(from_date) = '".$pinvoiceMonth."' AND YEAR(from_date) = '".$pinvoiceYear."' ");
             $extra_bill = $extra_bill[0]->extra_bill;
             
             
@@ -225,15 +221,15 @@ class MasInvoiceController extends Controller
             //dd($extra_bill);
 
             
-
-            
-
-            $sarrear=pick("mas_invoices","Sum(mas_invoices.total_bill-(collection_amnt+vat_adjust_ment+discount_amnt+other_adjustment)) as arrear","client_id='".$customerRow->id."' and id='".$customerRow->srv_id."'"); 
+			$sarrear=0;
+            $sarrear=pick("mas_invoices","Sum(mas_invoices.total_bill-(collection_amnt+vat_adjust_ment+discount_amnt+other_adjustment)) as arrear","customer_id='".$customerRow->id."' and serv_id='".$customerRow->serv_id."'"); 
             $sarrear=$sarrear[0]->arrear; 
-				
+			
+	        //	dd($customerRow->id,$customerRow->serv_id,$sarrear);		
+		
             if($sarrear>0){
 				$sarrear=$sarrear;
-					}else{
+			}else{
 						$sarrear=0;
 					}
 			
@@ -268,7 +264,7 @@ class MasInvoiceController extends Controller
             $bill_amount =1000;
             //$total_bill =1000;
 
-            //dd($start_year ,$inv_year ,$start_month,$inv_month);
+            //    dd($start_year ,$inv_year ,$start_month,$inv_month,$rate_amnt);
             if (intval($start_year) == intval($inv_year) && intval($start_month) == intval($inv_month)) {
                 $dayG=dateDifference($customerRow->bill_start_date , $last_dateG , '%a' )+1;
             
@@ -301,7 +297,7 @@ class MasInvoiceController extends Controller
                     'pre_arrear' => $sarrear
                 ]);
 
-                //dd($insertInvoice);
+                //         dd($insertInvoice);
                 $last_idG = pick('mas_invoices','MAX(id) as id',"")[0]->id;
                 if ($last_idG==null) {
                     $last_idG = 0;
@@ -333,9 +329,10 @@ class MasInvoiceController extends Controller
                     'unit' => $client_type,
                     'invoice_date' => $invoiceDate,
                 ];
-                //dd($invoiceData);
+                //       dd($invoiceData);
                 $result =  DB::table('trn_invoices')->insert($invoiceData);
-                //dd($result);
+                //   dd($result);
+				
 
                 $updateInvoice = DB::table('trn_invoices')
                                 ->whereYear('from_date', $pinvoiceYear)
@@ -352,64 +349,104 @@ class MasInvoiceController extends Controller
                 
             }
 
-            else{
+            elseif(intval($inv_year) >= intval($start_year) && intval($inv_month) >= intval($start_month)) 
+			{
+				
                 
                 $last_idG = pick('mas_invoices','MAX(id)',"");
                 $dayG=dateDifference($invoiceDate , $last_dateG , '%a' )+1;
-                //dd($rate_amnt,$extra_bill);
+          //      dd($rate_amnt,$extra_bill,$last_idG,$dayG);
                 
                 $tbill=$rate_amnt+$extra_bill;
                 $share_rate=ROUND(($rate_amnt+$vat_amnt )*($share_percent/100));
 
-                $insertInvoice = DB::table('mas_invoices')->insertOrIgnore([
-                    'invoice_date' => $invoiceDate,
+                $insertInvoice = DB::table('mas_invoices')->insert([
+				'invoice_date' => $invoiceDate,
                     'invoice_period' => $invoice_period,
                     'client_type' => $client_type,
-                    'client_id' => $id,
+                    'customer_id' => $id,
                     'invoice_number' => $invnum,
                     'bill_number' => $billnum,
                     'remarks' => $rmark,
-                    'invoice_cat' => 'Monthly',
+                    'tbl_invoice_cat_id' => 1,
                     'discount_amnt' => $discounts,
                     'other_add_item' => $other_add_item,
                     'other_adjustment' => $radjust,
                     'last_col_date' => $radv_date,
                     'entry_by' => Auth::id(),
-                    'entry_date' => Carbon::now(), // Use Carbon to get the current date and time
-                    'vat' => $vat_amnt,
+                    'entry_date' => Carbon::now(),
+                     'vat' => $vat_amnt,
                     'bill_amount' => $bill_amnt,
                     'total_bill' => $tbill,
+                    'serv_id' => $serv_id,
                     'cur_arrear' => $extra_bill,
                     'unit' => $unit,
                     'ip_number' => $ip_number,
                     'rate_amnt' => $rate_amnt,
-                    'from_date' => $invoiceDate, // Use appropriate date variable
-                    'to_date' => $last_dateG,
-                    'serv_id' => $serv_id,
+                    'tbl_srv_type_id' => $srv_id,
+                    'from_date' => $bill_start_date,
+                    'to_date' => $invoiceDate,
                     'pre_arrear' => $sarrear
-                ]);
-
+					
+               ]);
+				
+				
+                //dd($insertInvoice);
+			$last_idG = pick('mas_invoices','MAX(id) as id',"")[0]->id;
+                if ($last_idG==null) {
+                    $last_idG = 0;
+                }
 
                 $year = $pinvoiceYear;
                 $month = $pinvoiceMonth;
                 $invoiceDate = $invoiceDate; 
                 $serviceId = $serv_id;
                 $lastId = $last_idG;
-                DB::table('trn_invoices')
-                    ->where(function ($query) use ($year, $month, $serviceId) {
-                        $query->whereYear('from_date', $year)
-                            ->whereMonth('from_date', $month)
-                            ->where('serv_id', $serviceId);
-                    })
-                    ->where('extra_bill', '<>', 0)
-                    ->update([
-                        'invoiceobject_id' => $lastId,
-                        'billing_year' => DB::raw('YEAR(from_date)'),
-                        'billing_month' => DB::raw('MONTH(from_date)'),
-                        'invoice_date' => $invoiceDate,
-                    ]);
+				
+				
+			 $trn_insert = $invoiceData = [
+                    'invoiceobject_id' => $last_idG,
+                    'client_id' => $id,
+                    'billing_year' => $inv_year,
+                    'billing_month' => $inv_month,
+                    'rate' => $rate_amnt,
+                    'vat' => $vat_amnt,
+                    'billingdays' => $dayG,
+					 'cvat' => $vat_amnt,
+                    'camnt' => $bill_amnt,
+                    'total' => $tbill,
+                    'entry_by' => Auth::id(),
+                    'entry_date' => NOW(),
+                    'from_date' => $bill_start_date,
+                    'to_date' => $last_dateG,
+                    //'share_rate' => DB::raw('ROUND((('.($vat_amnt+$rate_amnt)*( $share_percent /100).') / DAY(LAST_DAY('.$invoiceDate.'))) * (DATEDIFF(LAST_DAY('.$invoiceDate.'), '.$bill_start_date.')+1))'),
+                    'share_rate' => 4,
+                    'reseller_id' => $reseller_id,
+                    'serv_id' => $serv_id,
+                    'unit' => $client_type,
+                    'invoice_date' => $invoiceDate,
+                ];
+				
+           //     dd($invoiceData);
+                $result =  DB::table('trn_invoices')->insert($invoiceData);
+            //    dd($result);
 
+                $updateInvoice = DB::table('trn_invoices')
+                                ->whereYear('from_date', $pinvoiceYear)
+                                ->whereMonth('from_date', $pinvoiceMonth)
+                                ->where('serv_id', $srv_id)
+                                ->where('extra_bill', '<>', 0)
+                                ->update([
+                                    'invoiceobject_id' => $last_idG,
+                                    'billing_year' => DB::raw('YEAR(from_date)'),
+                                    'billing_month' => DB::raw('MONTH(from_date)'),
+                                    'invoice_date' => $invoiceDate,
+                                ]);	
+				
             }
+			else {
+				die;
+			}
 
 
             //Process Start for Reseller user 
@@ -1112,8 +1149,41 @@ class MasInvoiceController extends Controller
         return redirect('/invoicecollectionhome')->with('success', 'Collection added successfully');
     }
 
-    public function dailyCollectionSheet()
+    public function dailyCollectionSheet(Request $request)
     {
+        $selectedDay = $request->day;
+        $selectedMonth = $request->month;
+        $selectedYear = $request->year;
+        $selectedCollector = $request->collector;
+        $selectedClient = $request->client_type;
+        $selectedZone = $request->zone;
+        $selectedBranch = $request->branch;
+
+        $selectedDate = $selectedYear."-".$selectedMonth."-".$selectedDay;
+        // dd(Carbon::createFromFormat('yyyy-m-dd',$selectedDate)->format('Y-m-d'));
+
+        $result = MasCollection::select(
+            'mas_collections.created_by',
+            'mas_collections.money_reciept',
+            'customers.customer_name',
+            DB::raw('SUM(CASE WHEN mas_collections.pay_type = "C" THEN mas_collections.coll_amount + mas_collections.adv_rec ELSE 0 END) AS ccollamnt'),
+            DB::raw('SUM(CASE WHEN mas_collections.pay_type = "Q" THEN mas_collections.coll_amount + mas_collections.adv_rec ELSE 0 END) AS qcollamnt'),
+            DB::raw('SUM(CASE WHEN mas_collections.pay_type = "D" THEN mas_collections.coll_amount + mas_collections.adv_rec ELSE 0 END) AS dcollamnt'),
+            DB::raw('SUM(mas_collections.coll_amount + mas_collections.adv_rec) AS collamnt'),
+            'mas_collections.remarks'
+        )
+        ->leftJoin('customers', 'customers.id', '=', 'mas_collections.customer_id')
+        ->groupBy('mas_collections.created_by', 'customers.customer_name', 'mas_collections.remarks','mas_collections.money_reciept');
+
+        // if ($selectedCollector>-1) {
+        //     $result->where('mas_collections.collection_date', $selectedCollector);
+        // }
+
+        $result = $result->get();
+
+        //dd($result);
+
+        //dd($selectedDay);
         $menus = Menu::get();
         $nisl_mas_members = NislMasMember::orderby('username')->get();
         $client_categories = TblClientCategory::orderby('name')->get();
@@ -1121,7 +1191,7 @@ class MasInvoiceController extends Controller
         $suboffices = TblSuboffice::orderby('name')->get();
         $dates = Carbon::now();
 
-        return view('pages.billing.dailyCollectionSheet', compact('menus', 'nisl_mas_members', 'client_categories', 'zones', 'suboffices', 'dates'));
+        return view('pages.billing.dailyCollectionSheet', compact('menus', 'nisl_mas_members', 'client_categories', 'zones', 'suboffices', 'dates','result'));
     }
 
     public function advanceInformation()

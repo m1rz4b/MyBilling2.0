@@ -50,7 +50,7 @@ class TrnClientsServiceController extends Controller
         ->get();
 
         $customers = Customer::select('id', 'customer_name','present_address')->orderBy('customer_name', 'desc')->get();
-        $service_types = TblSrvType::select('id','srv_name')->orderBy('srv_name', 'asc')->get();
+        $service_types = TblSrvType::select('id','srv_name')->where('srv_name','!=','Broadband')->orderBy('srv_name', 'asc')->get();
         $bandwidth_plans = TblBandwidthPlan::select('id','bandwidth_plan')->orderBy('id', 'desc')->get();
         $cable_types = TblCableType::select('id', 'cable_type')->orderBy('id', 'desc')->get();
         $routers = TblRouter::select('id', 'router_name')->orderBy('router_name', 'desc')->get();

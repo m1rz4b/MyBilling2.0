@@ -17,8 +17,9 @@ return new class extends Migration
             $table->integer('pid');
             $table->string('route');
             $table->integer('level');
-            $table->boolean('is_parent');
-            $table->string('icon');
+            $table->integer('serial');
+            $table->integer('is_parent');
+            $table->string('icon')->nullable();
             $table->integer('status')->default(1);
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

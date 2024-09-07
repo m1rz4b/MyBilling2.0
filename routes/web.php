@@ -42,6 +42,7 @@ use App\Http\Controllers\HrmAttendenceSummaryController;
 use App\Http\Controllers\HrmIncrementController;
 use App\Http\Controllers\TrnClientsServiceController;
 use App\Http\Controllers\PackagePlanController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BillReports\MonthlyInvoiceController;
 use App\Http\Controllers\BillReports\ClientLedgerController;
 use App\Http\Controllers\BillReports\DailyBillCollectionController;
@@ -95,6 +96,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('mikrotikgraph', MicrotikGraphController::class);
     Route::resource('variables', VariablesController::class);
     Route::resource('zone', TblZoneController::class);
+    Route::resource('menu', MenuController::class);
 
     // Radius Module
     Route::resource('ip', IpController::class);
@@ -160,6 +162,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('invoicecollectionhomestore', [MasInvoiceController::class, 'invoiceCollectionHomeStore'])->name('invoice_collection_home.store');
     
     Route::get('dailycollectionsheet', [MasInvoiceController::class, 'dailyCollectionSheet'])->name('masinvoice.dailycollectionsheet');
+    Route::post('dailycollectionsheet/show', [MasInvoiceController::class, 'dailyCollectionSheet'])->name('masinvoice.dailycollectionsheet.show');
     Route::resource('packageplan', PackagePlanController::class);
 
     Route::get('invoicecollectionhome', [MasInvoiceController::class, 'invoiceCollectionHome'])->name('invoicecollectionhome.invoicecollectionhome');
@@ -170,7 +173,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('otherinvoice', [MasInvoiceController::class, 'otherInv'])->name('otherinvoice.other_inv');
 	
 	Route::resource('monthlyinvoices', MonthlyInvoiceController::class);
-    Route::get('monthlyinvoices/show', [MonthlyInvoiceController::class, 'show'])->name('monthlyinvoices.show');
+    Route::post('monthlyinvoices/show', [MonthlyInvoiceController::class, 'show'])->name('monthlyinvoices.show');
 	Route::resource('clientledger', ClientLedgerController::class);
     Route::get('clientledger/show', [ClientLedgerController::class, 'show'])->name('clientledger.show');
 	Route::resource('dailybillcollection', DailyBillCollectionController::class);

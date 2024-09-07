@@ -38,6 +38,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
+
         $selectedCustomer = -1;
         $selectedCustomerCategory = -1;
         $selectedCustomerStatus = -1;
@@ -46,6 +47,7 @@ class CustomerController extends Controller
         $selectedSubZone = -1;
 
         $menus = Menu::get();
+
         $customers = Customer::select(
             'customers.id as customer_id',
             'customers.customer_name',
@@ -180,6 +182,7 @@ class CustomerController extends Controller
     }
     public function search(Request $request)
     {
+
         $selectedCustomer = $request->customer;
         $selectedCustomerCategory = $request->customer_category;
         $selectedCustomerStatus = $request->customer_status;
