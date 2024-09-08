@@ -156,7 +156,7 @@
             </div>
         </div>
 
-        <div class="px-3 row pt-2">
+        {{-- <div class="px-3 row pt-2">
             <div class="col-sm-6">
                 <label for="reseller" class="fw-medium">Reseller </label>
                 <select class="select2 form-select form-select-sm" id="reseller_user" name="reseller_user">
@@ -170,7 +170,7 @@
                 <br class="d-none d-sm-block">
                 <button type="button" class="btn btn-sm btn-primary"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Search</button>
             </div>
-        </div>
+        </div> --}}
 
         <div class="QA_table p-3 pb-0">
             @php

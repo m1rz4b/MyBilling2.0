@@ -54,7 +54,7 @@
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0" style="color: white;">Employee Increment</h5>
-                <a class="btn-custom-1" href="#" data-bs-toggle="modal" data-bs-target="#add_attendance_summery">Add</a>
+                <a class="btn-custom-1" href="#" data-bs-toggle="modal" data-bs-target="#add_attendance_summery"><i class="fa-solid fa-plus me-1"></i>Add Special Increment</a>
             </div>
         </div>
 
@@ -95,7 +95,7 @@
                             <div class="row">
                                 <div class="col-sm-6 form-group">
                                     <label for="previous_gross" class="fw-medium">Previous Gross</label>
-                                    <input type="text" class="form-control form-control-sm" value="" name="previous_gross" id="previous_gross">
+                                    <input type="text" class="form-control form-control-sm" value="" name="previous_gross" id="previous_gross" readonly>
                                 </div>
 
                                 <div class="col-sm-6 form-group">
@@ -148,7 +148,7 @@
                 <div class="input-group input-group-sm flex-nowrap">
                     <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                     <select class="form-select form-select-sm form-control" id="year" name="year" >
-                        <option value="-1">Please Choose A Year</option>
+                        <option value="-1">Please Choose a Year</option>
                         @foreach (range(now()->year - 10, now()->year + 5) as $year)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @endforeach
@@ -161,7 +161,7 @@
                 <div class="input-group input-group-sm flex-nowrap">
                     <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                     <select class="form-select form-select-sm form-control" id="month" name="month">
-                        <option value="-1">Please Choose A Month</option>
+                        <option value="-1">Please Choose a Month</option>
                         @foreach(range(1,12) as $month)
                             <option value="{{ $month }}">
                                 {{ date("M", mktime(0, 0, 0, $month, 1)) }}
@@ -202,7 +202,7 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($attendanceSummeries as $attendanceSummery)
+                        {{-- @foreach ($attendanceSummeries as $attendanceSummery)
                         <tr>
                             <td>{{ $count++ }}</td>
                             <td>{{ $attendanceSummery->emp_name }}</td>
@@ -218,7 +218,7 @@
                                 <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#edit_attendance_summery-{{$attendanceSummery->id}}">Edit</button>
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_attendance_summery-{{ $attendanceSummery->id }}">Delete</button>
                             </td>
-                        </tr>
+                        </tr> --}}
 
                         <!-- Edit Modal -->
                         {{-- <div class="modal fade" id="edit_attendance_summery-{{$attendanceSummery->id}}" tabindex="-1" aria-labelledby="attendance_summery_title" aria-hidden="true">
@@ -342,7 +342,7 @@
                                 </div>
                             </div>
                         </div> --}}
-                        @endforeach
+                        {{-- @endforeach --}}
                     </tbody>
                 </table>
             </div>

@@ -502,19 +502,8 @@
                       <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="type_of_connectivity" class="form-label fw-bold">Type of Connectivity</label>
-                            <select name="type_of_connectivity" id="type_of_connectivity" class="form-control">
-                              <option value="">Select a Connectivity</option>
-                              @foreach ($cable_types as $cable_type)
-                                  <option value="{{ $cable_type->id }}">{{ $cable_type->cable_type }}</option>
-                              @endforeach
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div class="mb-2">
-                            <label for="router_id" class="form-label fw-bold">Router</label>
-                            <select name="router_id" id="router_id" class="form-control">
+                            <label for="router_id" class="form-label fw-bold">Router <span class="text-danger">*</span></label>
+                            <select name="router_id" id="router_id" class="form-control" required>
                               <option value="">Select a Router</option>
                               @foreach ($routers as $router)
                                   <option value="{{ $router->id }}">{{ $router->router_name }}</option>
@@ -524,16 +513,7 @@
                         </div>
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="device" class="form-label fw-bold">Device </label>
-                            <input type="text" class="form-control" id="device" name="device">
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-sm-4">
-                          <div class="mb-2">
-                            <label for="mac_address" class="form-label fw-bold">Device MAC </label>
+                            <label for="mac_address" class="form-label fw-bold">MAC Address</label>
                             <input type="text" class="form-control" id="mac_address" name="mac_address">
                           </div>
                         </div>
@@ -543,7 +523,27 @@
                             <input type="text" class="form-control" id="ip_number" name="ip_number">
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                      </div>
+
+                      <div class="row">
+                        {{-- <div class="col-sm-4">
+                          <div class="mb-2">
+                            <label for="type_of_connectivity" class="form-label fw-bold">Type of Connectivity</label>
+                            <select name="type_of_connectivity" id="type_of_connectivity" class="form-control">
+                              <option value="">Select a Connectivity</option>
+                              @foreach ($cable_types as $cable_type)
+                                  <option value="{{ $cable_type->id }}">{{ $cable_type->cable_type }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div> --}}
+                        {{-- <div class="col-sm-4">
+                          <div class="mb-2">
+                            <label for="device" class="form-label fw-bold">Device </label>
+                            <input type="text" class="form-control" id="device" name="device">
+                          </div>
+                        </div> --}}
+                        {{-- <div class="col-sm-4">
                           <div class="mb-2">
                             <label for="box_id" class="form-label fw-bold">Box </label>
                             <select name="box_id" id="box_id" class="form-control">
@@ -553,10 +553,10 @@
                               @endforeach
                             </select>
                           </div>
-                        </div>
+                        </div> --}}
                       </div>
 
-                      <div class="row">
+                      {{-- <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-2">
                             <label for="cable_req" class="form-label fw-bold">Cable req </label>
@@ -575,16 +575,16 @@
                             <input type="text" class="form-control" id="core_color" name="core_color">
                           </div>
                         </div>
-                      </div>
+                      </div> --}}
 
-                      <div class="row">
+                      {{-- <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-2">
                             <label for="fiber_code" class="form-label fw-bold">Fiber Code </label>
                             <input type="text" class="form-control" id="fiber_code" name="fiber_code">
                           </div>
                         </div>
-                      </div>
+                      </div> --}}
                     </fieldset>
 
                     {{-- Billing Info --}}
@@ -593,8 +593,8 @@
                       <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="tbl_bill_type_id" class="form-label fw-bold">Bill Type</label>
-                            <select name="tbl_bill_type_id" id="tbl_bill_type_id" class="form-control">
+                            <label for="tbl_bill_type_id" class="form-label fw-bold">Bill Type <span class="text-danger">*</span></label>
+                            <select name="tbl_bill_type_id" id="tbl_bill_type_id" class="form-control" required>
                               <option value="">Select a Bill Type</option>
                               @foreach ($bill_types as $bill_type)
                                   <option value="{{ $bill_type->id }}">{{ $bill_type->bill_type_name }}</option>
@@ -615,8 +615,8 @@
                         </div>
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="bill_start_date" class="form-label fw-bold">Bill Start Date</label>
-                            <input type="text" class="form-control datepicker-here digits" id="bill_start_date" name="bill_start_date" placeholder="dd/mm/yy" data-date-Format="yyyy-mm-dd">
+                            <label for="bill_start_date" class="form-label fw-bold">Bill Start Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control datepicker-here digits" id="bill_start_date" name="bill_start_date" placeholder="dd/mm/yy" data-date-Format="yyyy-mm-dd" required>
                           </div>
                         </div>
                       </div>
@@ -624,8 +624,8 @@
                       <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="tbl_client_type_id" class="form-label fw-bold">Package</label>
-                            <select name="tbl_client_type_id" id="tbl_client_type_id" class="form-control">
+                            <label for="tbl_client_type_id" class="form-label fw-bold">Package <span class="text-danger">*</span></label>
+                            <select name="tbl_client_type_id" id="tbl_client_type_id" class="form-control" required>
                               <option value="">Select a Package</option>
                               @foreach ($client_types as $client_type)
                                   <option value="{{ $client_type->id }}">{{ $client_type->name }}</option>
@@ -639,7 +639,7 @@
                             <input type="text" class="form-control" id="monthly_bill" name="monthly_bill">
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                        {{-- <div class="col-sm-4">
                           <div class="mb-2">
                             <label for="billing_status_id" class="form-label fw-bold">Billing Status </label>
                             <select name="billing_status_id" id="billing_status_id" class="form-control">
@@ -649,17 +649,17 @@
                               @endforeach
                             </select>
                           </div>
-                        </div>
+                        </div> --}}
                       </div>
 
                       <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="tbl_status_type_id" class="form-label fw-bold">Service Status </label>
-                            <select name="tbl_status_type_id" id="tbl_status_type_id" class="form-control">
+                            <label for="tbl_status_type_id" class="form-label fw-bold">Service Status <span class="text-danger">*</span></label>
+                            <select name="tbl_status_type_id" id="tbl_status_type_id" class="form-control" required>
                               <option value="">Select a Service Status</option>
                               @foreach ($status_types as $status_type)
-                                  <option value="{{ $status_type->id }}">{{ $status_type->inv_name }}</option>
+                                  <option {{$status_type->inv_name == 'Active' ? 'Selected' : '' }} value="{{ $status_type->id }}">{{ $status_type->inv_name }}</option>
                               @endforeach
                             </select>
                           </div>

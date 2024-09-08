@@ -75,6 +75,11 @@ return new class extends Migration {
             $table->unsignedBigInteger('block_reason_id')->nullable();  //Renamed from 'block_reason'
             $table->foreign('block_reason_id')->references('id')->on('block_reasons');
 
+            $table->string('contact_person')->nullable();
+            $table->string('contact_address')->nullable();
+            $table->string('contact_mobile')->nullable();
+            $table->string('contact_email')->nullable();
+
             // $table->string('contract_person', 220)->nullable();
             // $table->string('address', 120)->nullable();
             // $table->string('address1', 120)->nullable();

@@ -126,7 +126,6 @@ class CustomerController extends Controller
         ->leftJoin('tbl_status_types', 'tbl_status_types.id', '=', 'trn_clients_services.tbl_status_type_id')
         ->where('trn_clients_services.srv_type_id', 1)
         ->get();
-        // dd($customers); 
 
         $customers_dropdown = Customer::select('id as customer_id', 'customer_name')->orderBy('customer_name', 'desc')->get();
         $zones = TblZone::get();
@@ -364,7 +363,6 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request): RedirectResponse
     {
-        // dd($request);
         $prof_image = "";
         $nid_image = "";
         $regform_image = "";
