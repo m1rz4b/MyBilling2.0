@@ -6,7 +6,6 @@ use App\Models\IpPool;
 use App\Models\Menu;
 use App\Models\TblRouter;
 use Illuminate\Http\Request;
-
 use \RouterOS\Client;
 use \RouterOS\Query;
 
@@ -24,8 +23,10 @@ class IpPoolController extends Controller
         return view("pages.radius.ipPool", compact("menus", "ip_pools", "routers"));
     }
 
-    public function search(int $search)
+    public function search(Request $req)
     {
+        // dd($req->routerID);
+        $search = $req->routerID;
         $routerInIppool = TblRouter::find($search);
         
         try {
@@ -58,6 +59,7 @@ class IpPoolController extends Controller
 
     public function importRouter(Request $request)
     {
+        // dd($request->key1);
         try {
             $ipPool = IpPool::create([
                 'router_id' => $request->routerId ?? '',
