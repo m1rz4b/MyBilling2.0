@@ -18,9 +18,9 @@ class HrmAttendenceSummaryController extends Controller
     public function index()
     {
         $menus = Menu::get();
-        $employees = MasEmployee::get();
-        $suboffices = TblSuboffice::get();
-        $departments = MasDepartment::get();
+        $employees = MasEmployee::select('id', 'emp_name')->orderBy('emp_name','asc')->get();
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name','asc')->get();
+        $departments = MasDepartment::select('id', 'department')->orderBy('department','asc')->get();
         $attendanceSummeries = HrmAttendenceSummary::select('hrm_attendence_summaries.*', 'mas_employees.emp_name', 'mas_designation.designation', 'tbl_suboffices.name')
             ->leftJoin('mas_employees', 'mas_employees.id', '=', 'hrm_attendence_summaries.employee_id')
             ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')

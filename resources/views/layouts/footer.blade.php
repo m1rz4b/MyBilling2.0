@@ -209,6 +209,9 @@
   {{-- Jquery Date Time Picker --}}
   <script src="{{url('js/jquery.datetimepicker.full.min.js') }}"></script>
 
+  {{-- Dropify File Input --}}
+  <script src="{{url('vendors/dropify/dist/js/dropify.min.js') }}"></script>
+
   <script>
     $(document).ready( function () {
       $('.datatable').DataTable({

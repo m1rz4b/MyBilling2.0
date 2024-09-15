@@ -54,7 +54,7 @@
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0" style="color: white;">Administrative</h5>
-                <a class="btn-custom-1" href="#" data-bs-toggle="modal" data-bs-target="#add_attendance_summery">Add</a>
+                <a class="btn-custom-1" href="#" data-bs-toggle="modal" data-bs-target="#add_attendance_summery"><i class="fa-solid fa-plus me-1"></i>Add New</a>
             </div>
         </div>
 
@@ -156,6 +156,7 @@
                 <label for="from_date" class="fw-medium">From Date</label>
                 <input type="text" class="form-control form-control-sm datepicker-here digits" value="" name="from_date" data-date-Format="yyyy-mm-dd" id="from_date">
             </div>
+
             <div class="col-sm-4 form-group">
                 <label for="employee" class="fw-medium">Employee</label>
                 <select class="select2 form-select form-select-sm" id="employee" name="employee">
@@ -167,8 +168,8 @@
             </div>
 
             <div class="col-sm-4 form-group">
-                <label for="suboffice" class="fw-medium">Sub-Office</label>
-                <select class="form-select form-select-sm" id="suboffice" name="suboffice">
+                <label for="suboffice" class="fw-medium">Office</label>
+                <select class="form-select form-select-sm form-control" id="suboffice" name="suboffice">
                     <option selected>Select an Office</option>
                     @foreach ($suboffices as $suboffice)
                         <option value="{{ $suboffice->id }}">{{ $suboffice->name }}</option>
@@ -179,7 +180,7 @@
             <div class="col-sm-4 form-group">
                 <label for="department" class="fw-medium">Department</label>
                 <select class="form-select form-select-sm form-control" id="department" name="department">
-                    <option selected>Select a Status</option>
+                    <option selected>Select a Department</option>
                     @foreach ($departments as $department)
                         <option value="{{ $department->id }}">{{ $department->department }}</option>
                     @endforeach                      
@@ -191,6 +192,8 @@
                 <button type="button" class="btn btn-sm btn-primary"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Show Report</button>
             </div>
         </div>
+
+
 
         <div class="QA_table px-3">
             <div>
@@ -211,7 +214,7 @@
                             <th scope="col">Total Time</th>
                             <th scope="col">Over Time</th>
                             <th scope="col">Ad.Entry</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
 
@@ -228,7 +231,7 @@
                             <td>{{ $attendanceSummery->total_time }}</td>
                             <td>{{ $attendanceSummery->ot_time }}</td>
                             <td>{{ $attendanceSummery->administrative == 1 ? 'Yes':'No' }}</td>
-                            <td>
+                            <td class="text-end text-nowrap" width='10%'>
                                 <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#edit_attendance_summery-{{$attendanceSummery->id}}">Edit</button>
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_attendance_summery-{{ $attendanceSummery->id }}">Delete</button>
                             </td>

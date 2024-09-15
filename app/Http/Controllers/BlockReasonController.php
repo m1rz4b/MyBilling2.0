@@ -6,6 +6,7 @@ use App\Models\BlockReason;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Menu;
+use Illuminate\Support\Facades\Auth;
 
 class BlockReasonController extends Controller
 {
@@ -41,7 +42,7 @@ class BlockReasonController extends Controller
             'block_reason_desc' => ['required', 'string']
         ]);
 
-        $user_id = 1; //Replace by Auth later
+        $user_id = Auth::id();
 
         $newBlockReason = BlockReason::create([
             'block_reason_name' => ($request->block_reason_name == null) ? '' : $request->block_reason_name,
@@ -75,7 +76,7 @@ class BlockReasonController extends Controller
      */
     public function update(Request $request, $blockreason)
     {
-        $user_id = 1; //Replace by Auth later
+        $user_id = Auth::id();
 
         $updateData = $request->validate([
             'block_reason_name' => [
@@ -101,7 +102,7 @@ class BlockReasonController extends Controller
      */
     public function destroy($blockreason = null)
     {
-        $user_id = 1; //Replace by Auth later
+        $user_id = Auth::id();
 
         $blocks = BlockReason::find($blockreason);
         $blocks->deleted_by = $user_id;

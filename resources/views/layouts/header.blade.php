@@ -65,6 +65,9 @@
 
     {{-- Date Time Picker --}}
     <link rel="stylesheet" type="text/css" href="{{url('css/jquery.datetimepicker.css') }}" />
+
+    {{-- Dropify File Input --}}
+    <link rel="stylesheet" href="{{url('vendors/dropify/dist/css/dropify.min.css') }}" />
  
   </head>
   <body class="crm_body_bg">

@@ -48,6 +48,7 @@ use App\Http\Controllers\BillReports\ClientLedgerController;
 use App\Http\Controllers\BillReports\DailyBillCollectionController;
 use App\Http\Controllers\BillReports\CollectionSummeryController;
 use App\Http\Controllers\BillReports\RptClientListController;
+use App\Http\Controllers\HrmEmpJobHistoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -207,6 +208,11 @@ Route::middleware(['auth'])->group(function () {
     //HRM Entry Form
     Route::resource('attendancesummary', HrmAttendenceSummaryController::class);
     Route::resource('hrmincrement', HrmIncrementController::class);
+    Route::resource('employeeinformation', MasEmployeeController::class);
+    // Route::get('employeepromotion', [MasEmployeeController::class, 'employeePromotionlIndex'])->name('employeepromotion.employeePromotionlIndex');
+    // Route::post('employeepromotion', [MasEmployeeController::class, 'employeePromotionlStore'])->name('employeepromotion.employeePromotionlStore');
+    // Route::post('employeepromotion/{employeepromotion}', [MasEmployeeController::class, 'employeePromotionlUpdate'])->name('employeepromotion.employeePromotionlUpdate');
+    Route::resource('employeepromotion', HrmEmpJobHistoryController::class);
 
     //Pdf
     Route::get('monthly_invoices_pdf', [MonthlyInvoiceController::class, 'indexPdf'])->name('monthly_invoices_pdf');

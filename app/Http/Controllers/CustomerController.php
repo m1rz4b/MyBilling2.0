@@ -22,6 +22,9 @@ use App\Models\TblBandwidthPlan;
 use App\Models\TblClientType;
 use App\Models\TblBillType;
 use App\Models\InvoiceType;
+use App\Models\Radcheck;
+use App\Models\Radreply;
+use App\Models\Radusergroup;
 use App\Models\TblClientCategory;
 use App\Models\TblSuboffice;
 use App\Models\TblCableType;
@@ -363,6 +366,7 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request): RedirectResponse
     {
+        // dd($request);
         $prof_image = "";
         $nid_image = "";
         $regform_image = "";
@@ -478,7 +482,83 @@ class CustomerController extends Controller
 
             "number_of_tv" => ($request->number_of_tv == null) ? 0 : $request->number_of_tv,
             "number_of_channel" => ($request->number_of_channel == null) ? 0 : $request->number_of_channel,
-        ]);
+            ]);
+        }
+
+        $block_date = 2024;
+
+        if($request->bandwidth_plan_id==2){
+            $client_id   = $customer->id;
+            // $ac_no       = $updated_account_no;
+            $user_id     = $request->user_id;
+            $password    = $request->password;
+            $ip_number   = $request->ip_number;
+            $mac_address = $request->mac_address;
+            $date_exp    = $block_date;
+            
+            $client_type = TrnClientsService::where('customer_id', $client_id)->value('tbl_client_type_id');
+            // $date_exp = date('d M Y', strtotime($exp_date));
+            // dd($date_exp);
+
+            if($ip_number>0){
+                $Asql = Radcheck::insert([
+                    ['username' => $user_id, 'attribute' => 'User-Password', 'op' => ':=', 'value' => $password],
+                    ['username' => $user_id, 'attribute' => 'Expiration', 'op' => '==', 'value' => $date_exp],
+                    ['username' => $user_id, 'attribute' => 'Simultaneous-Use', 'op' => ':=', 'value' => '1'],
+                ]);
+
+                $gsql = Radusergroup::create([
+                    'username' => $user_id,
+                    'groupname' => $client_type,
+                    'priority' => 1,
+                ]);
+
+                if ($mac_address != NULL) {
+                    $Asql = Radcheck::create([
+                        'username' => $user_id,
+                        'attribute' => 'Calling-Station-Id',
+                        'op' => '==',
+                        'value' => $mac_address,
+                    ]);
+                }
+
+                if ($ip_number != NULL) {
+                    $gsql = Radreply::create([
+                        'username' => $user_id,
+                        'attribute' => 'Framed-IP-Address',
+                        'op' => '==',
+                        'value' => $ip_number,
+                    ]);
+                }
+            }else {
+                if ($client_id) {
+                    $Asql = Radcheck::insert([
+                        ['username' => $user_id, 'attribute' => 'User-Password', 'op' => ':=', 'value' => $password],
+                        ['username' => $user_id, 'attribute' => 'Expiration', 'op' => '==', 'value' => $date_exp],
+                        ['username' => $user_id, 'attribute' => 'Simultaneous-Use', 'op' => ':=', 'value' => '1'],
+                    ]);
+
+                    $gsql = Radusergroup::create([
+                        'username' => $user_id,
+                        'groupname' => $client_type,
+                        'priority' => 1,
+                    ]);
+
+                    $Asql = Radcheck::create([
+                        'username' => $user_id,
+                        'attribute' => 'Calling-Station-Id',
+                        'op' => '==',
+                        'value' => $mac_address,
+                    ]);
+
+                    $gsql = Radreply::create([
+                        'username' => $user_id,
+                        'attribute' => 'Framed-IP-Address',
+                        'op' => '==',
+                        'value' => $ip_number,
+                    ]);
+                }
+            }
         }
 
         return redirect('/customers')->with('success', 'Customer added successfully');

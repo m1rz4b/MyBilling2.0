@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mas_employees', function (Blueprint $table) {
-            $table->id();
-            $table->string('emp_no', 50);
+            $table->id(); //previously emp_id
+            $table->string('emp_no', 50)->nullable();
             $table->string('emp_name', 120);
-            $table->date('date_of_birth');
-            $table->date('date_of_joing');
+            $table->date('date_of_birth')->nullable();
+            $table->date('date_of_joining');
             $table->unsignedBigInteger('department_id');
             $table->foreign('department_id')->references('id')->on('mas_departments');
             $table->unsignedBigInteger('designation_id');
@@ -33,27 +33,26 @@ return new class extends Migration
             $table->integer('shift_id');
             $table->integer('salary_status');   //previously salry_status
             $table->date('last_increment_date');
-            $table->double('last_increment_amount');
-            $table->integer('blood_group');
-            $table->string('mobile1', 50);  //Previously mobile1
-            $table->string('work_station', 100);
-            $table->string('father_name');
-            $table->date('date_of_resig');
-            $table->string('birth_certificate', 100);
-            $table->string('gender', 50);
-            $table->integer('system_user_id');
+            $table->double('last_increment_amount')->nullable();
+            $table->integer('blood_group')->nullable();
+            $table->string('mobile1', 50)->nullable();
+            $table->string('work_station', 100)->nullable();
+            $table->string('father_name')->nullable();
+            $table->date('date_of_resig')->nullable();
+            $table->string('birth_certificate', 100)->nullable();
+            $table->string('gender', 50)->nullable();
+            $table->integer('system_user_id')->nullable();
             $table->date('last_promotion_date');
-            $table->string('image', 100);
-            $table->string('provision_days', 10);
-            $table->string('e-tin', 100);
+            $table->string('image', 100)->nullable();
+            $table->string('provision_days', 10)->nullable();
+            $table->string('e_tin', 100);   //previously e-tin
             $table->integer('user_group_id');
             $table->integer('reporting_manager');
             $table->integer('reporting_manager_des');
-            $table->integer('emp_type_name');
-            $table->date('date_of_permanent');
-            $table->integer('roster_shift');
+            $table->integer('emp_type_name')->nullable();
+            $table->date('date_of_permanent')->nullable();
+            $table->integer('roster_shift')->nullable();
             $table->string('emp_pin');
-            $table->integer('status');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
