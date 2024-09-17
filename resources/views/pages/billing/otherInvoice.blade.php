@@ -526,136 +526,28 @@
     </div>
 
     <script>
-        $("#branch_id").select2({
-            dropdownParent: $("#addOtherInvModal")
-        });
-        $("#customer_id").select2({
-            dropdownParent: $("#addOtherInvModal")
-        });
+
 
         
 
         
         $(document).ready(function() {
-
-            //old code
-            $(document).on('change', 'select[name="txtcat_id[]"]', function(){
-                console.log("cat changed");
-                var total = 0;
-                var $nowRow =$(this).closest("tr")[0].rowIndex;
-                $('tr.items').each(function(i, el){
-
-                    var $this = $(this);
-                    if(i==($nowRow-1))
-                    {
-                    
-                        $.ajax({
-                            url: "../AjaxCode/loadajaxcombo.php?options=1&valueColumns=pd_id,pd_name&table=tbl_product&conditions=where cat_id=" +$this.find('select[name="txtcat_id[]"]').val()+" &firstText=Select a Product&selectedValue=" ,
-                            success: function(html){
-                            $this.find('select[name="txtprod_id[]"]').html(html);
-                        }
-                        });
-                    }
-                });
+            $('.select2').select2({
+                
             });
 
-            $(document).on('change', 'select[name="txtprod_id[]"]', function(){
-                var prod_id = $(this).val();
-                //alert(prod_id);
-                var $nowRow =$(this).closest("tr")[0].rowIndex;
-                $('tr.items').each(function(i, el){
-                    var $this = $(this);
-                    if(i==($nowRow-1))
-                    {
-                        $.ajax({
-                            type:'POST',
-                            url:'load_with_product.php',
-                            data:'prod_id='+prod_id,
-                            success:function(html){
-                                //alert(html)
-                                //$this.find('#r_qty').val(html);
-                                $this.find('input[name="r_qty[]"]').val(html);
-                            }
-                        });
-                    }
-                });
+            $("#branch_id").select2({
+                dropdownParent: $("#addOtherInvModal")
+            });
+            $("#customer_id").select2({
+                dropdownParent: $("#addOtherInvModal")
             });
 
-            $('input[name="qty\[\]"]').blur(function() {
-                             
-                $('#mytable tbody>tr:last').clone(true).insertAfter('#mytable tbody>tr:last').find('input[type="text"]').val("");
-                
-                
-                MyRowId();
-
-                
-                CaclulateCostTotal();
-                
-                return false;
-            });
-            MyRowId = function() {
-				var myid=1;
-				$('tr.items').each(function(i, el) {
-					var $this = $(this);
-					$this.find('[name="id\\[\\]"]').val(myid.toFixed(0));
-					myid++;
-				});
-				
-			};
-            CaclulateCostTotal = function() {
-				var totcost=0;
-				$('tr.items').each(function(i, el) {
-					var $this = $(this),
-						$cost = $this.find('[name="pwv\\[\\]"]'),
-						$quant = $this.find('[name="qty\\[\\]"]'),
-						c = parseFloat($cost.val()),
-						q = parseInt($quant.val(), 10),
-						total = c * q || 0;
-					$this.find('[name="vat\\[\\]"]').val(total.toFixed(2));
-					totcost=totcost+total;
-				});
-				//alert(totcost);
-				$("#totcost1").val(totcost.toFixed(2));
-				
-				
-				
-				//VAT Calculation and Total
-				$cost = $("#totcost1").val();
-				$per = $("#vatper").val();
-				$discount = $("#discount").val();
-				//alert($discount);
-				vatcal = Math.round(($cost-$discount) * $per/100) || 0;
-				//grandtot = Math.round(parseFloat($cost)+parseFloat(($cost * $per/100))-parseFloat($discount) );
-				grandtot = Math.round(parseFloat($cost)+parseFloat((($cost-$discount) * $per/100))-parseFloat($discount) );
-				//grandtot = Math.round(parseFloat($cost)+parseFloat(($cost * $per/100)));
-				
-				$("#vat1").val(vatcal.toFixed(2));
-				//alert(grandtot);
-				$("#gtot").val(grandtot.toFixed(2));
-				
-			};
-            vatcal = function() {
-				
-				$cost = $("#totcost1").val();
-				$per = $("#vatper").val();
-				
-				vatcal = $cost * $per/100 || 0;
-				grandtot = Math.round(parseFloat($cost)+parseFloat(($cost * $per/100)));
-				
-				$("#vat1").val(vatcal.toFixed(2));
-				//c = $cost;
-				//q = parseFloat(vatcal.val());
-				//grandtot =c+q;
-				alert(grandtot);
-				$("#gtot").val(grandtot.toFixed(2));
-				
-			};
+            
 
             //new code
             // row = document.querySelector("#row");
-            // $('.select2').select2({
-                
-            // });
+
              
             
 
@@ -840,6 +732,121 @@
             //     return false;
 	        // });
         });
+
+
+        //old code
+        $(document).on('change', 'select[name="txtcat_id[]"]', function(){
+                
+                var total = 0;
+                var $nowRow =$(this).closest("tr")[0].rowIndex;
+                console.log($nowRow);
+                $('tr.items').each(function(i, el){
+
+                    var $this = $(this);
+                    if(i==($nowRow-1))
+                    {
+                        console.log("cat changed");
+                        $.ajax({
+                            url: "../AjaxCode/loadajaxcombo.php?options=1&valueColumns=pd_id,pd_name&table=tbl_product&conditions=where cat_id=" +$this.find('select[name="txtcat_id[]"]').val()+" &firstText=Select a Product&selectedValue=" ,
+                            success: function(html){
+                            $this.find('select[name="txtprod_id[]"]').html(html);
+                        }
+                        });
+                    }
+                });
+            });
+
+            $(document).on('change', 'select[name="txtprod_id[]"]', function(){
+                var prod_id = $(this).val();
+                //alert(prod_id);
+                var $nowRow =$(this).closest("tr")[0].rowIndex;
+                $('tr.items').each(function(i, el){
+                    var $this = $(this);
+                    if(i==($nowRow-1))
+                    {
+                        $.ajax({
+                            type:'POST',
+                            url:'load_with_product.php',
+                            data:'prod_id='+prod_id,
+                            success:function(html){
+                                //alert(html)
+                                //$this.find('#r_qty').val(html);
+                                $this.find('input[name="r_qty[]"]').val(html);
+                            }
+                        });
+                    }
+                });
+            });
+
+            $('input[name="qty\[\]"]').blur(function() {
+                             
+                $('#mytable tbody>tr:last').clone(true).insertAfter('#mytable tbody>tr:last').find('input[type="text"]').val("");
+                
+                
+                MyRowId();
+
+                
+                CaclulateCostTotal();
+                
+                return false;
+            });
+            MyRowId = function() {
+				var myid=1;
+				$('tr.items').each(function(i, el) {
+					var $this = $(this);
+					$this.find('[name="id\\[\\]"]').val(myid.toFixed(0));
+					myid++;
+				});
+				
+			};
+            CaclulateCostTotal = function() {
+				var totcost=0;
+				$('tr.items').each(function(i, el) {
+					var $this = $(this),
+						$cost = $this.find('[name="pwv\\[\\]"]'),
+						$quant = $this.find('[name="qty\\[\\]"]'),
+						c = parseFloat($cost.val()),
+						q = parseInt($quant.val(), 10),
+						total = c * q || 0;
+					$this.find('[name="vat\\[\\]"]').val(total.toFixed(2));
+					totcost=totcost+total;
+				});
+				//alert(totcost);
+				$("#totcost1").val(totcost.toFixed(2));
+				
+				
+				
+				//VAT Calculation and Total
+				$cost = $("#totcost1").val();
+				$per = $("#vatper").val();
+				$discount = $("#discount").val();
+				//alert($discount);
+				vatcal = Math.round(($cost-$discount) * $per/100) || 0;
+				//grandtot = Math.round(parseFloat($cost)+parseFloat(($cost * $per/100))-parseFloat($discount) );
+				grandtot = Math.round(parseFloat($cost)+parseFloat((($cost-$discount) * $per/100))-parseFloat($discount) );
+				//grandtot = Math.round(parseFloat($cost)+parseFloat(($cost * $per/100)));
+				
+				$("#vat1").val(vatcal.toFixed(2));
+				//alert(grandtot);
+				$("#gtot").val(grandtot.toFixed(2));
+				
+			};
+            vatcal = function() {
+				
+				$cost = $("#totcost1").val();
+				$per = $("#vatper").val();
+				
+				vatcal = $cost * $per/100 || 0;
+				grandtot = Math.round(parseFloat($cost)+parseFloat(($cost * $per/100)));
+				
+				$("#vat1").val(vatcal.toFixed(2));
+				//c = $cost;
+				//q = parseFloat(vatcal.val());
+				//grandtot =c+q;
+				alert(grandtot);
+				$("#gtot").val(grandtot.toFixed(2));
+				
+			};
 
         
 

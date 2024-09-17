@@ -54,6 +54,7 @@ return new class extends Migration {
             $table->foreign('tbl_client_category_id')->references('id')->on('tbl_client_categories');
             $table->integer('sub_office_id');  //new
             $table->integer('reseller_id')->default(0);  //new
+            $table->integer('distributor_master')->default(0);  //new
 
             // $table->unsignedBigInteger('trn_clients_service_id')->nullable();  //new
             // $table->foreign('trn_clients_service_id')->references('id')->on('trn_clients_services');
