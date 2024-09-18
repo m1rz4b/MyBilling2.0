@@ -39,6 +39,7 @@ class TrnClientsService extends Model
         'tbl_bill_type_id',
         'invoice_type_id',
         'bill_start_date',
+		'block_date',
         'tbl_client_type_id',
         'monthly_bill',
         'billing_status_id',

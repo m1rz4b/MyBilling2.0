@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('description',50)->default('');
             $table->string('gl_code',5)->default('');
             $table->integer('editable');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

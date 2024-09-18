@@ -17,6 +17,9 @@ return new class extends Migration
 		    $table->string('gl_code',5)->default('');
 		    $table->double('depreciation_rate')->default(0);
 		    $table->double('ann_rate')->default(0);
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

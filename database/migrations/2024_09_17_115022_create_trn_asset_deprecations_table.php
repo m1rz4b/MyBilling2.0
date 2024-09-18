@@ -29,6 +29,9 @@ return new class extends Migration
             $table->double('wdv')->default('0');
             $table->date('proc_date')->nullable();
             $table->string('proc_by',10)->default('');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

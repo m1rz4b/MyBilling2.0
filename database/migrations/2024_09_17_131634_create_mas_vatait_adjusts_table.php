@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id(); //vataitadjust_id
             $table->integer('serv_id',);
             $table->integer('client_Id',);
-            $table->integer('masinvoiceobject_id',);
+            $table->integer('masinvoiceobject_id');
             $table->date('adjust_date');
             $table->double('vat');
             $table->double('ait');
-            $table->integer('journal_id',);
+            $table->integer('journal_id');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

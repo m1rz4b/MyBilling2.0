@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('address1',120)->default('');
             $table->string('address2',120)->default('');
             $table->string('phone',20)->default('');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

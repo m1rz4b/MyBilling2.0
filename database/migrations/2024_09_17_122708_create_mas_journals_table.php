@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('journalno',)->default('0');
             $table->string('journaltype',15)->default('');
             $table->date('journaldate');
-            $table->integer('lcno',)->default('0');
+            $table->integer('lcno')->default('0');
             $table->string('billno',10)->default('');
             $table->string('moneyreceiptno',15)->default('');
             $table->date('moneyreceiptdate');
@@ -24,19 +24,22 @@ return new class extends Migration
             $table->string('paytype',15)->default('');
             $table->integer('bankid',)->default('0');
             $table->string('branchid',15)->default('');
-            $table->integer('accountno',)->default('0');
+            $table->integer('accountno')->default('0');
             $table->string('chequeno',15)->default('');
             $table->date('chequedate')->nullable();
             $table->string('partyid',100)->default('');
             $table->string('supplierid',5)->default('');
-            $table->integer('project_id',);
+            $table->integer('project_id');
             $table->integer('companyid',)->default('0');
             $table->string('remarks',200)->default('');
             $table->string('payto',100)->default('');
             $table->integer('journal_status',)->default('0');
-            $table->integer('tobankid',)->nullable();
-            $table->integer('toaccountno',)->nullable();
-            $table->integer('emp_id',);
+            $table->integer('tobankid')->nullable();
+            $table->integer('toaccountno')->nullable();
+            $table->integer('emp_id');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

@@ -31,6 +31,9 @@ return new class extends Migration
             $table->integer('journalno');
             $table->double('discount')->default(0);
             $table->double('advance_adjust')->default(0);
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

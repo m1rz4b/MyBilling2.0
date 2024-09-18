@@ -28,7 +28,9 @@ return new class extends Migration
             $table->double('running_dr')->default('0');
             $table->double('running_cr')->default('0');
             $table->integer('reconcile_status')->default('0');
-            
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->integer('pid',)->default('0');
             $table->string('description',50)->default('');
             $table->string('cost_code',5)->default('');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

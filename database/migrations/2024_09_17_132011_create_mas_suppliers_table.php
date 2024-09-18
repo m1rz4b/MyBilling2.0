@@ -45,6 +45,9 @@ return new class extends Migration
             
 
             $table->integer('supp_type',);
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

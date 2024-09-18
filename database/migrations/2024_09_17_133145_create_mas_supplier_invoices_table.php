@@ -45,7 +45,9 @@ return new class extends Migration
             $table->integer('journal_id');
             $table->double('dscount_onpurchase')->default(0);
             $table->integer('office_id');
-
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }
