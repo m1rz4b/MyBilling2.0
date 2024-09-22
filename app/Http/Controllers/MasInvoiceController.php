@@ -15,6 +15,7 @@ use App\Models\MasBank;
 use App\Models\NislMasMember;
 use App\Models\SubZone;
 use App\Models\TblClientCategory;
+use App\Models\TblProduct;
 use App\Models\TblClientType;
 use App\Models\TblZone;
 use App\Models\TblSuboffice;
@@ -51,7 +52,7 @@ class MasInvoiceController extends Controller
     {
         $menus = Menu::get();
         //$mas_invoices = MasInvoice::get();
-        $branches = TblSuboffice::where('status',1)->get();;
+        $branches = TblSuboffice::where('status',1)->get();
 
         //dd($request);
 
@@ -1213,10 +1214,113 @@ class MasInvoiceController extends Controller
     public function otherInv()
     {
         $menus = Menu::get();
+        $branches = TblSuboffice::where('status',1)->get();
         $customers = Customer::get();
         $invoices = MasInvoice::get();
-        return view('pages.billing.otherInvoice', compact('menus', 'customers', 'invoices'));
+        $categories = DB::select("SELECT
+                                    IF(level_id=1,id,(if(level_id=2,cat_parent_id,(select cat_parent_id from tbl_categories where id=tt.cat_parent_id ))))AS l2,
+                                    IF(level_id=1,0,(if(level_id=2,id,(select id from tbl_categories where id=tt.cat_parent_id ))))AS l1,
+                                    `id`,
+                                    `cat_parent_id`,
+                                    `cat_name`,
+                                    `level_id`
+									FROM
+											`tbl_categories` as tt
+									Where tt.id>0
+									Order By l2,l1,cat_parent_id,cat_name");
+                                    //dd($categories);
+        return view('pages.billing.otherInvoice', compact('menus', 'customers', 'invoices','categories','branches'));
     }
+    public function otherInvSave()
+    {
+        $menus = Menu::get();
+        $branches = TblSuboffice::where('status',1)->get();
+        $customers = Customer::get();
+        $invoices = MasInvoice::get();
+        $categories = DB::select("SELECT
+                                    IF(level_id=1,id,(if(level_id=2,cat_parent_id,(select cat_parent_id from tbl_categories where id=tt.cat_parent_id ))))AS l2,
+                                    IF(level_id=1,0,(if(level_id=2,id,(select id from tbl_categories where id=tt.cat_parent_id ))))AS l1,
+                                    `id`,
+                                    `cat_parent_id`,
+                                    `cat_name`,
+                                    `level_id`
+									FROM
+											`tbl_categories` as tt
+									Where tt.id>0
+									Order By l2,l1,cat_parent_id,cat_name");
+                                    //dd($categories);
+            $insertInvoice="insert into 
+                                    mas_invoices(
+                                        `invoice_date`,
+                                        `client_type`,
+                                        `client_id`,
+                                        `invoice_number`,
+                                        `bill_number`,
+                                        `remarks`,
+                                        bill_amount,
+                                        vat,
+                                        total_bill,
+                                        invoice_cat,
+                                        discount_amnt,
+                                        vatper,
+                                        adv_rec,
+                                        next_inv_date,
+                                        project_id,
+                                        work_order,
+                                        work_order_date,
+                                        
+                                        ) values(
+                                        '$txtinvoice_date',
+                                        '$ctype',
+                                        '$txtclient_id',
+                                        '$invnum',
+                                        '$billnum',
+                                        '',
+                                        '$totcost1',
+                                        '$vat1',
+                                        '$gtot',
+                                        'Others',
+                                        '$discount',
+                                        '$vatper',
+                                        '$adv_rec',
+                                        '$conn,$txtwork_order',
+                                        '$txtproject_id',
+                                        '$txtwork_order',
+                                        '$txtwork_order_date',
+                                        
+                                        )";
+        return view('pages.billing.otherInvoice', compact('menus', 'customers', 'invoices','categories','branches'));
+    }
+
+    public function prodByCategory(Request $req)
+    {
+        //
+        $response = TblProduct::where('cat_id',$req->catID)->get();
+
+        //dd($response);
+        if ($response) {
+            return response()->json([
+                "status" => true,
+                "msg" => "",
+                "data" => $response
+            ]);
+        }
+    }
+    public function prodDetail(Request $req)
+    {
+        //
+        $response = TblProduct::where('id',$req->prodID)->first();
+
+        //dd($response);
+        if ($response) {
+            return response()->json([
+                "status" => true,
+                "msg" => "",
+                "data" => $response
+            ]);
+        }
+    }
+    
 
     /**
      * Show the form for creating a new resource.

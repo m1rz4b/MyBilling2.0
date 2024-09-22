@@ -117,7 +117,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('ippool', IpPoolController::class);
     Route::post('importRouter', [IpPoolController::class, 'importRouter'])->name('ippool.importRouter');
-    Route::post('ippool/{search}', [IpPoolController::class, 'search'])->name('ippool.search');
+    Route::post('ippool/search', [IpPoolController::class, 'search'])->name('ippool.search');
+    Route::post('otherInv/prodByCategory', [MasInvoiceController::class, 'prodByCategory'])->name('otherInv.prodByCategory');
+    Route::post('otherInv/prodDetail', [MasInvoiceController::class, 'prodDetail'])->name('otherInv.prodDetail');
+    Route::post('getCustomerByBranch', [CustomerController::class, 'getCustomerByBranch'])->name('getCustomerByBranch');
     
     Route::resource('router', TblRouterController::class);
     Route::resource('bulkrouterchange', BulkRouterChangeController::class);

@@ -182,6 +182,22 @@ class CustomerController extends Controller
             )
         );
     }
+    public function getCustomerByBranch(Request $request)
+    {
+
+        $branchID = $request->branchID;
+        $customers = Customer::select('customers.id','customers.customer_name')->where('customers.sub_office_id',$branchID)->get();
+        
+        if ($customers) {
+            return response()->json([
+                "status" => true,
+                "msg" => "",
+                "data" => $customers
+            ]);
+        }
+
+       
+    }
     public function search(Request $request)
     {
 

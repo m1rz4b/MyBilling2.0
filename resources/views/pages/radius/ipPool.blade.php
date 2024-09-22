@@ -160,18 +160,35 @@
         });
 
         const search = () => {
-            const id = document.getElementById('router_select').value;
-              
-            $.ajax({
-                url: `{{ url('ippool/'.'${id}') }}`,
-                type: 'POST',
-                dataType: "json",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    router: id,
-                },
-                success: function(data) {
-                    data = data.data;
+            const routerID = document.getElementById('router_select').value;
+
+            // Your JSON data
+            const jsonData = { routerID: routerID };
+
+            // Set up options for the fetch request
+            const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(jsonData) // Convert JSON data to a string and set it as the request body
+            };
+
+            // Make the fetch request with the provided options
+            fetch(`{{ url('ippool/search') }}`, options)
+            .then(response => {
+                // Check if the request was successful
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                // Parse the response as JSON
+                return response.json();
+            })
+            .then(data => {
+                // Handle the JSON data
+                console.log(data);
+                data = data.data;
                     for (res of data) {
                         const name = res.name;
                         const ranges = res.ranges;
@@ -193,8 +210,45 @@
                         `
                         tbody.appendChild(row);
                     }
-                }
+            })
+            .catch(error => {
+                // Handle any errors that occurred during the fetch
+                console.error('Fetch error:', error);
             });
+            
+            // $.ajax({
+            //     url: `{{ url('ippool/'.'${id}') }}`,
+            //     type: 'POST',
+            //     dataType: "json",
+            //     data: {
+            //         "_token": "{{ csrf_token() }}",
+            //         router: id,
+            //     },
+            //     success: function(data) {
+            //         data = data.data;
+            //         for (res of data) {
+            //             const name = res.name;
+            //             const ranges = res.ranges;
+            //             // const routerId = res['.id'];
+            //             // let id = routerId.replace('*', '');
+
+            //             const tbody = document.getElementById("tbody");
+            //             const row = document.createElement('tr');
+            //             const routerInfo = document.getElementById("router_info_table");
+            //             routerInfo.classList.remove('d-none');
+            //             row.innerHTML = `
+            //                 <td>${name}</td>
+            //                 <td>${ranges}</td>
+            //                 <td class="text-center text-nowrap" width='10%'>
+            //                     <button href="#" class="btn btn-sm btn-info text-white" data-name="${name}" data-ranges="${ranges}" onclick="importRouter(this)" data-bs-toggle="modal" data-bs-target="#deleteIpPoolModal">
+            //                         <i class="fa fa-cloud-download me-1" aria-hidden="true"></i>Import
+            //                     </button>
+            //                 </td>
+            //             `
+            //             tbody.appendChild(row);
+            //         }
+            //     }
+            // });
         }
 
         const importRouter = (e) => {
@@ -202,45 +256,98 @@
             const routerName = e.getAttribute('data-name');
             const routerRanges = e.getAttribute('data-ranges');    
             
-            $.ajax({
-                type: "POST",
-                url: `{{ url('importRouter') }}`,
-                dataType: "json",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    routerId: routerId,
-                    routerName: routerName,
-                    routerRanges : routerRanges
-                },
-                success: function (response)
-                {   
-                    // console.log(response);
+            let fetchRes = fetch("{{ url('importRouter') }}");
+                
+            // Your JSON data
+            const routerInfo = { routerId: routerId, routerName: routerName, routerRanges: routerRanges };
+
+            // Set up options for the fetch request
+            const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify(routerInfo) // Convert JSON data to a string and set it as the request body
+            };
+
+            // Make the fetch request with the provided options
+            fetch("{{ url('importRouter') }}", options)
+            .then(res => {
+                // Check if the request was successful
+                if (!res.ok) {
+                throw new Error('Network response was not ok');
+                }
+                // Parse the response as JSON
+                return res.json();
+            })
+            .then(response => {
+                // Handle the JSON data
+                console.log(response);
+                const data = response.data; 
+                const routerId = data.router_id;
+                const name = data.name;
+                const ranges = data.ranges;
+                 console.log(routerId, name, ranges);
+                
+                const tbody = document.getElementById("ippool_list");
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${response.count}</td>
+                    <td>${name}</td>
+                    <td class="text-center text-nowrap" width='10%'>
+                        <button href="#" class="btn_1 danger text-center py-2" data-bs-toggle="modal" data-bs-target="#deleteIpPoolModal{{ $ip_pool->id }}">
+                            Delete
+                        </button>
+                    </td>
+                `
+                tbody.appendChild(row);
+            })
+            .catch(error => {
+                // Handle any errors that occurred during the fetch
+                console.error('Fetch error:', error);
+            });
+            
+
+            // $.ajax({
+            //     type: "POST",
+            //     url: `{{ url('importRouter') }}`,
+            //     dataType: "json",
+            //     data: {
+            //         "_token": "{{ csrf_token() }}",
+            //         routerId: routerId,
+            //         routerName: routerName,
+            //         routerRanges : routerRanges
+            //     },
+            //     success: function (response)
+            //     {   
+            //         // console.log(response);
                     
-                    data = response.data;
-                    // console.log(data);
+            //         data = response.data;
+            //         // console.log(data);
                     
 
                         
-                        const routerId = data.router_id;
-                        const name = data.name;
-                        const ranges = data.ranges;
-                        // console.log(routerId, name, ranges);
+            //             const routerId = data.router_id;
+            //             const name = data.name;
+            //             const ranges = data.ranges;
+            //             // console.log(routerId, name, ranges);
                         
-                        const tbody = document.getElementById("ippool_list");
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${response.count}</td>
-                            <td>${name}</td>
-                            <td class="text-center text-nowrap" width='10%'>
-                                <button href="#" class="btn_1 danger text-center py-2" data-bs-toggle="modal" data-bs-target="#deleteIpPoolModal{{ $ip_pool->id }}">
-                                    Delete
-                                </button>
-                            </td>
-                        `
-                        tbody.appendChild(row);
+            //             const tbody = document.getElementById("ippool_list");
+            //             const row = document.createElement('tr');
+            //             row.innerHTML = `
+            //                 <td>${response.count}</td>
+            //                 <td>${name}</td>
+            //                 <td class="text-center text-nowrap" width='10%'>
+            //                     <button href="#" class="btn_1 danger text-center py-2" data-bs-toggle="modal" data-bs-target="#deleteIpPoolModal{{ $ip_pool->id }}">
+            //                         Delete
+            //                     </button>
+            //                 </td>
+            //             `
+            //             tbody.appendChild(row);
                     
-                }
-            });
+            //     }
+            // });
         }
     </script>
 @endsection
