@@ -49,6 +49,8 @@ use App\Http\Controllers\BillReports\DailyBillCollectionController;
 use App\Http\Controllers\BillReports\CollectionSummeryController;
 use App\Http\Controllers\BillReports\RptClientListController;
 use App\Http\Controllers\HrmEmpJobHistoryController;
+use App\Http\Controllers\HrmEmpMonthlyAddController;
+use App\Http\Controllers\HrmEmpMonthlyDeductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -213,10 +215,13 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('employeepromotion', [MasEmployeeController::class, 'employeePromotionlStore'])->name('employeepromotion.employeePromotionlStore');
     // Route::post('employeepromotion/{employeepromotion}', [MasEmployeeController::class, 'employeePromotionlUpdate'])->name('employeepromotion.employeePromotionlUpdate');
     Route::resource('employeepromotion', HrmEmpJobHistoryController::class);
+    Route::resource('additioncomponent', HrmEmpMonthlyAddController::class);
+    Route::post('additioncomponent.show', [HrmEmpMonthlyAddController::class, 'show'])->name('additioncomponent.show');
+    Route::resource('deductioncomponent', HrmEmpMonthlyDeductController::class);
+    Route::post('deductioncomponent.show', [HrmEmpMonthlyDeductController::class, 'show'])->name('deductioncomponent.show');
 
     //Pdf
     Route::get('monthly_invoices_pdf', [MonthlyInvoiceController::class, 'indexPdf'])->name('monthly_invoices_pdf');
-
 
     //ajax
     Route::post('routerApiCheck/{router}', [TblRouterController::class, 'apiCheckPost'])->name('routerApiCheck');

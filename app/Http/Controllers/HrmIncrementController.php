@@ -35,26 +35,6 @@ class HrmIncrementController extends Controller
             ->leftJoin('hrm_increment_types', 'hrm_increment_types.id', '=', 'hrm_increments.increment_type')
             ->get();
 
-        // $res = mysql_query("SELECT
-        // 				  hrm_increment.`id`,
-        // 				  hrm_increment.`emp_id`,
-        // 				  hrm_increment.`month`,
-        // 				  hrm_increment.`year`,
-        // 				  hrm_increment.`previous_gross`,
-        // 				  hrm_increment.`increment_percent`,
-        // 				  hrm_increment.`increment_amount`,
-        // 				  hrm_increment.`current_gross`,
-        // 				  mas_employees.emp_name,
-        // 				  hrm_increment_type.name
-        // 				FROM
-        // 				  `hrm_increment`
-        // 				 LEFT JOIN mas_employees ON mas_employees.emp_id = hrm_increment.emp_id
-        // 				 left join hrm_increment_type on hrm_increment_type.id= hrm_increment.increment_type
-        // 				WHERE hrm_increment.year = '$year' AND hrm_increment.month = '$month' and `approve_status`=0
-        // 				");
-
-
-
         $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'desc')->get();
         $mas_employees = MasEmployee::select('id', 'emp_name')->get();
         $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'desc')->get();

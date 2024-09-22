@@ -36,7 +36,7 @@ class TblScheduleTeamController extends Controller
                     ->orderBy('hrm_tbl_shift.shift_name', 'DESC')
                     ->get();
         $shiftemployees = DB::table('tbl_shift_team')
-                    ->select('level', 'mas_employees.empl_name')
+                    ->select('level', 'mas_employees.emp_name')
                     ->join('mas_employees', 'mas_employees.id', '=', 'tbl_shift_team.emp_id')
                     ->get();
         return view('pages.hrm.scheduleTeam', compact('menus', 'scheduleteams', 'companies', 'stviews', 'shiftemployees'));
