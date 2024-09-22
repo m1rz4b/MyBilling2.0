@@ -31,6 +31,7 @@ use App\Models\TblCableType;
 use App\Models\TrnClientsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -48,6 +49,7 @@ class CustomerController extends Controller
         $selectedPackage = -1;
         $selectedZone = -1;
         $selectedSubZone = -1;
+		$selectedBranch = -1;
 
         $menus = Menu::get();
 
@@ -128,7 +130,7 @@ class CustomerController extends Controller
         ->leftJoin('tbl_bill_types', 'tbl_bill_types.id', '=', 'trn_clients_services.tbl_bill_type_id')
         ->leftJoin('tbl_status_types', 'tbl_status_types.id', '=', 'trn_clients_services.tbl_status_type_id')
         ->where('trn_clients_services.srv_type_id', 1)
-        ->get();
+        ->paginate(30);
 
         $customers_dropdown = Customer::select('id as customer_id', 'customer_name')->orderBy('customer_name', 'desc')->get();
         $zones = TblZone::get();
@@ -178,25 +180,10 @@ class CustomerController extends Controller
                 'selectedCustomerStatus',
                 'selectedPackage',
                 'selectedZone',
-                'selectedSubZone'
+                'selectedSubZone',
+				'selectedBranch'
             )
         );
-    }
-    public function getCustomerByBranch(Request $request)
-    {
-
-        $branchID = $request->branchID;
-        $customers = Customer::select('customers.id','customers.customer_name')->where('customers.sub_office_id',$branchID)->get();
-        
-        if ($customers) {
-            return response()->json([
-                "status" => true,
-                "msg" => "",
-                "data" => $customers
-            ]);
-        }
-
-       
     }
     public function search(Request $request)
     {
@@ -207,6 +194,7 @@ class CustomerController extends Controller
         $selectedPackage = $request->package;
         $selectedZone = $request->zone;
         $selectedSubZone = $request->subzone;
+		$selectedBranch = $request->branch_id;
 
         $menus = Menu::get();
         $customers = Customer::select(
@@ -355,7 +343,8 @@ class CustomerController extends Controller
                 'selectedCustomerStatus',
                 'selectedPackage',
                 'selectedZone',
-                'selectedSubZone'
+                'selectedSubZone',
+				'selectedBranch'
             )
         );
     }

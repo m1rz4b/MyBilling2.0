@@ -62,7 +62,7 @@ class MonthlyInvoiceController extends Controller
         $customers = Customer::select('id', 'customer_name')->orderBy('customer_name', 'asc')->get();
 		$branches = TblSuboffice::where('status',1)->get();
 
-        $cust_invoices = MasInvoice::query()
+ $cust_invoices = MasInvoice::query()
 						->leftJoin('customers', 'customers.id', '=', 'mas_invoices.customer_id')
 						->leftJoin('trn_clients_services', 'trn_clients_services.id', '=', 'mas_invoices.serv_id')
 						->leftJoin('tbl_client_types', 'tbl_client_types.id', '=', 'mas_invoices.client_type')
@@ -75,7 +75,7 @@ class MonthlyInvoiceController extends Controller
 								DB::raw('DATE_FORMAT(mas_invoices.invoice_date, "%d/%m/%Y") AS invoicedate'),								
 								'mas_invoices.bill_number',
 								'mas_invoices.invoice_cat',
-								'mas_invoices.client_id',
+								'mas_invoices.customer_id',
 								'trn_clients_services.user_id',
 								'customers.mobile1',
 								'customers.present_address',
@@ -83,7 +83,7 @@ class MonthlyInvoiceController extends Controller
 								'customers.customer_name',
 					DB::raw("if(mas_invoices.tbl_invoice_cat_id='1',(SELECT sum(arr.total_bill)-(sum(arr.collection_amnt)+sum(arr.ait_adjustment)+sum(arr.vat_adjust_ment)+sum(arr.other_adjustment)+sum(arr.vat_adjust_ment)+sum(arr.ait_adjustment)+sum(arr.downtimeadjust))
 									FROM mas_invoices as arr
-									WHERE arr.invoice_date < '$invoiceYear-$invoiceMonth-01' AND arr.client_id = mas_invoices.client_id  group by client_id),0) as cur_arrear"),								
+									WHERE arr.invoice_date < '$invoiceYear-$invoiceMonth-01' AND arr.customer_id = mas_invoices.customer_id  group by customer_id),0) as cur_arrear"),								
 								'mas_invoices.bill_amount', 
 								'mas_invoices.total_bill',
 								'mas_invoices.unit',
@@ -113,14 +113,9 @@ class MonthlyInvoiceController extends Controller
         }
 		
         $cust_invoices = $cust_invoices->get();
-        
-        
-
 
         return view("pages.billing.reports.monthlyInvoiceReport", compact("menus", "zones", "client_category", "status_types", "customers", "cust_invoices", "selectedZone", "selectedPackage", "selectedCustomerStatus", "selectedCurrentStatus", "selectedCustomer","branches","invoiceMonth", "invoiceYear","selectedBranch" , "selectedcategory"));
     }
-
-    
 
     /**
      * Show the form for creating a new resource.
@@ -143,7 +138,7 @@ class MonthlyInvoiceController extends Controller
      */
     public function show(Request $request)
     {
-		$selectedZone = $request->zone;
+        $selectedZone = $request->zone;
         $selectedPackage = $request->package;
         $selectedCustomerStatus = $request->customer_status;
         $selectedCurrentStatus = $request->current_status;
@@ -153,7 +148,7 @@ class MonthlyInvoiceController extends Controller
 		$selectedBranch = $request->branch;
 		$selectedcategory = $request->client_category;
 
-		$menus = Menu::get();
+		$menus = Menu::where('status',1)->get();
 			$zones = TblZone::select('id', 'zone_name')->orderBy('zone_name', 'asc')->get();
 			$client_category = TblClientCategory::select('id', 'name')->orderBy('name', 'asc')->get();
 			$status_types = TblStatusType::select('id', 'inv_name')->orderBy('inv_name', 'asc')->get();
@@ -234,10 +229,7 @@ class MonthlyInvoiceController extends Controller
 	        return Excel::download($export, $filename,null,$header);
 			
     	    //return redirect( Storage::url("{$filename}"));
-		}
-
-
-
+		}    
     }
 
     /**

@@ -236,6 +236,7 @@
 } );
   </script>
   @stack('select2')
+  @stack('datatable')
 
 </body>
 </html>
