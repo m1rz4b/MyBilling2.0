@@ -9,4 +9,12 @@ class HrmDeductComp extends Model
 {
     use HasFactory;
     protected $table = 'hrm_deduct_comp';
+
+    protected $fillable = [
+        'deduct_comp_name',
+        'type',
+        'percent',
+        'amnt',
+        'gl_code'
+    ];
 }
