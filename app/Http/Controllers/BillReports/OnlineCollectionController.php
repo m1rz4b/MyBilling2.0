@@ -32,7 +32,7 @@ use App\Models\MasCollection;
 
 
 
-class DiscountInCollectionController extends Controller
+class OnlineCollectionController extends Controller
 {
  
      /**
@@ -65,14 +65,15 @@ class DiscountInCollectionController extends Controller
  $cust_invoices = MasCollection::query()
 						->Join('customers', 'customers.id', '=', 'mas_collections.customer_id')
 						->Join('trn_clients_services', 'trn_clients_services.customer_id', '=', 'mas_collections.customer_id')
-        ->select([
-						'mas_collections.discoun_amnt',
+         ->select([
+						'mas_collections.adv_rec',
 						  'money_receipt',	
 						  DB::raw('DATE_FORMAT(mas_collections.collection_date, "%m/%d/%Y") AS advrec_date'),
+						  'mas_collections.coll_amount',
 						  'customers.customer_name',
 						  'trn_clients_services.user_id',
         ])
-		
+		 ->where('mas_collections.pay_type','D')
 		 ->where(DB::raw("DATE_FORMAT(mas_collections.collection_date,'%Y-%m-%d')"),'>=', $start_date)
 		 ->where(DB::raw("DATE_FORMAT(mas_collections.collection_date,'%Y-%m-%d')"),'<=', $end_date);
 		
@@ -90,7 +91,7 @@ class DiscountInCollectionController extends Controller
 		
         $cust_invoices = $cust_invoices->get();
 
-        return view("pages.billing.reports.discountInCollection", compact("menus", "zones", "client_category", "status_types", "customers", "cust_invoices", "selectedZone", "selectedPackage", "selectedCustomerStatus", "selectedCurrentStatus", "selectedCustomer","branches","selectedBranch","selectedcategory","nowdate","start_date","end_date"));
+        return view("pages.billing.reports.onlineCollection", compact("menus", "zones", "client_category", "status_types", "customers", "cust_invoices", "selectedZone", "selectedPackage", "selectedCustomerStatus", "selectedCurrentStatus", "selectedCustomer","branches","selectedBranch","selectedcategory","nowdate","start_date","end_date"));
     }
 
     /**
@@ -139,17 +140,17 @@ class DiscountInCollectionController extends Controller
 						->Join('customers', 'customers.id', '=', 'mas_collections.customer_id')
 						->Join('trn_clients_services', 'trn_clients_services.customer_id', '=', 'mas_collections.customer_id')
         ->select([
-						'mas_collections.discoun_amnt',
+						'mas_collections.adv_rec',
 						  'money_receipt',	
 						  DB::raw('DATE_FORMAT(mas_collections.collection_date, "%m/%d/%Y") AS advrec_date'),
+						  'mas_collections.coll_amount',
 						  'customers.customer_name',
 						  'trn_clients_services.user_id',
         ])
-		 ->where('mas_collections.discoun_amnt','!=',0)
+		 ->where('mas_collections.pay_type','D')
 		 ->where(DB::raw("DATE_FORMAT(mas_collections.collection_date,'%Y-%m-%d')"),'>=', $start_date)
 		 ->where(DB::raw("DATE_FORMAT(mas_collections.collection_date,'%Y-%m-%d')"),'<=', $end_date);
-	
- 
+
         if ($selectedZone>-1) {
             $cust_invoices->where('customers.tbl_zone_id', $selectedZone);
         }
@@ -164,10 +165,11 @@ class DiscountInCollectionController extends Controller
 		
         $cust_invoices = $cust_invoices->get();
 
-        return view("pages.billing.reports.discountInCollection", compact("menus", "zones", "client_category", "status_types", "customers", "cust_invoices", "selectedZone", "selectedPackage", "selectedCustomerStatus", "selectedCurrentStatus", "selectedCustomer","branches","selectedBranch","selectedcategory","nowdate","start_date","end_date"));
+        return view("pages.billing.reports.onlineCollection", compact("menus", "zones", "client_category", "status_types", "customers", "cust_invoices", "selectedZone", "selectedPackage", "selectedCustomerStatus", "selectedCurrentStatus", "selectedCustomer","branches","selectedBranch","selectedcategory","nowdate","start_date","end_date"));
     }
 
-    /**
+    
+	/**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)

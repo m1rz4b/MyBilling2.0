@@ -13,7 +13,8 @@ class MenuController extends Controller
     public function index()
     {
         //
-        $menus = Menu::get();
+        $menus = Menu::with('children')->get();
+        //dd($menus);
         $allmenu = Menu::withoutGlobalScopes()->orderBy('level')->get();
         return view("pages.setup.menu", compact("menus",'allmenu'));
     }

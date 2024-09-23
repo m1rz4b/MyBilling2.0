@@ -27,7 +27,7 @@ class TrnClientsServiceController extends Controller
     {
         $selectedCustomer = -1;
         $selectedCustomerStatus = -1;
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $units = TblUnit::select('id','unit_display')->orderBy('unit_display', 'asc')->get();
         $client_services = TrnClientsService::select(
             'trn_clients_services.*',
@@ -47,7 +47,8 @@ class TrnClientsServiceController extends Controller
         ->leftJoin('tbl_status_types', 'tbl_status_types.id', '=', 'trn_clients_services.tbl_status_type_id')
         ->leftJoin('tbl_bill_types', 'tbl_bill_types.id', '=', 'trn_clients_services.tbl_bill_type_id')
         ->leftJoin('tbl_units', 'tbl_units.id', '=', 'trn_clients_services.unit_id')
-        ->get();
+		->where('trn_clients_services.srv_type_id','<>', 1)
+		->orderBy('cust_id')->get();
 
         $customers = Customer::select('id', 'customer_name','present_address')->orderBy('customer_name', 'desc')->get();
         $service_types = TblSrvType::select('id','srv_name')->where('srv_name','!=','Broadband')->orderBy('srv_name', 'asc')->get();

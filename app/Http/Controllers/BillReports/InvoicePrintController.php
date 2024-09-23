@@ -46,7 +46,7 @@ class InvoicePrintController extends Controller
         $selectedPackage = -1;
         $selectedCustomerStatus = -1;
         $selectedCurrentStatus = -1;
-        $selectedCustomer = -1;
+        $selectedCustomer = 0;
 		$selectedBranch = -1;
 		$selectedInvoiceCat= -1;
 	
@@ -70,6 +70,7 @@ class InvoicePrintController extends Controller
 						->Join('trn_invoices', 'trn_invoices.invoiceobject_id', '=', 'mas_invoices.id')
 						->leftJoin('trn_clients_services', 'trn_clients_services.id', '=', 'mas_invoices.serv_id')
 						->leftJoin('tbl_srv_types', 'tbl_srv_types.id', '=', 'trn_clients_services.srv_type_id')
+						->leftJoin('invoice_types', 'invoice_types.id', '=', 'mas_invoices.tbl_invoice_cat_id')
         ->select([
 								  'trn_invoices.billing_year',
 								  'trn_invoices.billing_month',
@@ -83,6 +84,7 @@ class InvoicePrintController extends Controller
 								  'trn_invoices.discount_comments',
 								  'trn_clients_services.user_id',
 								  'mas_invoices.tbl_invoice_cat_id',
+								  'invoice_types.invoice_type_name',
 								  'mas_invoices.invoice_date',
 								  'mas_invoices.total_bill',		
         ]);
@@ -91,10 +93,10 @@ class InvoicePrintController extends Controller
 			
 	
         if ($selectedCustomer>-1) {
-			$client_list->where(DB::raw('year(mas_invoices.customer_id)'), $selectedCustomer);
+			 $client_list->where('mas_invoices.customer_id', $selectedCustomer);
         }
 		if ($invoiceMonth>-1) {
-			$client_list->where(DB::raw('year(mas_invoices.invoice_date)'), $invoiceMonth);
+			$client_list->where(DB::raw('month(mas_invoices.invoice_date)'), $invoiceMonth);
         }
 		if ($invoiceYear>-1) {
 			$client_list->where(DB::raw('year(mas_invoices.invoice_date)'), $invoiceYear);
@@ -157,6 +159,7 @@ class InvoicePrintController extends Controller
 						->Join('trn_invoices', 'trn_invoices.invoiceobject_id', '=', 'mas_invoices.id')
 						->leftJoin('trn_clients_services', 'trn_clients_services.id', '=', 'mas_invoices.serv_id')
 						->leftJoin('tbl_srv_types', 'tbl_srv_types.id', '=', 'trn_clients_services.srv_type_id')
+						->leftJoin('invoice_types', 'invoice_types.id', '=', 'mas_invoices.tbl_invoice_cat_id')
         ->select([
 								  'trn_invoices.billing_year',
 								  'trn_invoices.billing_month',
@@ -170,6 +173,7 @@ class InvoicePrintController extends Controller
 								  'trn_invoices.discount_comments',
 								  'trn_clients_services.user_id',
 								  'mas_invoices.tbl_invoice_cat_id',
+								   'invoice_types.invoice_type_name',
 								  'mas_invoices.invoice_date',
 								  'mas_invoices.total_bill',		
         ]);
@@ -179,7 +183,7 @@ class InvoicePrintController extends Controller
             $client_list->where('mas_invoices.customer_id', $selectedCustomer);
         }
 		if ($invoiceMonth>-1) {
-			$client_list->where(DB::raw('year(mas_invoices.invoice_date)'), $invoiceMonth);
+			$client_list->where(DB::raw('month(mas_invoices.invoice_date)'), $invoiceMonth);
         }
 		if ($invoiceYear>-1) {
 			$client_list->where(DB::raw('year(mas_invoices.invoice_date)'), $invoiceYear);
@@ -190,8 +194,29 @@ class InvoicePrintController extends Controller
    //     }
 	
         $client_list = $client_list->get();
+		
+		
+		$invoice_header = Customer::query()
+			->leftJoin('trn_clients_services', 'trn_clients_services.customer_id', '=', 'customers.id')
+			->leftJoin('tbl_vat_types', 'tbl_vat_types.id', '=', 'trn_clients_services.vat_type_id')
+			->select([
+				  'trn_clients_services.user_id',
+				  'customers.customer_name',
+				  'customers.present_address',
+				  'customers.mobile1',
+				  'customers.account_no',
+				  'tbl_vat_types.status_name',				  
+				  'customers.reseller_id',
+	
+				])
+				->where('customers.id', $selectedCustomer)
+				->where('trn_clients_services.vat_type_id', 1);
+	
+			$invoice_header = $invoice_header->get();	
+				
+				
 
-        return view("pages.billing.reports.invoicePrint", compact("menus", "zones", "client_category", "status_types", "customers", "client_list", "selectedZone", "selectedPackage", "selectedCustomerStatus", "selectedCurrentStatus", "selectedCustomer","branches","invoiceMonth","invoiceYear","selectedBranch","selectedcategory","clienttypes", "selectedInvoiceCat","invoicecategorys"));
+        return view("pages.billing.reports.invoicePrint", compact("menus", "zones", "client_category", "status_types", "customers", "client_list", "selectedZone", "selectedPackage", "selectedCustomerStatus", "selectedCurrentStatus", "selectedCustomer","branches","invoiceMonth","invoiceYear","selectedBranch","selectedcategory","clienttypes", "selectedInvoiceCat","invoicecategorys","invoice_header"));
     }
 
 
