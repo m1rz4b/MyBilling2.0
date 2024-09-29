@@ -51,6 +51,7 @@ use App\Http\Controllers\BillReports\RptClientListController;
 use App\Http\Controllers\HrmEmpJobHistoryController;
 use App\Http\Controllers\HrmEmpMonthlyAddController;
 use App\Http\Controllers\HrmEmpMonthlyDeductController;
+use App\Http\Controllers\TblLeaveController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -214,14 +215,33 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('attendancesummary', HrmAttendenceSummaryController::class);
     Route::resource('hrmincrement', HrmIncrementController::class);
     Route::resource('employeeinformation', MasEmployeeController::class);
-    // Route::get('employeepromotion', [MasEmployeeController::class, 'employeePromotionlIndex'])->name('employeepromotion.employeePromotionlIndex');
-    // Route::post('employeepromotion', [MasEmployeeController::class, 'employeePromotionlStore'])->name('employeepromotion.employeePromotionlStore');
-    // Route::post('employeepromotion/{employeepromotion}', [MasEmployeeController::class, 'employeePromotionlUpdate'])->name('employeepromotion.employeePromotionlUpdate');
     Route::resource('employeepromotion', HrmEmpJobHistoryController::class);
+
     Route::resource('additioncomponent', HrmEmpMonthlyAddController::class);
     Route::post('additioncomponent.show', [HrmEmpMonthlyAddController::class, 'show'])->name('additioncomponent.show');
+
     Route::resource('deductioncomponent', HrmEmpMonthlyDeductController::class);
     Route::post('deductioncomponent.show', [HrmEmpMonthlyDeductController::class, 'show'])->name('deductioncomponent.show');
+
+    Route::resource('employeeleave', TblLeaveController::class);
+    Route::post('employeeleave.show', [TblLeaveController::class, 'show'])->name('employeeleave.show');
+
+    Route::get('approveleave', [TblLeaveController::class, 'approveLeaveIndex'])->name('approveleave.approveleaveIndex');
+    Route::post('approveleave.show', [TblLeaveController::class, 'approveLeaveShow'])->name('approveleave.show');
+    Route::post('approveleave.update', [TblLeaveController::class, 'approveLeavelUpdate'])->name('approveleave.update');
+
+    Route::get('dayoffentry', [MasEmployeeController::class, 'dayoffentryIndex'])->name('dayoffentry.index');
+    // Route::post('dayoffentry.show', [MasEmployeeController::class, 'dayoffentryShow'])->name('dayoffentry.show');
+
+    Route::get('leaveregister', [MasEmployeeController::class, 'leaveregisterIndex'])->name('leaveregister.index');
+    Route::post('leaveregister.store', [MasEmployeeController::class, 'leaveRegisterStore'])->name('leaveregister.store');
+    Route::put('leaveregister/{leaveregister}', [MasEmployeeController::class, 'leaveRegisterUpdate'])->name('leaveregister.update');
+    Route::post('leaveregister.show', [MasEmployeeController::class, 'leaveregisterShow'])->name('leaveregister.show');
+
+    Route::get('regenerateattendance', [HrmAttendenceSummaryController::class, 'regenerateAttendanceIndex'])->name('regenerateattendance.index');
+    Route::post('regenerateattendance.show', [HrmAttendenceSummaryController::class, 'regenerateAttendanceShow'])->name('regenerateattendance.show');
+
+    Route::get('importdata', [MasEmployeeController::class, 'importDataIndex'])->name('importdata.index');
 
     //Pdf
     Route::get('monthly_invoices_pdf', [MonthlyInvoiceController::class, 'indexPdf'])->name('monthly_invoices_pdf');

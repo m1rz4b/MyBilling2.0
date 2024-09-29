@@ -11,19 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_leave', function (Blueprint $table) {
+        Schema::create('employee_leave_ledger', function (Blueprint $table) {
             $table->id();
             $table->integer('employee_id');
-            $table->date('from_date');
-            $table->date('to_date');
-            $table->integer('days');
-            $table->integer('leavetype_id');
-            $table->text('remarks');
-            $table->integer('status')->nullable();
-            $table->integer('approved_by')->nullable();
-            $table->dateTime('approved_time')->nullable();
-            $table->integer('day_type');
-            $table->text('approve_remarks')->nullable();
+            $table->year('year');
+            $table->integer('leave_type');
+            $table->double('allowed')->nullable();
+            $table->double('consumed')->nullable();
+            $table->double('carry')->nullable();
+            $table->double('total');
+
+            $table->unique(['employee_id', 'year', 'leave_type'], 'employee_id');
+            $table->unique(['employee_id', 'year', 'leave_type'], 'employee_id_2');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_leave');
+        Schema::dropIfExists('employee_leave_ledger');
     }
 };

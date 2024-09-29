@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TblLeave extends Model
+class EmployeeLeaveLedger extends Model
 {
     use HasFactory;
-    protected $table = 'tbl_leave';
+    protected $table = 'employee_leave_ledger';
     protected $fillable = [
         'employee_id',
-        'day_type',
-        'from_date',
-        'to_date',
-        'days',
-        'leavetype_id',
-        'remarks',
+        'leave_type',
+        'year',
+        'total',
         'created_by'
     ];
 }

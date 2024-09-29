@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Designation;
+use App\Models\EmployeeLeaveLedger;
 use App\Models\EmployeeStatus;
 use App\Models\EmpPaymentMode;
 use App\Models\HrmSalaryStatus;
+use App\Models\LeaveType;
 use App\Models\MasBank;
 use App\Models\MasDepartment;
 use App\Models\MasEmployee;
@@ -185,5 +187,152 @@ class MasEmployeeController extends Controller
         $empwopin->update($data);
 
         return redirect()->route('empwopin.woPin')->with('success', 'The Pin of the employee assigned successfully');
+    }
+
+    // Day Off Entry
+    public function dayoffentryIndex()
+    {
+        $selectedMonth = '';
+        $selectedYear = '';
+        $selectedEmployee = '';
+        $selectedOffice = '';
+        $selectedDepartment = '';
+        $menus = Menu::get();
+        $from_date = '';
+        $mas_employees = MasEmployee::select('id', 'emp_name')->orderBy('emp_name', 'asc')->get();
+        $offices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $departments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $day_off_entries = $employees = MasEmployee::select(
+            'mas_employees.id as emp_id',
+            'mas_employees.emp_name',
+            'mas_employees.emp_no',
+            'tbl_day_off.id',
+            'tbl_day_off.off_date',
+            'mas_departments.department',
+            'mas_designation.designation'
+        )
+        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department_id')
+        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
+        ->leftJoin('tbl_day_off', function($join) use ($from_date) {
+            $join->on('tbl_day_off.emp_id', '=', 'mas_employees.id')
+                ->where('tbl_day_off.off_date', '=', $from_date);
+        })
+        ->paginate(30);
+        // dd($day_off_entries);
+
+        return view('pages.hrm.entryForm.dayOffEntry', compact('menus', 'from_date', 'mas_employees', 'offices', 'departments', 'day_off_entries', 'selectedMonth', 'selectedYear', 'selectedEmployee', 'selectedOffice', 'selectedDepartment'));
+    }
+
+    // Leave Register
+    public function leaveregisterIndex()
+    {
+        $selectedYear = '';
+        $selectedDepartment = '';
+        $selectedEmployee = '';
+        $menus = Menu::get();
+        $employees_modal = MasEmployee::select('id', 'emp_name')->orderBy('emp_name','asc')->get();
+        $leave_types = LeaveType::select('id', 'name')->orderBy('name','asc')->get();
+        $departments = MasDepartment::select('id', 'department')->orderBy('department','asc')->get();
+        $employees =  MasEmployee::select(
+            'employee_leave_ledger.id',
+            'mas_employees.id as emp_id',
+            'mas_employees.emp_name',
+            'employee_leave_ledger.year',
+            'employee_leave_ledger.leave_type',
+            'employee_leave_ledger.allowed',
+            'employee_leave_ledger.consumed',
+            'employee_leave_ledger.carry',
+            'employee_leave_ledger.total',
+            'tbl_leavetype.name'
+        )
+        ->leftJoin('employee_leave_ledger', 'employee_leave_ledger.employee_id', '=', 'mas_employees.id')
+        ->leftJoin('tbl_leavetype', 'tbl_leavetype.id', '=', 'employee_leave_ledger.leave_type')
+        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department_id')
+        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
+        ->leftJoin('employee_status', 'employee_status.id', '=', 'mas_employees.emp_status_id')
+        ->orderBy('mas_employees.emp_name')
+        ->paginate(10);
+
+        return view('pages.hrm.entryForm.leaveRegister', compact('menus', 'employees_modal', 'leave_types', 'departments', 'employees', 'selectedYear', 'selectedDepartment', 'selectedEmployee'));
+    }
+
+    public function leaveRegisterStore(Request $request)
+    {
+        $user_id = Auth::id();
+
+        $newEmployeeLeaveLedger = EmployeeLeaveLedger::create([
+            'employee_id' => ($request->employee_id == null) ? '' : $request->employee_id,
+            'leave_type' => ($request->leave_type == null) ? '' : $request->leave_type,
+            'year' => ($request->year == null) ? '' : $request->year,
+            'total' => ($request->total == null) ? '' : $request->total,
+            'created_by' => $user_id
+        ]);
+
+        return redirect(route('leaveregister.index'))->with('success', 'Leave Register added successfully');
+    }
+
+    public function leaveRegisterUpdate(Request $request, $leaveregister)
+    {
+        $user_id = Auth::id();
+
+        $emp_leave_ledger = EmployeeLeaveLedger::find($leaveregister);
+        $emp_leave_ledger->employee_id = $request->employee_id;
+        $emp_leave_ledger->leave_type = $request->leave_type;
+        $emp_leave_ledger->year = $request->year;
+        $emp_leave_ledger->total = $request->total;
+        $emp_leave_ledger->updated_by = $user_id;
+        $emp_leave_ledger->save();
+
+        return redirect(route('leaveregister.index'))->with('success', 'Leave Register has been updated successfully');
+    }
+
+    public function leaveregisterShow(Request $request)
+    {
+        // dd($request);
+        $selectedYear = $request->year;
+        $selectedDepartment = $request->department;
+        $selectedEmployee = $request->employee;
+        $menus = Menu::get();
+        $employees_modal = MasEmployee::select('id', 'emp_name')->orderBy('emp_name','asc')->get();
+        $leave_types = LeaveType::select('id', 'name')->orderBy('name','asc')->get();
+        $departments = MasDepartment::select('id', 'department')->orderBy('department','asc')->get();
+        $employees =  MasEmployee::select(
+            'employee_leave_ledger.id',
+            'mas_employees.id as emp_id',
+            'mas_employees.emp_name',
+            'employee_leave_ledger.year',
+            'employee_leave_ledger.leave_type',
+            'employee_leave_ledger.allowed',
+            'employee_leave_ledger.consumed',
+            'employee_leave_ledger.carry',
+            'employee_leave_ledger.total',
+            'tbl_leavetype.name'
+        )
+        ->leftJoin('employee_leave_ledger', 'employee_leave_ledger.employee_id', '=', 'mas_employees.id')
+        ->leftJoin('tbl_leavetype', 'tbl_leavetype.id', '=', 'employee_leave_ledger.leave_type')
+        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department_id')
+        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
+        ->leftJoin('employee_status', 'employee_status.id', '=', 'mas_employees.emp_status_id')
+        ->orderBy('mas_employees.emp_name');
+        if ($selectedYear>-1) {
+            $employees->where('employee_leave_ledger.year',$selectedYear);
+        }
+        if ($selectedDepartment>-1) {
+            $employees->where('department_id',$selectedDepartment);
+        }
+        if ($selectedEmployee>-1) {
+            $employees->where('mas_employees.id',$selectedEmployee);
+        }
+        $employees = $employees->paginate(10);
+
+        return view('pages.hrm.entryForm.leaveRegister', compact('menus', 'employees_modal', 'leave_types', 'departments', 'employees', 'selectedYear', 'selectedDepartment', 'selectedEmployee'));
+    }
+
+    // Import All Data
+    public function importDataIndex()
+    {
+        $menus = Menu::get();
+
+        return view('pages.hrm.entryForm.importAllData', compact('menus'));
     }
 }

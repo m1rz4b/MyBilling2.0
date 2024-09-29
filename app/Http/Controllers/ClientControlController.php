@@ -128,7 +128,7 @@ class ClientControlController extends Controller
             LEFT JOIN customers ON customers.id = tbl_client_types.reseller_id 
             AND customers.reseller_id = 0 
             ORDER BY tbl_client_types.id"
-        ); 
+        );
         
         $router_logs = ChangeRouterLog::select(
             'previous_router.router_name as previous',

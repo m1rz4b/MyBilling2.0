@@ -50,7 +50,7 @@
   </div>
 
   <div class="main_content_iner">
-    <div class="container-fluid p-0">
+    <div class="container-fluid p-0 pb-3">
       <div class="row justify-content-center">
         {{-- Customers header --}}
         <div class="">
