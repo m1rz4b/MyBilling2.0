@@ -233,7 +233,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('approveleave.update', [TblLeaveController::class, 'approveLeavelUpdate'])->name('approveleave.update');
 
     Route::get('dayoffentry', [MasEmployeeController::class, 'dayoffentryIndex'])->name('dayoffentry.index');
-    // Route::post('dayoffentry.show', [MasEmployeeController::class, 'dayoffentryShow'])->name('dayoffentry.show');
 
     Route::get('leaveregister', [MasEmployeeController::class, 'leaveregisterIndex'])->name('leaveregister.index');
     Route::post('leaveregister.store', [MasEmployeeController::class, 'leaveRegisterStore'])->name('leaveregister.store');
@@ -244,6 +243,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('regenerateattendance.show', [HrmAttendenceSummaryController::class, 'regenerateAttendanceShow'])->name('regenerateattendance.show');
 
     Route::get('importdata', [MasEmployeeController::class, 'importDataIndex'])->name('importdata.index');
+
+    //HRM Reports
+    Route::get('employeeincrement', [HrmIncrementController::class, 'employeeincrementIndex'])->name('employeeincrement.index');
+    Route::post('employeeincrement.show', [HrmIncrementController::class, 'employeeincrementShow'])->name('employeeincrement.show');
 
     // HRM Payroll Setup
     Route::resource('payrolladdcomponent', HrmPayrollAddCompController::class);

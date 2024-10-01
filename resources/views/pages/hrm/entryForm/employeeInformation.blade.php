@@ -135,10 +135,10 @@
 
                             <div class="row">
                                 <div class="col-sm-4 form-group">
-                                    <label for="department_id" class="fw-medium">Department</label>
+                                    <label for="department" class="fw-medium">Department</label>
                                     <div class="input-group input-group-sm flex-nowrap">
                                         <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
-                                        <select value="-1" class="form-select form-select-sm form-control" id="department_id" name="department_id">
+                                        <select value="-1" class="form-select form-select-sm form-control" id="department" name="department">
                                             <option selected>Select a Department</option>
                                             @foreach ($departments as $department)
                                                 <option value="{{ $department->id }}">{{ $department->department }}</option>
@@ -148,10 +148,10 @@
                                 </div>
 
                                 <div class="col-sm-4 form-group">
-                                    <label for="designation_id" class="fw-medium">Designation</label>
+                                    <label for="designation" class="fw-medium">Designation</label>
                                     <div class="input-group input-group-sm flex-nowrap">
                                         <span class="input-group-text" id="addon-wrapping"><i class="fa-brands fa-black-tie"></i></span>
-                                        <select class="form-select form-select-sm form-control" id="designation_id" name="designation_id">
+                                        <select class="form-select form-select-sm form-control" id="designation" name="designation">
                                             <option value="-1" selected>Select a Designation</option>
                                             @foreach ($designations as $designation)
                                                 <option value="{{ $designation->id }}">{{ $designation->designation }}</option>
@@ -161,10 +161,10 @@
                                 </div>
 
                                 <div class="col-sm-4 form-group">
-                                    <label for="emp_status_id" class="fw-medium">Employee Status</label>
+                                    <label for="status" class="fw-medium">Employee Status</label>
                                     <div class="input-group input-group-sm flex-nowrap">
                                         <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-chart-simple"></i></span>
-                                        <select class="form-select form-select-sm form-control" id="emp_status_id" name="emp_status_id">
+                                        <select class="form-select form-select-sm form-control" id="status" name="status">
                                             <option value="-1" selected>Select a Status</option>
                                             @foreach ($employee_statuses as $emp_status)
                                                 <option value="{{ $emp_status->id }}">{{ $emp_status->name }}</option>
@@ -489,39 +489,39 @@
 
                                             <div class="row">
                                                 <div class="col-sm-4 form-group">
-                                                    <label for="department_id" class="fw-medium">Department</label>
+                                                    <label for="department" class="fw-medium">Department</label>
                                                     <div class="input-group input-group-sm flex-nowrap">
                                                         <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
-                                                        <select value="-1" class="form-select form-select-sm form-control" id="department_id" name="department_id">
+                                                        <select value="-1" class="form-select form-select-sm form-control" id="department" name="department">
                                                             <option selected>Select a Department</option>
                                                             @foreach ($departments as $department)
-                                                                <option {{$edit_mas_employee->department_id==$department->id?'selected':''}} value="{{ $department->id }}">{{ $department->department }}</option>
+                                                                <option {{$edit_mas_employee->department==$department->id?'selected':''}} value="{{ $department->id }}">{{ $department->department }}</option>
                                                             @endforeach                      
                                                         </select>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-sm-4 form-group">
-                                                    <label for="designation_id" class="fw-medium">Designation</label>
+                                                    <label for="designation" class="fw-medium">Designation</label>
                                                     <div class="input-group input-group-sm flex-nowrap">
                                                         <span class="input-group-text" id="addon-wrapping"><i class="fa-brands fa-black-tie"></i></span>
-                                                        <select class="form-select form-select-sm form-control" id="designation_id" name="designation_id">
+                                                        <select class="form-select form-select-sm form-control" id="designation" name="designation">
                                                             <option value="-1" selected>Select a Designation</option>
                                                             @foreach ($designations as $designation)
-                                                                <option {{$edit_mas_employee->designation_id==$designation->id?'selected':''}} value="{{ $designation->id }}">{{ $designation->designation }}</option>
+                                                                <option {{$edit_mas_employee->designation==$designation->id?'selected':''}} value="{{ $designation->id }}">{{ $designation->designation }}</option>
                                                             @endforeach                      
                                                         </select>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-sm-4 form-group">
-                                                    <label for="emp_status_id" class="fw-medium">Employee Status</label>
+                                                    <label for="status" class="fw-medium">Employee Status</label>
                                                     <div class="input-group input-group-sm flex-nowrap">
                                                         <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-chart-simple"></i></span>
-                                                        <select class="form-select form-select-sm form-control" id="emp_status_id" name="emp_status_id">
+                                                        <select class="form-select form-select-sm form-control" id="status" name="status">
                                                             <option value="-1" selected>Select a Status</option>
                                                             @foreach ($employee_statuses as $emp_status)
-                                                                <option {{$edit_mas_employee->emp_status_id==$emp_status->id?'selected':''}} value="{{ $emp_status->id }}">{{ $emp_status->name }}</option>
+                                                                <option {{$edit_mas_employee->status==$emp_status->id?'selected':''}} value="{{ $emp_status->id }}">{{ $emp_status->name }}</option>
                                                             @endforeach                      
                                                         </select>
                                                     </div>

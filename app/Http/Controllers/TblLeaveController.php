@@ -29,8 +29,8 @@ class TblLeaveController extends Controller
             'mas_employees.id as emp_id',
             DB::raw('CONCAT(emp_name, " => ", mas_departments.department, " => ", mas_designation.designation) as employee_details')
         )
-        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department_id')
-        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
+        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department')
+        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
         ->get();
         $leave_day_types = TblLeaveDayType::select('id', 'name')->get();
         $leave_types = LeaveType::select('id', 'name')->orderBy('name','asc')->get();
@@ -102,8 +102,8 @@ class TblLeaveController extends Controller
             'mas_employees.id as emp_id',
             DB::raw('CONCAT(emp_name, " => ", mas_departments.department, " => ", mas_designation.designation) as employee_details')
         )
-        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department_id')
-        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
+        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department')
+        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
         ->get();
         $leave_day_types = TblLeaveDayType::select('id', 'name')->get();
         $leave_types = LeaveType::select('id', 'name')->orderBy('name','asc')->get();

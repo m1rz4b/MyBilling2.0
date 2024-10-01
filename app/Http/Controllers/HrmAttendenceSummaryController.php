@@ -24,7 +24,7 @@ class HrmAttendenceSummaryController extends Controller
         $departments = MasDepartment::select('id', 'department')->orderBy('department','asc')->get();
         $attendanceSummeries = HrmAttendenceSummary::select('hrm_attendence_summaries.*', 'mas_employees.emp_name', 'mas_designation.designation', 'tbl_suboffices.name')
             ->leftJoin('mas_employees', 'mas_employees.id', '=', 'hrm_attendence_summaries.employee_id')
-            ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
+            ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
             ->leftJoin('tbl_suboffices', 'tbl_suboffices.id', '=', 'mas_employees.suboffice_id')
             ->orderBy('hrm_attendence_summaries.date', 'desc')
             ->get();
@@ -164,7 +164,7 @@ class HrmAttendenceSummaryController extends Controller
         $designations = Designation::select('id', 'designation')->orderBy('designation','asc')->get();
         $attendanceSummeries = HrmAttendenceSummary::select('hrm_attendence_summaries.*', 'mas_employees.emp_name', 'mas_designation.designation', 'tbl_suboffices.name')
             ->leftJoin('mas_employees', 'mas_employees.id', '=', 'hrm_attendence_summaries.employee_id')
-            ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
+            ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
             ->leftJoin('tbl_suboffices', 'tbl_suboffices.id', '=', 'mas_employees.suboffice_id')
             ->orderBy('hrm_attendence_summaries.date', 'desc')
             ->get();

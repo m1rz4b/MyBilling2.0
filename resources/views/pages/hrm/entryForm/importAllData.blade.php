@@ -1,31 +1,6 @@
 @extends('layouts.main')
 
 @section('main-container')
-<style>
-    .table th,
-    .table td {
-        padding: 0.25rem;
-    }
-
-    .select2-container .select2-selection--single {
-        height: auto !important;
-    }
-
-    .select2-container .select2-selection--single .select2-selection__rendered {
-        padding-top: .25rem !important;
-        padding-bottom: .25rem !important;
-        font-size: .875rem !important;
-    }
-
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        top: 3px !important;
-        right: 3px !important;
-    }
-
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 1.5 !important;
-    }
-</style>
 
 <div>
     @if (Session::has('success'))
@@ -135,14 +110,4 @@
     </div>
 </div>
 
-@push('select2')
-<script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            
-        });
-    });
-</script>
-
-@endpush
 @endsection

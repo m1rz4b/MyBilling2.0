@@ -16,17 +16,14 @@ return new class extends Migration
             $table->string('emp_no', 50)->nullable();
             $table->string('emp_name', 120);
             $table->date('date_of_birth')->nullable();
-            $table->date('date_of_joining');
-            $table->unsignedBigInteger('department_id');
-            $table->foreign('department_id')->references('id')->on('mas_departments');
-            $table->unsignedBigInteger('designation_id');
-            $table->foreign('designation_id')->references('id')->on('mas_designation');
+            $table->date('date_of_joining'); //previously joing
+            $table->integer('department');
+            $table->integer('designation');
             $table->text('address');
             $table->string('mobile', 30);
             $table->string('email', 40);
             $table->integer('suboffice_id');
-            $table->unsignedBigInteger('emp_status_id');
-            $table->foreign('emp_status_id')->references('id')->on('employee_status');
+            $table->integer('status');
             $table->integer('payment_mode');
             $table->integer('bank_id');
             $table->string('acc_no', 150);
@@ -41,8 +38,14 @@ return new class extends Migration
             $table->date('date_of_resig')->nullable();
             $table->string('birth_certificate', 100)->nullable();
             $table->string('gender', 50)->nullable();
+            $table->date('last_promotion')->nullable();
             $table->integer('system_user_id')->nullable();
-            $table->date('last_promotion_date');
+            $table->date('last_inc_date')->nullable();
+            $table->dateTime('status_change_date')->nullable();
+            $table->integer('update_by')->nullable();
+            $table->dateTime('update_date')->nullable();
+            $table->date('last_promotion_date')->nullable();
+            $table->string('mas_employees', 100)->nullable();
             $table->string('image', 100)->nullable();
             $table->string('provision_days', 10)->nullable();
             $table->string('e_tin', 100);   //previously e-tin

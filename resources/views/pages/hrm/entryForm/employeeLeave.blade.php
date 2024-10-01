@@ -59,7 +59,7 @@
         </div>
 
         <!-- Add Modal -->
-        <div class="modal fade" id="add_employee_leave" tabindex="-1" aria-labelledby="attendance_summery_title" aria-hidden="true">
+        <div class="modal fade" id="add_employee_leave" aria-labelledby="attendance_summery_title" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <form action="{{route('employeeleave.store')}}" method="post" enctype="multipart/form-data">
@@ -296,7 +296,6 @@
 <script>
     $(document).ready(function() {
         $('.select2').select2({
-            
         });
     });
 

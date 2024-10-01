@@ -50,9 +50,9 @@ class MasEmployeeController extends Controller
                 'mas_employees.email',
                 'employee_status.name as statusname'
             )
-            ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department_id')
-            ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
-            ->leftJoin('employee_status', 'employee_status.id', '=', 'mas_employees.emp_status_id')
+            ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department')
+            ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
+            ->leftJoin('employee_status', 'employee_status.id', '=', 'mas_employees.status')
             ->get();
 
         $edit_mas_employees =  MasEmployee::get();
@@ -83,9 +83,9 @@ class MasEmployeeController extends Controller
         'date_of_joining' => ($request->date_of_joining == null) ? '' : $request->date_of_joining,
         'mobile' => ($request->mobile == null) ? '' : $request->mobile,
         'email' => ($request->email == null) ? '' : $request->email,
-        'department_id' => ($request->department_id == null) ? '' : $request->department_id,
-        'designation_id' => ($request->designation_id == null) ? '' : $request->designation_id,
-        'emp_status_id' => ($request->emp_status_id == null) ? '' : $request->emp_status_id,
+        'department' => ($request->department == null) ? '' : $request->department,
+        'designation' => ($request->designation == null) ? '' : $request->designation,
+        'status' => ($request->status == null) ? '' : $request->status,
         'reporting_manager' => ($request->reporting_manager == null) ? '' : $request->reporting_manager,
         'reporting_manager_des' => ($request->reporting_manager_des == null) ? '' : $request->reporting_manager_des,
         'salary_status' => ($request->salary_status == null) ? '' : $request->salary_status,
@@ -134,9 +134,9 @@ class MasEmployeeController extends Controller
         $employee_information->date_of_joining = $request->date_of_joining;
         $employee_information->mobile = $request->mobile;
         $employee_information->email = $request->email;
-        $employee_information->department_id = $request->department_id;
-        $employee_information->designation_id = $request->designation_id;
-        $employee_information->emp_status_id = $request->emp_status_id;
+        $employee_information->department = $request->department;
+        $employee_information->designation = $request->designation;
+        $employee_information->status = $request->status;
         $employee_information->reporting_manager = $request->reporting_manager;
         $employee_information->reporting_manager_des = $request->reporting_manager_des;
         $employee_information->salary_status = $request->salary_status;
@@ -167,8 +167,8 @@ class MasEmployeeController extends Controller
     {
         $menus = Menu::get();
         $wopinemployees = DB::table('mas_employees')
-        ->leftjoin('mas_departments', 'mas_employees.department_id', '=', 'mas_departments.id')
-        ->leftjoin('mas_designation', 'mas_employees.designation_id', '=', 'mas_designation.id')
+        ->leftjoin('mas_departments', 'mas_employees.department', '=', 'mas_departments.id')
+        ->leftjoin('mas_designation', 'mas_employees.designation', '=', 'mas_designation.id')
         ->select('mas_employees.id', 'mas_employees.emp_name', 'mas_departments.department',
         'mas_designation.designation', 'mas_employees.mobile', 'mas_employees.email', 'mas_employees.emp_pin')
         ->where('mas_employees.emp_pin', '=', '')
@@ -211,8 +211,8 @@ class MasEmployeeController extends Controller
             'mas_departments.department',
             'mas_designation.designation'
         )
-        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department_id')
-        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
+        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department')
+        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
         ->leftJoin('tbl_day_off', function($join) use ($from_date) {
             $join->on('tbl_day_off.emp_id', '=', 'mas_employees.id')
                 ->where('tbl_day_off.off_date', '=', $from_date);
@@ -247,9 +247,9 @@ class MasEmployeeController extends Controller
         )
         ->leftJoin('employee_leave_ledger', 'employee_leave_ledger.employee_id', '=', 'mas_employees.id')
         ->leftJoin('tbl_leavetype', 'tbl_leavetype.id', '=', 'employee_leave_ledger.leave_type')
-        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department_id')
-        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
-        ->leftJoin('employee_status', 'employee_status.id', '=', 'mas_employees.emp_status_id')
+        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department')
+        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
+        ->leftJoin('employee_status', 'employee_status.id', '=', 'mas_employees.status')
         ->orderBy('mas_employees.emp_name')
         ->paginate(10);
 
@@ -310,15 +310,15 @@ class MasEmployeeController extends Controller
         )
         ->leftJoin('employee_leave_ledger', 'employee_leave_ledger.employee_id', '=', 'mas_employees.id')
         ->leftJoin('tbl_leavetype', 'tbl_leavetype.id', '=', 'employee_leave_ledger.leave_type')
-        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department_id')
-        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation_id')
-        ->leftJoin('employee_status', 'employee_status.id', '=', 'mas_employees.emp_status_id')
+        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department')
+        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
+        ->leftJoin('employee_status', 'employee_status.id', '=', 'mas_employees.status')
         ->orderBy('mas_employees.emp_name');
         if ($selectedYear>-1) {
             $employees->where('employee_leave_ledger.year',$selectedYear);
         }
         if ($selectedDepartment>-1) {
-            $employees->where('department_id',$selectedDepartment);
+            $employees->where('department',$selectedDepartment);
         }
         if ($selectedEmployee>-1) {
             $employees->where('mas_employees.id',$selectedEmployee);
