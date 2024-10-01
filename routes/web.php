@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HrmPayrollAddCompController;
+use App\Http\Controllers\HrmPayrollDeductCompController;
 use App\Http\Controllers\InvoiceTypeController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\DesignationController;
@@ -242,6 +244,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('regenerateattendance.show', [HrmAttendenceSummaryController::class, 'regenerateAttendanceShow'])->name('regenerateattendance.show');
 
     Route::get('importdata', [MasEmployeeController::class, 'importDataIndex'])->name('importdata.index');
+
+    // HRM Payroll Setup
+    Route::resource('payrolladdcomponent', HrmPayrollAddCompController::class);
+    Route::resource('payrolldeductcomponent', HrmPayrollDeductCompController::class);
 
     //Pdf
     Route::get('monthly_invoices_pdf', [MonthlyInvoiceController::class, 'indexPdf'])->name('monthly_invoices_pdf');
