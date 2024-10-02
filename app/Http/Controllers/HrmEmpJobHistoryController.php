@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Designation;
 use App\Models\HrmEmpJobHistory;
+use App\Models\MasDepartment;
 use App\Models\MasEmployee;
 use App\Models\Menu;
 use Illuminate\Http\Request;
@@ -102,5 +103,50 @@ class HrmEmpJobHistoryController extends Controller
     public function destroy(HrmEmpJobHistory $hrmEmpJobHistory)
     {
         //
+    }
+
+    // Employee Promotion Report
+    public function employeePromotionIndex()
+    {
+        $menus = Menu::get();
+        $selectedYear = '';
+        $selectedMonth = '';
+        $selectedDepartment = '';
+        $hrmEmpJobHistory = [];
+
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        return view('pages.hrm.reports.employeePromotion', compact('menus', 'selectedYear', 'selectedMonth', 'selectedDepartment', 'hrmEmpJobHistory', 'masDepartments'));
+    }
+
+    public function employeePromotionShow(Request $request)
+    {
+        $menus = Menu::get();
+        $selectedYear = $request->year;
+        $selectedMonth = $request->month;
+        $selectedDepartment = $request->department;
+
+        $hrmEmpJobHistory = HrmEmpJobHistory::select(
+        'hrm_emp_job_history.id',
+            DB::raw("DATE_FORMAT(hrm_emp_job_history.pro_date, '%d/%m/%Y') as pro_date"),
+            DB::raw("DATE_FORMAT(hrm_emp_job_history.pre_pro_date, '%d/%m/%Y') as pre_pro_date"),
+            'b.designation as prodes',
+            'c.designation as predes',
+            'mas_employees.emp_name',
+        )
+        ->leftJoin('mas_designation as b', 'b.id', '=', 'hrm_emp_job_history.designation')
+        ->leftJoin('mas_designation as c', 'c.id', '=', 'hrm_emp_job_history.pre_designation')
+        ->leftJoin('mas_employees', 'hrm_emp_job_history.emp_id', '=', 'mas_employees.id');
+        if($selectedYear !='' && $selectedMonth!=''){
+            $hrmEmpJobHistory->whereMonth('pro_date', 10)
+            ->whereYear('pro_date', 2020);
+        }
+        if ($selectedDepartment>-1) {
+            $hrmEmpJobHistory->where('mas_employees.department',$selectedDepartment);
+        }
+        $hrmEmpJobHistory = $hrmEmpJobHistory->get();
+
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        return view('pages.hrm.reports.employeePromotion', compact('menus', 'selectedYear', 'selectedMonth', 'selectedDepartment', 'hrmEmpJobHistory', 'masDepartments'));
     }
 }

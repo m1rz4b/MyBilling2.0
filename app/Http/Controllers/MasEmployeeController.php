@@ -335,4 +335,174 @@ class MasEmployeeController extends Controller
 
         return view('pages.hrm.entryForm.importAllData', compact('menus'));
     }
+
+    //Employee List Report
+    public function employeeListIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $employeeStatus = EmployeeStatus::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDesignations = Designation::select('id', 'designation')->orderBy('designation', 'asc')->get();
+
+        $selectedSuboffice = '';
+        $selectedEmployeeStatus = '';
+        $selectedDepartment = '';
+        $selectedDesignation = '';
+        $name = '';
+        $masEmployees = [];
+
+        return view('pages.hrm.reports.employeeList', compact(
+            'menus', 
+            'suboffices', 
+            'employeeStatus', 
+            'masDepartments', 
+            'masDesignations', 
+            'selectedSuboffice', 
+            'selectedEmployeeStatus', 
+            'selectedDepartment', 
+            'selectedDesignation',
+            'name', 
+            'masEmployees' 
+        ));
+    }
+
+    public function employeeListShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $employeeStatus = EmployeeStatus::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDesignations = Designation::select('id', 'designation')->orderBy('designation', 'asc')->get();
+
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedEmployeeStatus = $request->status_id;
+        $selectedDepartment = $request->department;
+        $selectedDesignation = $request->designation;
+        $name = $request->name;
+        $masEmployees = MasEmployee::select(
+            'mas_employees.id as emp_id',
+            'mas_employees.emp_name',
+            DB::raw("DATE_FORMAT(hrm_emp_personal_details.date_of_birth, '%m/%d/%Y') as date_of_birth"),
+            DB::raw("DATE_FORMAT(mas_employees.date_of_joining, '%m/%d/%Y') as date_of_joining"),
+            'mas_employees.date_of_joining as ndate',
+            'mas_departments.department as department',
+            'mas_designation.designation as designation',
+            'mas_employees.address',
+            'mas_employees.mobile',
+            'mas_employees.email',
+            'employee_status.name'
+        )
+        ->leftJoin('mas_departments', 'mas_departments.id', '=', 'mas_employees.department')
+        ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
+        ->leftJoin('hrm_emp_personal_details', 'hrm_emp_personal_details.emp_id', '=', 'mas_employees.id')
+        ->leftJoin('employee_status', 'employee_status.id', '=', 'mas_employees.status');        
+        if ($name!='') {
+            $masEmployees->where('mas_employees.emp_name', $name);
+            $masEmployees->orWhere('mas_employees.address', $name);
+            $masEmployees->orWhere('mas_employees.mobile', $name);
+        }
+        if ($selectedSuboffice>-1) {
+            $masEmployees->where('mas_employees.suboffice_id',$selectedSuboffice);
+        }
+        if ($selectedEmployeeStatus>-1) {
+            $masEmployees->where('mas_employees.status',$selectedEmployeeStatus);
+        }
+        if ($selectedDepartment>-1) {
+            $masEmployees->where('mas_employees.department',$selectedDepartment);
+        }
+        if ($selectedDesignation>-1) {
+            $masEmployees->where('mas_employees.designation',$selectedDesignation);
+        }
+        $masEmployees = $masEmployees->paginate(20);
+
+        return view('pages.hrm.reports.employeeList', compact(
+            'menus', 
+            'suboffices', 
+            'employeeStatus', 
+            'masDepartments', 
+            'masDesignations', 
+            'selectedSuboffice', 
+            'selectedEmployeeStatus', 
+            'selectedDepartment', 
+            'selectedDesignation',
+            'name', 
+            'masEmployees' 
+        ));
+    }
+
+    //Performance Report
+    public function performanceReportIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $employeeStatus = EmployeeStatus::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDesignations = Designation::select('id', 'designation')->orderBy('designation', 'asc')->get();
+        $hrmSalaryStatus = HrmSalaryStatus::select('id', 'description')->orderBy('description', 'asc')->get();
+
+        $selectedYear= '';
+        $selectedMonth= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+        $selectedEmployeeStatus = '';
+        $selectedDesignation = '';
+        $selectedSalaryStatus = '';
+        $masEmployees = [];
+
+        return view('pages.hrm.reports.performanceReport', compact(
+            'menus', 
+            'suboffices', 
+            'employeeStatus', 
+            'masDepartments', 
+            'masDesignations', 
+            'hrmSalaryStatus', 
+            'selectedYear',
+            'selectedMonth',
+            'selectedSuboffice', 
+            'selectedEmployeeStatus', 
+            'selectedDepartment', 
+            'selectedDesignation',
+            'selectedSalaryStatus',
+            'masEmployees' 
+        ));
+    }
+
+    public function performanceReportShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $employeeStatus = EmployeeStatus::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDesignations = Designation::select('id', 'designation')->orderBy('designation', 'asc')->get();
+        $hrmSalaryStatus = HrmSalaryStatus::select('id', 'description')->orderBy('description', 'asc')->get();
+
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedEmployeeStatus = $request->status_id;
+        $selectedDepartment = $request->department;
+        $selectedDesignation = $request->designation;
+        $selectedSalaryStatus = $request->salary_status;
+
+
+        return view('pages.hrm.reports.performanceReport', compact(
+            'menus', 
+            'suboffices', 
+            'employeeStatus', 
+            'masDepartments', 
+            'masDesignations',
+            'hrmSalaryStatus',
+            'selectedYear',
+            'selectedMonth', 
+            'selectedSuboffice', 
+            'selectedEmployeeStatus', 
+            'selectedDepartment', 
+            'selectedDesignation',
+            'selectedSalaryStatus',
+            'masEmployees' 
+        ));
+    }
 }

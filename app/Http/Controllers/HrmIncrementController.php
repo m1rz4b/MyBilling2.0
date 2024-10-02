@@ -8,6 +8,7 @@ use App\Models\Menu;
 use App\Models\MasDepartment;
 use App\Models\MasEmployee;
 use App\Models\HrmIncrementType;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HrmIncrementController extends Controller
 {
@@ -90,10 +91,9 @@ class HrmIncrementController extends Controller
     }
 
     // Employee Increment Report
-    public function employeeincrementIndex()
+    public function employeeIncrementIndex()
     {
         $menus = Menu::get();
-
         $selectedYear = '';
         $selectedMonth = '';
         $selectedIgnoreMonth = 1;
@@ -101,19 +101,19 @@ class HrmIncrementController extends Controller
         $selectedIncrementType = '';
         $hrm_increments = [];
 
-        $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'desc')->get();
-        $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'desc')->get();
+        $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'asc')->get();
         return view('pages.hrm.reports.employeeIncrement', compact('menus', 'selectedYear', 'selectedMonth', 'selectedIgnoreMonth', 'selectedDepartment', 'selectedIncrementType', 'mas_departments', 'hrm_increment_types', 'hrm_increments'));
     }
 
-    public function employeeincrementShow(Request $request)
+    public function employeeIncrementShow(Request $request)
     {
+        $menus = Menu::get();
         $selectedYear = $request->year;
         $selectedMonth = $request->month;
         $selectedIgnoreMonth = $request->ignore_month;
         $selectedDepartment = $request->department;
         $selectedIncrementType = $request->increment_type;
-        $menus = Menu::get();
 
         $hrm_increments = HrmIncrement::select(
             'hrm_increments.id',
@@ -150,9 +150,9 @@ class HrmIncrementController extends Controller
         }
         $hrm_increments = $hrm_increments->get();
 
-        $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'desc')->get();
+        $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
         $mas_employees = MasEmployee::select('id', 'emp_name')->get();
-        $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'desc')->get();
+        $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'asc')->get();
         return view('pages.hrm.reports.employeeIncrement', compact('menus', 'selectedYear', 'selectedMonth', 'selectedIgnoreMonth', 'selectedDepartment', 'selectedIncrementType', 'hrm_increments', 'mas_departments', 'mas_employees', 'hrm_increment_types'));
     }
 }

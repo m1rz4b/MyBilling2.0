@@ -245,8 +245,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('importdata', [MasEmployeeController::class, 'importDataIndex'])->name('importdata.index');
 
     //HRM Reports
-    Route::get('employeeincrement', [HrmIncrementController::class, 'employeeincrementIndex'])->name('employeeincrement.index');
-    Route::post('employeeincrement.show', [HrmIncrementController::class, 'employeeincrementShow'])->name('employeeincrement.show');
+    Route::get('employee-increment-report', [HrmIncrementController::class, 'employeeIncrementIndex'])->name('employee-increment-report.index');
+    Route::post('employee-increment-report.show', [HrmIncrementController::class, 'employeeIncrementShow'])->name('employee-increment-report.show');
+
+    Route::get('employee-promotion-report', [HrmEmpJobHistoryController::class, 'employeePromotionIndex'])->name('employee-promotion-report.index');
+    Route::post('employee-promotion-report.show', [HrmEmpJobHistoryController::class, 'employeePromotionShow'])->name('employee-promotion-report.show');
+
+    Route::get('employee-list-report', [MasEmployeeController::class, 'employeeListIndex'])->name('employee-list-report.index');
+    Route::post('employee-list-report.show', [MasEmployeeController::class, 'employeeListShow'])->name('employee-list-report.show');
+
+    Route::get('performance-report', [MasEmployeeController::class, 'performanceReportIndex'])->name('performance-report.index');
+    Route::post('performance-report.show', [MasEmployeeController::class, 'performanceReportShow'])->name('performance-report.show');
 
     // HRM Payroll Setup
     Route::resource('payrolladdcomponent', HrmPayrollAddCompController::class);

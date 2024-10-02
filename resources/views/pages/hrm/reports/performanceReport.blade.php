@@ -50,31 +50,29 @@
 </div>
 
 <div class="main_content_iner">
-    <div class="container-fluid p-0 sm_padding_15px">
+    <div class="container-fluid p-0 pb-3 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0" style="color: white;">Employee Increment Report</h5>
+                <h5 class="mb-0" style="color: white;">Performance Report</h5>
             </div>
         </div>
 
-        <form action="{{route('employee-increment-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('employee-promotion-report.show')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
-                <div class="col-sm-2 form-group">
+                <div class="col-sm-3 form-group">
                     <label for="year" class="fw-medium">Year</label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                         <select class="form-select form-select-sm form-control" id="year" name="year" >
                             @foreach (range(now()->year - 15, now()->year + 5) as $year)
-                                <option value="{{ $year }}" {{ (now()->year == $year) ? 'selected' : ($selectedYear==$year? 'selected' : '') }}>
-                                    {{ $year }}
-                                </option>
+                                <option value="{{ $year }}" {{ (now()->year == $year) ? 'selected' : ($selectedYear==$year? 'selected' : '') }}>{{ $year }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
 
-                <div class="col-sm-2 form-group">
+                <div class="col-sm-3 form-group">
                     <label for="month" class="fw-medium">Month</label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
@@ -88,9 +86,17 @@
                     </div>
                 </div>
 
-                <div class="col-sm-2 form-group">
-                    <br class="d-none d-sm-block">
-                    <input type="checkbox" class="mt-2" id="ignore_month" name="ignore_month" value="1" {{$selectedIgnoreMonth == 1 ? 'checked' : ''}} > Ignore Month
+                <div class="col-sm-3 form-group">
+                    <label for="suboffice_id" class="fw-medium">Office</label>
+                    <div class="input-group input-group-sm flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
+                        <select class="form-select form-select-sm form-control" id="suboffice_id" name="suboffice_id">
+                            <option value="-1">Select an Office</option>
+                            @foreach ($suboffices as $suboffice)
+                                <option {{ $selectedSuboffice==$suboffice->id ? 'selected' : '' }} value="{{ $suboffice->id }}">{{ $suboffice->name }}</option>
+                            @endforeach                      
+                        </select>
+                    </div>
                 </div>
 
                 <div class="col-sm-3 form-group">
@@ -99,27 +105,53 @@
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
                         <select class="form-select form-select-sm form-control" id="department" name="department">
                             <option value="-1">Select a Department</option>
-                            @foreach ($mas_departments as $department)
+                            @foreach ($masDepartments as $department)
                                 <option {{ $selectedDepartment==$department->id ? 'selected' : '' }} value="{{ $department->id }}">{{ $department->department }}</option>
+                            @endforeach                      
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-sm-3 form-group">
+                    <label for="status_id" class="fw-medium">Employee Status</label>
+                    <div class="input-group input-group-sm flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-user"></i></span>
+                        <select class="form-select form-select-sm form-control" id="status_id" name="status_id">
+                            <option value="-1">Select an Employee Status</option>
+                            @foreach ($employeeStatus as $status)
+                                <option {{ $selectedEmployeeStatus==$status->id ? 'selected' : '' }} value="{{ $status->id }}">{{ $status->name }}</option>
                             @endforeach                      
                         </select>
                     </div>
                 </div>
 
                 <div class="col-sm-3 form-group">
-                    <label for="increment_type" class="fw-medium">Increment Type</label>
+                    <label for="designation" class="fw-medium">Designation</label>
                     <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
-                        <select class="form-select form-select-sm form-control" id="increment_type" name="increment_type">
-                            <option value="-1">Select a Increment Type</option>
-                            @foreach ($hrm_increment_types as $increment_type)
-                                <option {{ $selectedIncrementType==$increment_type->id ? 'selected' : '' }} value="{{ $increment_type->id }}">{{ $increment_type->name }}</option>
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-brands fa-black-tie"></i></span>
+                        <select class="form-select form-select-sm form-control" id="designation" name="designation">
+                            <option value="-1">Select a Designation</option>
+                            @foreach ($masDesignations as $designation)
+                                <option {{ $selectedDesignation==$designation->id ? 'selected' : '' }} value="{{ $designation->id }}">{{ $designation->designation }}</option>
                             @endforeach                      
                         </select>
                     </div>
-                </div>                
+                </div>
 
-                <div class="col-sm-12 d-flex justify-content-end">
+                <div class="col-sm-3 form-group">
+                    <label for="salary_status" class="fw-medium">Salary Status</label>
+                    <div class="input-group input-group-sm flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-brands fa-black-tie"></i></span>
+                        <select class="form-select form-select-sm form-control" id="salary_status" name="salary_status">
+                            <option value="-1">Select a Salary Status</option>
+                            @foreach ($hrmSalaryStatus as $salaryStatus)
+                                <option {{ $selectedSalaryStatus==$salaryStatus->id ? 'selected' : '' }} value="{{ $salaryStatus->id }}">{{ $salaryStatus->description }}</option>
+                            @endforeach                      
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 d-flex d-sm-inline justify-content-end">
                     <br class="d-none d-sm-block">
                     <div class="d-flex">
                         <button type="button" class="btn btn-sm btn-primary me-4"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Show Report</button>
@@ -129,9 +161,9 @@
             </div>
         </form>
 
-        @if ($hrm_increments)
+        @if ($masEmployees)
         <h4 class="text-center">Millennium Computers and Networking</h4>
-        <p class="text-center text-dark fw-bold">Increment Report</p>
+        <p class="text-center text-dark fw-bold">Promotion Report</p>
         <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
         <div class="QA_table px-3">
             <div>
@@ -143,36 +175,28 @@
                     <thead>
                         <tr>
                             <th scope="col">Sl</th>
-                            <th>Employee</th>
-                            <th>Increment Type</th>
-                            <th>Previous Gross</th>
-                            <th>Percentage</th>
-                            <th>Amount</th>
-                            <th>Current Gross</th>
-                            <th>Effective Month</th>
-                            <th>Entry Date</th>
-                            <th>Approve Date</th>
+                            <th>Employee Name</th>
+                            <th>Promotion Date</th>
+                            <th>New Designation</th>
+                            <th>Previous Promotion Date</th>                                        
+                            <th>Previous Designation</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($hrm_increments as $hrm_increment)
+                        @foreach ($hrmEmpJobHistory as $jobHistory)
                         <tr>
                             <td>{{ $count++ }}</td>
-                            <td>{{ $hrm_increment->emp_name }}</td>
-                            <td>{{ $hrm_increment->name }}</td>
-                            <td>{{ number_format($hrm_increment->previous_gross, 2) }}</td>                    
-                            <td>{{ $hrm_increment->increment_percent }}</td>
-                            <td>{{ number_format($hrm_increment->increment_amount, 2) }}</td>
-                            <td>{{ number_format($hrm_increment->current_gross, 2) }}</td>
-                            <td class="month">{{ $hrm_increment->month }}, {{$hrm_increment->year }}</td>
-                            <td>{{ date('d-m-Y', strtotime($hrm_increment->entry_date)) }}</td>
-                            <td>{{ date('d-m-Y', strtotime($hrm_increment->approve_date)) }}</td>
+                            <td>{{ $jobHistory->emp_name }}</td>
+                            <td>{{ $jobHistory->pro_date }}</td>
+                            <td>{{ $jobHistory->prodes }}</td>
+                            <td>{{ $jobHistory->pre_pro_date }}</td>
+                            <td>{{ $jobHistory->predes }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{-- {!! $hrm_increments->links() !!} --}}
+                {{-- {!! $hrmEmpJobHistory->links() !!} --}}
             </div>
         </div>
         @endif
@@ -186,8 +210,6 @@
             
         });
 
-
-        const month = document.getElementsByClassName('month');
         const timePeriod = document.getElementById('time_period');
         
         function getMonth(m){
@@ -216,15 +238,6 @@
             }else if(m==12){
                 return "December";
             }
-        }
-
-        //Convert number into month name for table data
-        for(mon of month){
-            let res = mon.innerText;
-            let result = res.split(',')[0];
-            let monthName = getMonth(result);
-            result = monthName.concat(',',res.split(',')[1]);
-            mon.innerText = result;
         }
 
         //Convert number into month name for table header
