@@ -40,7 +40,7 @@ use App\Http\Controllers\TblClientTypeController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\TblHolidayController;
 use App\Http\Controllers\TblWeekendController;
-use App\Http\Controllers\HrmAttendenceSummaryController;
+use App\Http\Controllers\HrmAttendanceSummaryController;
 use App\Http\Controllers\HrmIncrementController;
 use App\Http\Controllers\TrnClientsServiceController;
 use App\Http\Controllers\PackagePlanController;
@@ -214,7 +214,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('shiftsetup', HrmShiftSetupController::class);
 
     //HRM Entry Form
-    Route::resource('attendancesummary', HrmAttendenceSummaryController::class);
+    Route::resource('attendancesummary', HrmAttendanceSummaryController::class);
     Route::resource('hrmincrement', HrmIncrementController::class);
     Route::resource('employeeinformation', MasEmployeeController::class);
     Route::resource('employeepromotion', HrmEmpJobHistoryController::class);
@@ -239,8 +239,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('leaveregister/{leaveregister}', [MasEmployeeController::class, 'leaveRegisterUpdate'])->name('leaveregister.update');
     Route::post('leaveregister.show', [MasEmployeeController::class, 'leaveregisterShow'])->name('leaveregister.show');
 
-    Route::get('regenerateattendance', [HrmAttendenceSummaryController::class, 'regenerateAttendanceIndex'])->name('regenerateattendance.index');
-    Route::post('regenerateattendance.show', [HrmAttendenceSummaryController::class, 'regenerateAttendanceShow'])->name('regenerateattendance.show');
+    Route::get('regenerateattendance', [HrmAttendanceSummaryController::class, 'regenerateAttendanceIndex'])->name('regenerateattendance.index');
+    Route::post('regenerateattendance.show', [HrmAttendanceSummaryController::class, 'regenerateAttendanceShow'])->name('regenerateattendance.show');
 
     Route::get('importdata', [MasEmployeeController::class, 'importDataIndex'])->name('importdata.index');
 
@@ -256,6 +256,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('performance-report', [MasEmployeeController::class, 'performanceReportIndex'])->name('performance-report.index');
     Route::post('performance-report.show', [MasEmployeeController::class, 'performanceReportShow'])->name('performance-report.show');
+
+    Route::get('daily-attendance-report', [HrmAttendanceSummaryController::class, 'dailyAttendanceReportIndex'])->name('daily-attendance-report.index');
+    Route::post('daily-attendance-report.show', [HrmAttendanceSummaryController::class, 'dailyAttendanceReportShow'])->name('daily-attendance-report.show');
 
     // HRM Payroll Setup
     Route::resource('payrolladdcomponent', HrmPayrollAddCompController::class);

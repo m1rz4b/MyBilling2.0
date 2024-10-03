@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Designation;
-use App\Models\HrmAttendenceSummary;
+use App\Models\HrmAttendanceSummary;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +11,7 @@ use App\Models\MasEmployee;
 use App\Models\TblSuboffice;
 use App\Models\MasDepartment;
 
-class HrmAttendenceSummaryController extends Controller
+class HrmAttendanceSummaryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class HrmAttendenceSummaryController extends Controller
         $employees = MasEmployee::select('id', 'emp_name')->orderBy('emp_name','asc')->get();
         $suboffices = TblSuboffice::select('id', 'name')->orderBy('name','asc')->get();
         $departments = MasDepartment::select('id', 'department')->orderBy('department','asc')->get();
-        $attendanceSummeries = HrmAttendenceSummary::select('hrm_attendence_summaries.*', 'mas_employees.emp_name', 'mas_designation.designation', 'tbl_suboffices.name')
+        $attendanceSummeries = HrmAttendanceSummary::select('hrm_attendence_summaries.*', 'mas_employees.emp_name', 'mas_designation.designation', 'tbl_suboffices.name')
             ->leftJoin('mas_employees', 'mas_employees.id', '=', 'hrm_attendence_summaries.employee_id')
             ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
             ->leftJoin('tbl_suboffices', 'tbl_suboffices.id', '=', 'mas_employees.suboffice_id')
@@ -64,7 +64,7 @@ class HrmAttendenceSummaryController extends Controller
 
         $authid = Auth::id();
 
-        HrmAttendenceSummary::create(
+        HrmAttendanceSummary::create(
             [
                 'employee_id' => ($request->employee_id == null) ? '' : $request->employee_id,
                 'date' => ($request->date == null) ? '' : $request->date,
@@ -88,7 +88,7 @@ class HrmAttendenceSummaryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(HrmAttendenceSummary $hrmAttendenceSummary)
+    public function show(HrmAttendanceSummary $HrmAttendanceSummary)
     {
         //
     }
@@ -96,7 +96,7 @@ class HrmAttendenceSummaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(HrmAttendenceSummary $hrmAttendenceSummary)
+    public function edit(HrmAttendanceSummary $HrmAttendanceSummary)
     {
         //
     }
@@ -104,7 +104,7 @@ class HrmAttendenceSummaryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $hrmAttendenceSummary)
+    public function update(Request $request, $HrmAttendanceSummary)
     {
         $request->validate(
             [
@@ -123,7 +123,7 @@ class HrmAttendenceSummaryController extends Controller
 
         $authid = Auth::id();
 
-        $attendanceData = HrmAttendenceSummary::find($hrmAttendenceSummary);
+        $attendanceData = HrmAttendanceSummary::find($HrmAttendanceSummary);
         $attendanceData->start_date = $request->start_date;
         $attendanceData->end_date = $request->end_date;
         $attendanceData->total_time = $request->total_time;
@@ -143,10 +143,10 @@ class HrmAttendenceSummaryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($hrmAttendenceSummary = null)
+    public function destroy($HrmAttendanceSummary = null)
     {
         $authid = Auth::id();
-        $attendanceData = HrmAttendenceSummary::find($hrmAttendenceSummary);
+        $attendanceData = HrmAttendanceSummary::find($HrmAttendanceSummary);
         $attendanceData->deleted_by = $authid;
         $attendanceData->save();
         $attendanceData->delete();
@@ -162,7 +162,7 @@ class HrmAttendenceSummaryController extends Controller
         $suboffices = TblSuboffice::select('id', 'name')->orderBy('name','asc')->get();
         $departments = MasDepartment::select('id', 'department')->orderBy('department','asc')->get();
         $designations = Designation::select('id', 'designation')->orderBy('designation','asc')->get();
-        $attendanceSummeries = HrmAttendenceSummary::select('hrm_attendence_summaries.*', 'mas_employees.emp_name', 'mas_designation.designation', 'tbl_suboffices.name')
+        $attendanceSummeries = HrmAttendanceSummary::select('hrm_attendence_summaries.*', 'mas_employees.emp_name', 'mas_designation.designation', 'tbl_suboffices.name')
             ->leftJoin('mas_employees', 'mas_employees.id', '=', 'hrm_attendence_summaries.employee_id')
             ->leftJoin('mas_designation', 'mas_designation.id', '=', 'mas_employees.designation')
             ->leftJoin('tbl_suboffices', 'tbl_suboffices.id', '=', 'mas_employees.suboffice_id')
@@ -170,5 +170,63 @@ class HrmAttendenceSummaryController extends Controller
             ->get();
 
         return view('pages.hrm.entryForm.regenerateAttendance', compact('menus', 'attendanceSummeries', 'employees', 'suboffices', 'departments', 'designations'));
+    }
+    
+    //Daily Attendance Report
+    public function dailyAttendanceReportIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedDate = '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+        $hrmAttendances = [];
+
+        return view('pages.hrm.reports.dailyAttendance', compact(
+            'menus', 
+            'suboffices',  
+            'masDepartments', 
+            'selectedDate',
+            'selectedSuboffice',
+            'selectedDepartment',
+            'hrmAttendances' 
+        ));
+    }
+
+    public function dailyAttendanceReportShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedDate = $request->date;
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedDepartment = $request->department;
+
+        $hrmAttendances = HrmAttendanceSummary::select('*', 'mas_employees.emp_name', 'mas_employees.emp_no')
+        ->leftJoin('mas_employees', 'mas_employees.emp_no', '=', 'hrm_attendance_summary.employee_id')
+        ->orderBy('mas_employees.id')
+        ->where('hrm_attendance_summary.date', $selectedDate);
+        // if ($selectedSuboffice>-1) {
+        //     $hrmAttendances->where('mas_employees.suboffice_id',$selectedSuboffice);
+        // }
+        // if ($selectedDepartment>-1) {
+        //     $hrmAttendances->where('mas_employees.department',$selectedDepartment);
+        // }
+        $hrmAttendances = $hrmAttendances->paginate(20);
+
+        return view('pages.hrm.reports.dailyAttendance', compact(
+            'menus', 
+            'suboffices',  
+            'masDepartments', 
+            'selectedDate',
+            'selectedSuboffice',
+            'selectedDepartment',
+            'hrmAttendances' 
+        ));
     }
 }
