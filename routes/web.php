@@ -259,6 +259,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('daily-attendance-report', [HrmAttendanceSummaryController::class, 'dailyAttendanceReportIndex'])->name('daily-attendance-report.index');
     Route::post('daily-attendance-report.show', [HrmAttendanceSummaryController::class, 'dailyAttendanceReportShow'])->name('daily-attendance-report.show');
+    
+    Route::get('act-and-plan-work-report', [HrmAttendanceSummaryController::class, 'actAndPlanWorkIndex'])->name('act-and-plan-work-report.index');
+    Route::post('act-and-plan-work-report.show', [HrmAttendanceSummaryController::class, 'actAndPlanWorkShow'])->name('act-and-plan-work-report.show');
 
     // HRM Payroll Setup
     Route::resource('payrolladdcomponent', HrmPayrollAddCompController::class);

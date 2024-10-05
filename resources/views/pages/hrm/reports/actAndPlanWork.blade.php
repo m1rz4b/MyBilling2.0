@@ -54,42 +54,37 @@
     <div class="container-fluid p-0 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0" style="color: white;">Daily Attendance Report</h5>
+                <h5 class="mb-0" style="color: white;">Actual And Planned Work Times</h5>
             </div>
         </div>
 
-        <form action="{{route('daily-attendance-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('act-and-plan-work-report.show')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
-                <div class=" col-sm-3 form-group">
-                    <label for="date" class="fw-medium">Date <span class="text-danger">*</span></label>
+                <div class="col-sm-3 form-group">
+                    <label for="txtfromopen_date" class="fw-medium">From Date</label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <input type="text" class="form-control form-control-sm datepicker-here digits" name="date" id="date" value="{{$selectedDate}}" data-date-Format="yyyy-mm-dd" required/>
+                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="" name="txtfromopen_date" data-date-Format="yyyy-mm-dd" id="txtfromopen_date">
                     </div>
                 </div>
 
                 <div class="col-sm-3 form-group">
-                    <label for="suboffice_id" class="fw-medium">Office <span class="text-danger">*</span></label>
+                    <label for="txttoopen_date" class="fw-medium">To Date</label>
                     <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
-                        <select class="form-select form-select-sm form-control" id="suboffice_id" name="suboffice_id" required>
-                            <option value="-1">Select an Office</option>
-                            @foreach ($suboffices as $suboffice)
-                                <option {{ $selectedSuboffice==$suboffice->id ? 'selected' : '' }} value="{{ $suboffice->id }}">{{ $suboffice->name }}</option>
-                            @endforeach                      
-                        </select>
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
+                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="" name="txttoopen_date" data-date-Format="yyyy-mm-dd" id="txttoopen_date">
                     </div>
                 </div>
 
                 <div class="col-sm-3 form-group">
-                    <label for="department" class="fw-medium">Department</label>
+                    <label for="employee" class="fw-medium">Employee</label>
                     <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
-                        <select class="form-select form-select-sm form-control" id="department" name="department">
-                            <option value="-1">Select a Department</option>
-                            @foreach ($masDepartments as $department)
-                                <option {{ $selectedDepartment==$department->id ? 'selected' : '' }} value="{{ $department->id }}">{{ $department->department }}</option>
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-user"></i></span>
+                        <select class="select2 form-select form-select-sm" id="employee" name="employee">
+                            <option value="-1">Select an Employee</option>
+                            @foreach ($employees as $employee)
+                                <option value="{{ $employee->id }}">{{ $employee->emp_name }}</option>
                             @endforeach                      
                         </select>
                     </div>
@@ -105,7 +100,7 @@
             </div>
         </form>
 
-        @if ($hrmAttendances)
+        {{-- @if ($hrmAttendances)
         <h4 class="text-center">Millennium Computers and Networking</h4>
         <p class="text-center fw-bold text-dark">Daily Attendance Report</p>
         <p class="text-center fw-medium text-dark">For the period of: {{$selectedDate}}</p>
@@ -133,18 +128,6 @@
                             <td>{{ $hrmAttendance->emp_name }}</td>
                             <td>{{ \Carbon\Carbon::parse($hrmAttendance->start_date)->format('g:i a') }}</td>
                             <td>{{ \Carbon\Carbon::parse($hrmAttendance->end_date)->format('g:i a') }}</td>
-                            {{-- <td>
-                                @if($carbon::parse($hrmAttendance->end_date)->greaterThan($hrmAttendance->start_date))
-                                    @php
-                                        $start = $carbon::parse($hrmAttendance->start_date);
-                                        $end = $carbon::parse($hrmAttendance->end_date);
-                                        $diffInSeconds = $end->diffInSeconds($start);
-                                        $hours = floor($diffInSeconds / 3600);
-                                        $minutes = round(($diffInSeconds % 3600) / 60);
-                                    @endphp
-                                    {{ $hours }} H, {{ $minutes }} M
-                                @endif
-                            </td> --}}
                         </tr>
                         @endforeach
                     </tbody>
@@ -152,7 +135,7 @@
                 {!! $hrmAttendances->links() !!}
             </div>
         </div>
-        @endif
+        @endif --}}
     </div>
 </div>
 
