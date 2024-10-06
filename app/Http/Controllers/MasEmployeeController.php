@@ -505,4 +505,58 @@ class MasEmployeeController extends Controller
             'masEmployees' 
         ));
     }
+
+    //Late In Report
+    public function lateInIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedDate= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+        
+        $masEmployees = [];
+
+        return view('pages.hrm.reports.lateInReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees' 
+        ));
+    }
+
+    public function lateInShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedDate= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+
+        $masEmployees = [];
+
+        $selectedDate = $request->date;
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedDepartment = $request->department;
+
+
+        return view('pages.hrm.reports.lateInReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees' 
+        ));
+    }
 }

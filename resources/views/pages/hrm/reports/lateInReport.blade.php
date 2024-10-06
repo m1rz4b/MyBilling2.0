@@ -54,37 +54,42 @@
     <div class="container-fluid p-0 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0" style="color: white;">Actual And Planned Work Times</h5>
+                <h5 class="mb-0" style="color: white;">Late In Report</h5>
             </div>
         </div>
 
-        <form action="{{route('act-and-plan-work-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('late-in-report.show')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">
-                    <label for="from_date" class="fw-medium">From Date</label>
+                    <label for="date" class="fw-medium">Date</label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedFromDate}}" name="from_date" data-date-Format="yyyy-mm-dd" id="from_date">
+                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedDate}}" name="date" data-date-Format="yyyy-mm-dd" id="date">
                     </div>
                 </div>
 
                 <div class="col-sm-3 form-group">
-                    <label for="to_date" class="fw-medium">To Date</label>
+                    <label for="suboffice_id" class="fw-medium">Office</label>
                     <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedToDate}}" name="to_date" data-date-Format="yyyy-mm-dd" id="to_date">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
+                        <select class="form-select form-select-sm form-control" id="suboffice_id" name="suboffice_id">
+                            <option value="-1">Select an Office</option>
+                            @foreach ($suboffices as $suboffice)
+                                <option {{ $selectedSuboffice==$suboffice->id ? 'selected' : '' }} value="{{ $suboffice->id }}">{{ $suboffice->name }}</option>
+                            @endforeach                      
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-sm-3 form-group">
-                    <label for="employee" class="fw-medium">Employee</label>
+                    <label for="department" class="fw-medium">Department</label>
                     <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-user"></i></span>
-                        <select class="select2 form-select form-select-sm" id="employee" name="employee">
-                            <option value="-1">Select an Employee</option>
-                            @foreach ($employees as $employee)
-                                <option {{ $selectedEmployee==$employee->id ? 'selected' : '' }} value="{{ $employee->id }}">{{ $employee->emp_name }}</option>
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
+                        <select class="form-select form-select-sm form-control" id="department" name="department">
+                            <option value="-1">Select a Department</option>
+                            @foreach ($masDepartments as $department)
+                                <option {{ $selectedDepartment==$department->id ? 'selected' : '' }} value="{{ $department->id }}">{{ $department->department }}</option>
                             @endforeach                      
                         </select>
                     </div>

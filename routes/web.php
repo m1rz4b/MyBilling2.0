@@ -50,6 +50,8 @@ use App\Http\Controllers\BillReports\ClientLedgerController;
 use App\Http\Controllers\BillReports\DailyBillCollectionController;
 use App\Http\Controllers\BillReports\CollectionSummeryController;
 use App\Http\Controllers\BillReports\RptClientListController;
+use App\Http\Controllers\CheckinoutConroller;
+use App\Http\Controllers\CheckinoutController;
 use App\Http\Controllers\HrmEmpJobHistoryController;
 use App\Http\Controllers\HrmEmpMonthlyAddController;
 use App\Http\Controllers\HrmEmpMonthlyDeductController;
@@ -260,8 +262,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('daily-attendance-report', [HrmAttendanceSummaryController::class, 'dailyAttendanceReportIndex'])->name('daily-attendance-report.index');
     Route::post('daily-attendance-report.show', [HrmAttendanceSummaryController::class, 'dailyAttendanceReportShow'])->name('daily-attendance-report.show');
     
-    Route::get('act-and-plan-work-report', [HrmAttendanceSummaryController::class, 'actAndPlanWorkIndex'])->name('act-and-plan-work-report.index');
-    Route::post('act-and-plan-work-report.show', [HrmAttendanceSummaryController::class, 'actAndPlanWorkShow'])->name('act-and-plan-work-report.show');
+    Route::get('act-and-plan-work-report', [CheckinoutController::class, 'actAndPlanWorkIndex'])->name('act-and-plan-work-report.index');
+    Route::post('act-and-plan-work-report.show', [CheckinoutController::class, 'actAndPlanWorkShow'])->name('act-and-plan-work-report.show');
+
+    Route::get('late-in-report', [MasEmployeeController::class, 'lateInIndex'])->name('late-in-report.index');
+    Route::post('late-in-report.show', [MasEmployeeController::class, 'lateInShow'])->name('late-in-report.show');
 
     // HRM Payroll Setup
     Route::resource('payrolladdcomponent', HrmPayrollAddCompController::class);
