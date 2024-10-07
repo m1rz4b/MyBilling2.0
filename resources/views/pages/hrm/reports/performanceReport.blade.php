@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <form action="{{route('employee-promotion-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('performance-report.show')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">

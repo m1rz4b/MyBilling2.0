@@ -54,18 +54,26 @@
     <div class="container-fluid p-0 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0" style="color: white;">Late In Report</h5>
+                <h5 class="mb-0" style="color: white;">Holiday Allowance Report</h5>
             </div>
         </div>
 
-        <form action="{{route('late-in-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('holiday-allowance-report.show')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">
-                    <label for="date" class="fw-medium">Date</label>
+                    <label for="from_date" class="fw-medium">From Date</label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedDate}}" name="date" data-date-Format="yyyy-mm-dd" id="date">
+                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedFromDate}}" name="from_date" data-date-Format="yyyy-mm-dd" id="from_date">
+                    </div>
+                </div>
+
+                <div class="col-sm-3 form-group">
+                    <label for="to_date" class="fw-medium">To Date</label>
+                    <div class="input-group input-group-sm flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
+                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedToDate}}" name="to_date" data-date-Format="yyyy-mm-dd" id="to_date">
                     </div>
                 </div>
 
@@ -95,7 +103,7 @@
                     </div>
                 </div> 
 
-                <div class="col-sm-3 d-flex d-sm-inline justify-content-start">
+                <div class="col-sm-12 d-flex justify-content-end">
                     <br class="d-none d-sm-block">
                     <div class="d-flex">
                         <button type="button" class="btn btn-sm btn-primary me-4"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Show Report</button>
@@ -107,7 +115,7 @@
 
         @if ($masEmployees)
         <h4 class="text-center">Millennium Computers and Networking</h4>
-        <p class="text-center text-dark fw-medium">For the period of: {{$selectedDate}}</p>
+        <p class="text-center text-dark fw-medium">For the period of: {{$selectedFromDate}}, {{$selectedToDate}}</p>
         <p class="text-center fw-medium text-dark">Office: {{$selectedOfficeName->name}}</p>
         <div class="QA_table px-3">
             <div>

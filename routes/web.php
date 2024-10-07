@@ -268,6 +268,29 @@ Route::middleware(['auth'])->group(function () {
     Route::get('late-in-report', [MasEmployeeController::class, 'lateInIndex'])->name('late-in-report.index');
     Route::post('late-in-report.show', [MasEmployeeController::class, 'lateInShow'])->name('late-in-report.show');
 
+    Route::get('absent-report', [MasEmployeeController::class, 'absentIndex'])->name('absent-report.index');
+    Route::post('absent-report.show', [MasEmployeeController::class, 'absentShow'])->name('absent-report.show');
+
+    Route::get('night-allowance-report', [HrmAttendanceSummaryController::class, 'nightAllowanceIndex'])->name('night-allowance-report.index');
+    Route::post('night-allowance-report.show', [HrmAttendanceSummaryController::class, 'nightAllowanceShow'])->name('night-allowance-report.show');
+
+    Route::get('early-out-report', [MasEmployeeController::class, 'earlyOutIndex'])->name('early-out-report.index');
+    Route::post('early-out-report.show', [MasEmployeeController::class, 'earlyOutShow'])->name('early-out-report.show');
+
+    Route::get('provision-report', [MasEmployeeController::class, 'provisionReportIndex'])->name('provision-report.index');
+    Route::post('provision-report.show', [MasEmployeeController::class, 'provisionReportShow'])->name('provision-report.show');
+
+    Route::get('holiday-allowance-report', [HrmAttendanceSummaryController::class, 'holidayAllowanceIndex'])->name('holiday-allowance-report.index');
+    Route::post('holiday-allowance-report.show', [HrmAttendanceSummaryController::class, 'holidayAllowanceShow'])->name('holiday-allowance-report.show');
+
+    Route::get('raw-check-in-out-report', [MasEmployeeController::class, 'rawCheckInOutIndex'])->name('raw-check-in-out-report.index');
+    Route::post('raw-check-in-out-report.show', [MasEmployeeController::class, 'rawCheckInOutShow'])->name('raw-check-in-out-report.show');
+
+    Route::get('leave-transaction-report', [TblLeaveController::class, 'leaveTransactionIndex'])->name('leave-transaction-report.index');
+
+    Route::get('leave-register-report', [MasEmployeeController::class, 'leaveRegisterReportIndex'])->name('leave-register-report.index');
+    Route::post('leave-register-report.show', [MasEmployeeController::class, 'leaveRegisterReportShow'])->name('leave-register-report.show');
+
     // HRM Payroll Setup
     Route::resource('payrolladdcomponent', HrmPayrollAddCompController::class);
     Route::resource('payrolldeductcomponent', HrmPayrollDeductCompController::class);

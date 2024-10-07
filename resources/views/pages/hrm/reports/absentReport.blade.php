@@ -54,11 +54,11 @@
     <div class="container-fluid p-0 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0" style="color: white;">Late In Report</h5>
+                <h5 class="mb-0" style="color: white;">Absent Report</h5>
             </div>
         </div>
 
-        <form action="{{route('late-in-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('absent-report.show')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">

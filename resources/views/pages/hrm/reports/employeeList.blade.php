@@ -54,7 +54,6 @@
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0" style="color: white;">Employee List</h5>
-
             </div>
         </div>
 
@@ -134,6 +133,7 @@
         @if ($masEmployees)
         <h4 class="text-center">Millennium Computers and Networking</h4>
         <p class="text-center fw-bold text-dark">Employee List</p>
+        <p class="text-center fw-medium text-dark">Office: {{$selectedOfficeName->name}}</p>
         <div class="QA_table px-3">
             <div>
                 @php

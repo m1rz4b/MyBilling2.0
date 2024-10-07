@@ -267,4 +267,17 @@ class TblLeaveController extends Controller
     {
         dd($request);
     }
+
+    //Leave Transaction Report
+    public function leaveTransactionIndex()
+    {
+        $menus = Menu::get();
+        
+        $leaves = [];
+
+        return view('pages.hrm.reports.leaveTransaction', compact(
+            'menus', 
+            'leaves'
+        ));
+    }
 }

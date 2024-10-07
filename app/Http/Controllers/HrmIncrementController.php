@@ -150,9 +150,32 @@ class HrmIncrementController extends Controller
         }
         $hrm_increments = $hrm_increments->get();
 
+        $tprevious_gross=0;
+        $tincrement_amount=0;
+        $tcurrent_gross=0;
+        foreach ($hrm_increments as $hrm_increment) {
+            $tprevious_gross = $tprevious_gross + $hrm_increment->previous_gross;
+            $tincrement_amount = $tincrement_amount + $hrm_increment->increment_amount;
+            $tcurrent_gross = $tcurrent_gross + $hrm_increment->current_gross;
+        }
+
         $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
         $mas_employees = MasEmployee::select('id', 'emp_name')->get();
         $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'asc')->get();
-        return view('pages.hrm.reports.employeeIncrement', compact('menus', 'selectedYear', 'selectedMonth', 'selectedIgnoreMonth', 'selectedDepartment', 'selectedIncrementType', 'hrm_increments', 'mas_departments', 'mas_employees', 'hrm_increment_types'));
+        return view('pages.hrm.reports.employeeIncrement', compact(
+            'menus', 
+            'selectedYear', 
+            'selectedMonth', 
+            'selectedIgnoreMonth', 
+            'selectedDepartment', 
+            'selectedIncrementType', 
+            'hrm_increments', 
+            'mas_departments', 
+            'mas_employees', 
+            'hrm_increment_types', 
+            'tprevious_gross', 
+            'tincrement_amount', 
+            'tcurrent_gross'
+        ));
     }
 }

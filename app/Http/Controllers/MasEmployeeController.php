@@ -353,6 +353,8 @@ class MasEmployeeController extends Controller
         $name = '';
         $masEmployees = [];
 
+        $selectedOfficeName = '';
+
         return view('pages.hrm.reports.employeeList', compact(
             'menus', 
             'suboffices', 
@@ -364,7 +366,8 @@ class MasEmployeeController extends Controller
             'selectedDepartment', 
             'selectedDesignation',
             'name', 
-            'masEmployees' 
+            'masEmployees',
+            'selectedOfficeName'
         ));
     }
 
@@ -418,6 +421,8 @@ class MasEmployeeController extends Controller
         }
         $masEmployees = $masEmployees->paginate(20);
 
+        $selectedOfficeName = TblSuboffice::select('id', 'name')->where('id', $selectedSuboffice)->first();
+
         return view('pages.hrm.reports.employeeList', compact(
             'menus', 
             'suboffices', 
@@ -429,7 +434,8 @@ class MasEmployeeController extends Controller
             'selectedDepartment', 
             'selectedDesignation',
             'name', 
-            'masEmployees' 
+            'masEmployees',
+            'selectedOfficeName'
         ));
     }
 
@@ -447,8 +453,8 @@ class MasEmployeeController extends Controller
         $selectedYear= '';
         $selectedMonth= '';
         $selectedSuboffice = '';
-        $selectedDepartment = '';
         $selectedEmployeeStatus = '';
+        $selectedDepartment = '';
         $selectedDesignation = '';
         $selectedSalaryStatus = '';
         $masEmployees = [];
@@ -486,7 +492,7 @@ class MasEmployeeController extends Controller
         $selectedDepartment = $request->department;
         $selectedDesignation = $request->designation;
         $selectedSalaryStatus = $request->salary_status;
-
+        $masEmployees = [];
 
         return view('pages.hrm.reports.performanceReport', compact(
             'menus', 
@@ -520,6 +526,8 @@ class MasEmployeeController extends Controller
         
         $masEmployees = [];
 
+        $selectedOfficeName = '';
+
         return view('pages.hrm.reports.lateInReport', compact(
             'menus', 
             'suboffices', 
@@ -527,7 +535,8 @@ class MasEmployeeController extends Controller
             'selectedDate',
             'selectedSuboffice', 
             'selectedDepartment', 
-            'masEmployees' 
+            'masEmployees',
+            'selectedOfficeName'
         ));
     }
 
@@ -548,6 +557,7 @@ class MasEmployeeController extends Controller
         $selectedSuboffice = $request->suboffice_id;
         $selectedDepartment = $request->department;
 
+        $selectedOfficeName = TblSuboffice::select('id', 'name')->where('id', $selectedSuboffice)->first();
 
         return view('pages.hrm.reports.lateInReport', compact(
             'menus', 
@@ -556,7 +566,305 @@ class MasEmployeeController extends Controller
             'selectedDate',
             'selectedSuboffice', 
             'selectedDepartment', 
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    //Absent Report
+    public function absentIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedDate= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+        
+        $masEmployees = [];
+
+        $selectedOfficeName = '';
+
+        return view('pages.hrm.reports.absentReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    public function absentShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedDate= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+
+        $masEmployees = [];
+
+        $selectedDate = $request->date;
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedDepartment = $request->department;
+
+        $selectedOfficeName = TblSuboffice::select('id', 'name')->where('id', $selectedSuboffice)->first();
+
+        return view('pages.hrm.reports.absentReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    //Early Out Report
+    public function earlyOutIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedDate= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+        
+        $masEmployees = [];
+
+        $selectedOfficeName = '';
+
+        return view('pages.hrm.reports.earlyOutReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    public function earlyOutShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedDate= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+
+        $masEmployees = [];
+
+        $selectedDate = $request->date;
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedDepartment = $request->department;
+
+        $selectedOfficeName = TblSuboffice::select('id', 'name')->where('id', $selectedSuboffice)->first();
+
+        return view('pages.hrm.reports.earlyOutReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    //Provision Report
+    public function provisionReportIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDesignations = Designation::select('id', 'designation')->orderBy('designation', 'asc')->get();
+
+        $selectedMonth= '';
+        $selectedYear= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+        $selectedDesignation = '';
+        $name = '';
+        $masEmployees = [];
+
+        return view('pages.hrm.reports.provisionReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'masDesignations',
+            'selectedMonth',
+            'selectedYear',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'selectedDesignation',
+            'name',
             'masEmployees' 
+        ));
+    }
+
+    public function provisionReportShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDesignations = Designation::select('id', 'designation')->orderBy('designation', 'asc')->get();
+
+        $selectedMonth= $request->month;
+        $selectedYear= $request->year;
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedDepartment = $request->department;
+        $selectedDesignation = $request->designation;
+        $name = $request->name;
+        $masEmployees = [];
+
+        return view('pages.hrm.reports.provisionReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'masDesignations',
+            'selectedMonth',
+            'selectedYear',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'selectedDesignation',
+            'name',
+            'masEmployees' 
+        ));
+    }
+
+    //Raw Check In Out
+    public function rawCheckInOutIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $employees = MasEmployee::select('id', 'emp_name')->orderBy('emp_name', 'asc')->get();
+
+        $selectedFromDate= '';
+        $selectedToDate= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+        $selectedEmployee = '';
+        
+        $masEmployees = [];
+
+        $selectedOfficeName = '';
+
+        return view('pages.hrm.reports.rawCheckInOut', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'employees', 
+            'selectedFromDate',
+            'selectedToDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'selectedEmployee',
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    public function rawCheckInOutShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $employees = MasEmployee::select('id', 'emp_name')->orderBy('emp_name', 'asc')->get();
+
+        $selectedFromDate = $request->from_date;
+        $selectedToDate = $request->to_date;
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedDepartment = $request->department;
+        $selectedEmployee = $request->employee;
+
+        $masEmployees = [];
+
+        $selectedOfficeName = TblSuboffice::select('id', 'name')->where('id', $selectedSuboffice)->first();
+
+        return view('pages.hrm.reports.rawCheckInOut', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments',
+            'employees', 
+            'selectedFromDate',
+            'selectedToDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'selectedEmployee',
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    //Leave register
+    public function leaveRegisterReportIndex()
+    {
+        $menus = Menu::get();
+
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $employees = MasEmployee::select('id', 'emp_name')->orderBy('emp_name', 'asc')->get();
+
+        $selectedyear= '';
+        $selectedDepartment = '';
+        $selectedEmployee = '';
+        
+        $masEmployees = [];
+
+        return view('pages.hrm.reports.leaveRegister', compact(
+            'menus', 
+            'masDepartments', 
+            'employees',
+            'selectedyear',
+            'selectedDepartment', 
+            'selectedEmployee',
+            'masEmployees',
+        ));
+    }
+
+    public function leaveRegisterReportShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $employees = MasEmployee::select('id', 'emp_name')->orderBy('emp_name', 'asc')->get();
+
+        $selectedYear = $request->year;
+        $selectedDepartment = $request->department;
+        $selectedEmployee = $request->employee;
+
+        $masEmployees = [];
+
+        return view('pages.hrm.reports.leaveRegister', compact(
+            'menus', 
+            'masDepartments', 
+            'employees',
+            'selectedyear',
+            'selectedDepartment', 
+            'selectedEmployee',
+            'masEmployees'
         ));
     }
 }

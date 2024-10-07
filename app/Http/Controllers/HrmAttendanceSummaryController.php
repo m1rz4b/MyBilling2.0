@@ -229,4 +229,122 @@ class HrmAttendanceSummaryController extends Controller
             'hrmAttendances' 
         ));
     }
+
+    //Night Allowance Summary
+    public function nightAllowanceIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedFromDate= '';
+        $selectedToDate= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+        
+        $masEmployees = [];
+
+        $selectedOfficeName = '';
+
+        return view('pages.hrm.reports.nightAllowanceReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedFromDate',
+            'selectedToDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    public function nightAllowanceShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedFromDate = $request->from_date;
+        $selectedToDate = $request->to_date;
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedDepartment = $request->department;
+
+        $masEmployees = [];
+
+        $selectedOfficeName = TblSuboffice::select('id', 'name')->where('id', $selectedSuboffice)->first();
+
+        return view('pages.hrm.reports.nightAllowanceReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedFromDate',
+            'selectedToDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    //Holiday Allowance Summary
+    public function holidayAllowanceIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedFromDate= '';
+        $selectedToDate= '';
+        $selectedSuboffice = '';
+        $selectedDepartment = '';
+        
+        $masEmployees = [];
+
+        $selectedOfficeName = '';
+
+        return view('pages.hrm.reports.rawCheckInOutReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedFromDate',
+            'selectedToDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
+
+    public function holidayAllowanceShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+
+        $selectedFromDate = $request->from_date;
+        $selectedToDate = $request->to_date;
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedDepartment = $request->department;
+
+        $masEmployees = [];
+
+        $selectedOfficeName = TblSuboffice::select('id', 'name')->where('id', $selectedSuboffice)->first();
+
+        return view('pages.hrm.reports.rawCheckInOutReport', compact(
+            'menus', 
+            'suboffices', 
+            'masDepartments', 
+            'selectedFromDate',
+            'selectedToDate',
+            'selectedSuboffice', 
+            'selectedDepartment', 
+            'masEmployees',
+            'selectedOfficeName'
+        ));
+    }
 }

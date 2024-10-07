@@ -54,30 +54,21 @@
     <div class="container-fluid p-0 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0" style="color: white;">Late In Report</h5>
+                <h5 class="mb-0" style="color: white;">Leave Register Report</h5>
             </div>
         </div>
 
-        <form action="{{route('late-in-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('leave-register-report.show')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">
-                    <label for="date" class="fw-medium">Date</label>
+                    <label for="year" class="fw-medium">Year</label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedDate}}" name="date" data-date-Format="yyyy-mm-dd" id="date">
-                    </div>
-                </div>
-
-                <div class="col-sm-3 form-group">
-                    <label for="suboffice_id" class="fw-medium">Office</label>
-                    <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
-                        <select class="form-select form-select-sm form-control" id="suboffice_id" name="suboffice_id">
-                            <option value="-1">Select an Office</option>
-                            @foreach ($suboffices as $suboffice)
-                                <option {{ $selectedSuboffice==$suboffice->id ? 'selected' : '' }} value="{{ $suboffice->id }}">{{ $suboffice->name }}</option>
-                            @endforeach                      
+                        <select class="form-select form-select-sm form-control" id="year" name="year" >
+                            @foreach (range(now()->year - 15, now()->year + 5) as $year)
+                                <option value="{{ $year }}" {{ (now()->year == $year) ? 'selected' : ($selectedYear==$year? 'selected' : '') }}>{{ $year }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -95,7 +86,20 @@
                     </div>
                 </div> 
 
-                <div class="col-sm-3 d-flex d-sm-inline justify-content-start">
+                <div class="col-sm-3 form-group">
+                    <label for="employee" class="fw-medium">Employee</label>
+                    <div class="input-group input-group-sm flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
+                        <select class="form-select form-select-sm form-control" id="employee" name="employee">
+                            <option value="-1">Select an Employee</option>
+                            @foreach ($employees as $emp)
+                                <option {{ $selectedEmployee==$emp->id ? 'selected' : '' }} value="{{ $emp->id }}">{{ $emp->emp_name }}</option>
+                            @endforeach                      
+                        </select>
+                    </div>
+                </div> 
+
+                <div class="col-sm-12 d-flex justify-content-end">
                     <br class="d-none d-sm-block">
                     <div class="d-flex">
                         <button type="button" class="btn btn-sm btn-primary me-4"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Show Report</button>
@@ -107,7 +111,7 @@
 
         @if ($masEmployees)
         <h4 class="text-center">Millennium Computers and Networking</h4>
-        <p class="text-center text-dark fw-medium">For the period of: {{$selectedDate}}</p>
+        <p class="text-center text-dark fw-medium">For the period of: {{$selectedFromDate}}, {{$selectedToDate}}</p>
         <p class="text-center fw-medium text-dark">Office: {{$selectedOfficeName->name}}</p>
         <div class="QA_table px-3">
             <div>
