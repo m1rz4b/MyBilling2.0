@@ -15,6 +15,7 @@ use App\Models\Menu;
 use App\Models\TblSchedule;
 use App\Models\TblSuboffice;
 use App\Models\TblUserType;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -423,20 +424,29 @@ class MasEmployeeController extends Controller
 
         $selectedOfficeName = TblSuboffice::select('id', 'name')->where('id', $selectedSuboffice)->first();
 
-        return view('pages.hrm.reports.employeeList', compact(
-            'menus', 
-            'suboffices', 
-            'employeeStatus', 
-            'masDepartments', 
-            'masDesignations', 
-            'selectedSuboffice', 
-            'selectedEmployeeStatus', 
-            'selectedDepartment', 
-            'selectedDesignation',
-            'name', 
-            'masEmployees',
-            'selectedOfficeName'
-        ));
+        if($request->action == 'show'){
+            return view('pages.hrm.reports.employeeList', compact(
+                'menus', 
+                'suboffices', 
+                'employeeStatus', 
+                'masDepartments', 
+                'masDesignations', 
+                'selectedSuboffice', 
+                'selectedEmployeeStatus', 
+                'selectedDepartment', 
+                'selectedDesignation',
+                'name', 
+                'masEmployees',
+                'selectedOfficeName'
+            ));
+        }else if($request->action == 'pdf'){
+            $pdf = Pdf::loadView('pages.pdf.reports.employeeListReport', compact(
+                'masEmployees',
+                'selectedOfficeName'
+            ))->setPaper('a4', 'portrait');
+            return $pdf->download('invoices.pdf');
+        }
+        
     }
 
     //Performance Report

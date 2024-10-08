@@ -108,6 +108,7 @@ class HrmIncrementController extends Controller
 
     public function employeeIncrementShow(Request $request)
     {
+        // dd($request);
         $menus = Menu::get();
         $selectedYear = $request->year;
         $selectedMonth = $request->month;
@@ -162,20 +163,33 @@ class HrmIncrementController extends Controller
         $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
         $mas_employees = MasEmployee::select('id', 'emp_name')->get();
         $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'asc')->get();
-        return view('pages.hrm.reports.employeeIncrement', compact(
-            'menus', 
-            'selectedYear', 
-            'selectedMonth', 
-            'selectedIgnoreMonth', 
-            'selectedDepartment', 
-            'selectedIncrementType', 
-            'hrm_increments', 
-            'mas_departments', 
-            'mas_employees', 
-            'hrm_increment_types', 
-            'tprevious_gross', 
-            'tincrement_amount', 
-            'tcurrent_gross'
-        ));
+
+        if($request->action == 'show'){
+            return view('pages.hrm.reports.employeeIncrement', compact(
+                'menus', 
+                'selectedYear', 
+                'selectedMonth', 
+                'selectedIgnoreMonth', 
+                'selectedDepartment', 
+                'selectedIncrementType', 
+                'hrm_increments', 
+                'mas_departments', 
+                'mas_employees', 
+                'hrm_increment_types', 
+                'tprevious_gross', 
+                'tincrement_amount', 
+                'tcurrent_gross'
+            ));
+        }else if($request->action == 'pdf'){
+            $pdf = Pdf::loadView('pages.pdf.reports.employeeIncrementReport', compact(
+                'selectedYear', 
+                'selectedMonth', 
+                'hrm_increments', 
+                'tprevious_gross', 
+                'tincrement_amount', 
+                'tcurrent_gross'
+            ))->setPaper('a4', 'portrait');
+            return $pdf->download('invoices.pdf');
+        }
     }
 }

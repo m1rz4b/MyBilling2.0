@@ -7,6 +7,7 @@ use App\Models\HrmEmpJobHistory;
 use App\Models\MasDepartment;
 use App\Models\MasEmployee;
 use App\Models\Menu;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -147,6 +148,22 @@ class HrmEmpJobHistoryController extends Controller
 
         $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
 
-        return view('pages.hrm.reports.employeePromotion', compact('menus', 'selectedYear', 'selectedMonth', 'selectedDepartment', 'hrmEmpJobHistory', 'masDepartments'));
+        if($request->action == 'show'){
+            return view('pages.hrm.reports.employeePromotion', compact(
+                'menus', 
+                'selectedYear', 
+                'selectedMonth', 
+                'selectedDepartment', 
+                'hrmEmpJobHistory', 
+                'masDepartments'
+            ));
+        } else if($request->action == 'pdf'){
+            $pdf = Pdf::loadView('pages.pdf.reports.employeePromotionReport', compact(
+                'selectedYear', 
+                'selectedMonth', 
+                'hrmEmpJobHistory'
+            ))->setPaper('a4', 'portrait');
+            return $pdf->download('invoices.pdf');
+        }
     }
 }

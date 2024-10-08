@@ -303,10 +303,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('routerSShCheck/{router}', [TblRouterController::class, 'sshCheckPost'])->name('routerSShCheck');
 });
 
-
-
-
-
 Route::get('routes', function () {
     $routeCollection = Route::getRoutes();
 
