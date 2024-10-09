@@ -14,14 +14,14 @@ class Menu extends Model
         static::addGlobalScope(new MenuScope);
     }
 
-    public function children()
-    {
-        return $this->hasMany(Menu::class);
-    }
+    // public function children()
+    // {
+    //     return $this->hasMany(Menu::class);
+    // }
 
-    public function parent()
-    {
-        return $this->belongsTo(Menu::class);
-    }
+    // public function parent()
+    // {
+    //     return $this->belongsTo(Menu::class);
+    // }
 
 }

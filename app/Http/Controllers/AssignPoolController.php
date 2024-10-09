@@ -26,49 +26,35 @@ class AssignPoolController extends Controller
 
         $rad_group_reply = RadGroupReply::leftJoin('radgroupcheck', 'radgroupcheck.groupname', '=', 'radgroupreply.groupname')
             ->leftJoin('tbl_client_types', 'tbl_client_types.id', '=', 'radgroupreply.groupname',)
-            ->select('tbl_client_types.name', 'tbl_client_types.id')
+            ->select('tbl_client_types.name', 'tbl_client_types.id','tbl_client_types.status')
             ->groupBy('radgroupreply.groupname', 'tbl_client_types.name', 'tbl_client_types.id')
             ->get();
-
-        // dd($rad_group_reply);
-
+/*
         foreach ($rad_group_reply as $rad_reply) {
             $client_id = $rad_reply->id;
+
+            $ip = Radgroupcheck::where('groupname', $client_id)
+                ->select('value')
+                ->first();
+
+            $nas = Nas::where('nasname', $ip->value)
+                ->select('shortname')
+                ->first();
+
+            $mikrotik_rate_limit = RadGroupReply::select('value')
+                ->where('groupname', $client_id)
+                ->where('attribute', 'Mikrotik-Rate-Limit')
+                ->first();
+
+            $framed_pool = RadGroupReply::select('value')
+                ->where('groupname', $client_id)
+                ->where('attribute', 'Framed-Pool')
+                ->first();
         }
-
-        // dd($client_id);
-        
-        $ip = Radgroupcheck::where('groupname', $client_id)
-            ->select('value')
-            ->get();
-
-        // dd($ip);
-
-        $nas = Nas::where('nasname', $ip->value)
-            ->select('shortname')
-            ->get();
-
-        // dd($nas);
-
-        $mikrotik_rate_limit = RadGroupReply::select('value')
-            ->where('groupname', $client_id)
-            ->where('attribute', 'Mikrotik-Rate-Limit')
-            ->get();
-
-        // dd($mikrotik_rate_limit);
-
-        $framed_pool = RadGroupReply::select('value')
-            ->where('groupname', $client_id)
-            ->where('attribute', 'Framed-Pool')
-            ->get();
-
-        // dd($framed_pool);
-
+*/
         $packages = TblClientType::select('id', 'name')
             ->orderBy('name')
             ->get();
-
-        // dd($packages);
 
         $naslist = Nas::select('id', 'shortname')
             ->orderBy('shortname')
@@ -77,8 +63,17 @@ class AssignPoolController extends Controller
         $ip_pools = IpPool::select('id', 'name')
             ->orderBy('name')
             ->get();
+			
+		$radgroupreplys = Radgroupreply::select('groupname','attribute','value')
+            ->orderBy('groupname')
+            ->get();
+			
+		$radgroupchecks = Radgroupcheck::select('groupname','attribute','value')
+            ->orderBy('groupname')
+            ->get();
+			
 
-        return view('pages.radius.assignPool', compact('menus', 'rad_group_reply', 'ip', 'nas', 'mikrotik_rate_limit', 'framed_pool', 'packages', 'naslist', 'ip_pools'));
+        return view('pages.radius.assignPool', compact('menus', 'rad_group_reply', 'ip', 'nas', 'mikrotik_rate_limit', 'framed_pool', 'packages', 'naslist', 'ip_pools','radgroupreplys','radgroupchecks',));
     }
 
     /**

@@ -9,4 +9,5 @@ class TrnCustomerProject extends Model
 {
     use HasFactory;
     protected $table = 'trn_customer_project';
+	protected $fillable = ['project_name', 'client_id','contract_person', 'address', 'mobile1','active_statust'];
 }

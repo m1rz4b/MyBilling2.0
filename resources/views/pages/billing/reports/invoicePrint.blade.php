@@ -27,7 +27,7 @@
         <div class="container-fluid p-0 sm_padding_15px">
             <div class="">
                 <div class="px-4 py-1 theme_bg_1">
-                    <h5 class="mb-0 text-white text-center">Client List</h5>
+                    <h5 class="mb-0 text-white text-center">Invoice Print</h5>
                 </div>
             </div>
 
@@ -66,7 +66,7 @@
 				
 					<div class="col-sm-3">
                             <select name="invoice_cat" id="invoice_cat" class="select2 form-select form-select-sm form-control">
-                                <option value="-1">Select a Category</option>
+                                <option value="-1">Select a Invoice Type</option>
                                 @foreach ($invoicecategorys as $invoicecategory)
                    <option {{ $selectedInvoiceCat==$invoicecategory->id? 'selected' : '' }} value="{{ $invoicecategory->id }}">{{ $invoicecategory->invoice_type_name }}</option>
                                 @endforeach
@@ -95,9 +95,12 @@
                 </div>
             </form>
 					<div class="px-4 py-1">
-                    <h5 class="mb-0 text-center">Millennium Computers And Networking</h5>
-					<h5 class="mb-0 text-center">Client List</h5>
-                </div>
+                    <h3 class="mb-0 text-center">Millennium Computers And Networking</h3>
+					<h5 class="mb-0 text-center">11/1,Rambabu Road, Alimun Plaza( 1st Floor),</h5>
+					<h5 class="mb-0 text-center">Mymensingh-2200,Bangladesh.t</h5>
+					<h5 class="mb-0 text-center">Phone +8809666747474, Tel: + 88091-64234,Mob:+8801881010100</h5>
+					<h5 class="mb-0 text-center">www.mcnbd.com</h5>
+               </div>
 
 
             <div class="QA_table p-3 pb-0 table-responsive">
@@ -105,71 +108,77 @@
                     $count  = 1;
                 @endphp
 
-
+		    @foreach ($client_list as $client)
+				@foreach ($invoice_header as $inv_header)
+				
+		<table cellpadding="0" border="0" width="100%"  >
     	<thead>
         	<tr>
-            	<td  align="left"  valign="middle" style="font-weight:bold;  width: 50%;"><h1> INVOICE</h1></td>
-                <?php 
+            	<td colspan="1" valign="middle" style="font-weight:bold; text-align:center;  width: 100%;"><h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INVOICE</h2></td> <br><br>
+            </tr>
+			  <tr>
+                 <?php 
 					$home_url = 'http://' . $_SERVER['HTTP_HOST'] ;
 				?>
-                <td  align="right" style="text-align:right; width: 50%;"><img src="<?php echo $home_url;?>/mcnbd/upload/mililogo.png" alt="" class="img-responsive pull-right" ></td>
+                <td  colspan="1" align="right" style="text-align:right; width: 50%;"><img src="<?php echo $home_url;?>/mcnbd/upload/mililogo.png" alt="" class="img-responsive pull-right" ></td>
             </tr>
         </thead>
+		</table>
+		<table cellpadding="0" border="0" width="100%"  >
 		 <tbody>
-		    @foreach ($client_list as $client)
-		 <tr>
-            	<td colspan="2" style="width: 50%;">&nbsp;</td>
-            </tr>
-            <tr>
-            	<td colspan="2" style="width: 50%;">&nbsp;</td>
-            </tr>
-            <tr>
-            	<td colspan="2" style="width: 50%;">&nbsp;</td>
-            </tr>
         	<tr>
-            	<td style="width: 50%;"><span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Bill To:</span><br>
-                   	<span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Customer ID:</span>	{{ $client->billing_year }}<br>
-                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Company / Client Name:</span>	{{ $client->billing_year }}<br>
-                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Address:</span>	{{ $client->billing_year }}<br>                     <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Mobile:</span>	{{ $client->billing_year }}<br>   
-                    
+					<td style="width: 70%;"><span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Bill To:</span><br>
+                   	<span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Customer ID:</span>	{{ $inv_header->user_id }}<br>
+                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Company / Client Name:</span>	{{ $inv_header->customer_name }}<br>
+                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Address:</span>	{{ $inv_header->present_address }}<br> 
+					<span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Mobile:</span>	{{ $inv_header->mobile1 }}<br>   
                     </td>
-                <td style="width: 50%;"><span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Billing Statement</span><br>		
-                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Invoice #:</span> APCL/{{ $client->billing_year }}<br>		
-                   	<span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Invoice Date:</span> {{ $client->billing_year }}<br>		
-                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Invoice Period:</span> {{ $client->billing_year }} <br>		
-                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Payment Due Date:</span>	{{ $client->billing_year }}<br>
-                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">VAT Reg No:</span>{{ $client->billing_year }}	<br>		
+                <td style="width: 30%;"><span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Billing Statement</span><br>		
+                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Invoice #:</span> {{ $client->inv_number }}<br>		
+              <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Invoice Date:</span> {{ date('d F Y',strtotime($client->invoice_date)) }}<br>		
+                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Invoice Period:</span> {{ date('d F Y',strtotime($client->invoice_date)) }} <br>		
+                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">Payment Due Date:</span>	{{ date('15 F Y',strtotime($client->invoice_date)) }}<br>
+                    <span style="font-weight:bold; font-size:14px; color:rgba(71,71,71,1.00)">VAT Reg No:</span>{{ $inv_header->status_name }}	<br>		
                 </td>
             </tr>
-           
-           
             <tr>
             	<td colspan="2" style=" width: 100%;">&nbsp;</td>
             </tr>
-            
-            
-           
-            
-            <tr> <!--payment start-->
-            	<td colspan="2" style="width: 100%;">
-                	<table cellspacing="2" cellpadding="0" border="0" width="100%"  >
-                    	
+           </table>
+		<table cellpadding="0" border="0" width="100%"  >
+		 <tbody> 
                     	<tr bgcolor="#DAEEF3">
-                        	<th style="padding:3px; width: 20%;">User Id &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                        	<th style="padding:3px; width: 20%;">Month&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                            <th style="padding:3px; width: 20%;">Invoice Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>          		
-                        	<th style="padding:3px; width: 20%;">Invoice For&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>                        	
-                            <th align="right" style="padding:3px; text-align:right;  width: 20%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Amount(BDT)</th>
+                        	<th style="padding:3px; width: 25%;">Invoice Date </th>
+                        	<th style="padding:3px; width: 25%;">Invoice Type</th>
+                            <th style="padding:3px; width: 25%;">Invoice For</th>          		
+                        	<th style="padding:3px; width: 20%;">Amount(BDT)</th>
                         </tr>
-						
-	 @endforeach       				
-	</tbody>
+						<tr>
+                        	<td style="padding:3px; width: 25%;">{{ $client->invoice_date }}	 </td>
+                        	<td style="padding:3px; width: 25%;">{{ $client->invoice_type_name }}	</td>
+                            <td style="padding:3px; width: 25%;">{{ $client->billing_year }}	</td>          		
+                        	<td style="padding:3px; width: 20%;">{{ $client->total_bill }}	</td>
+                        </tr>
+					</tbody>
         
-    </table>
-		
+				</table>	
+				<br><br><br><br><br><br>
+							<div class="py-1">
+							<h5 class="mb-0 text-left">Millennium Computers And Networking</h5>
+							<h5 class="mb-0 text-left">Signature- Billing Department	</h5>
+							<h5 class="mb-0 text-left">Millennium Computers and Network</h5>
+							<h5 class="mb-0 text-left">Phone:- 09666-747474</h5>
+							<h5 class="mb-0 text-left">Address:- Ram Babu Rd, Mymensingh</h5>
+   
+							</div>
+	 @endforeach  
+ @endforeach  	 
+	
+	
             </div>
         </div>
-
+		
+		
     </div>
 
     <script>

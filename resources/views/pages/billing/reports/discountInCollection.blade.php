@@ -27,7 +27,7 @@
         <div class="container-fluid p-0 sm_padding_15px">
             <div class="">
                 <div class="px-4 py-1 theme_bg_1">
-                    <h5 class="mb-0 text-white text-center">Daily Bill Collection</h5>
+                    <h5 class="mb-0 text-white text-center">Discount In Collection</h5>
                 </div>
             </div>
 
@@ -35,48 +35,20 @@
                 @csrf
                 <div class="m-3">
                     <div class="row mb-3">
-					 <div class="col-sm-2 form-group">
-                    <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <select class="form-select form-select-sm form-control" id="day" name="day">
-						<option>Select Day</option>                           
-						   @foreach(range(1,31) as $day)
-                                <option {{ $start_day==$day? 'selected' : '' }} value="{{ $day }}">
-                                    {{ $day }}
-                                </option>
-                            @endforeach
-                        </select>
+					
+                    <div class="col-sm-3 form-group">
+                        <label class="fw-medium" for="start_date" class="form-label">From</label>
+                        <input class="form-control input_form datepicker-here digits" name="start_date" id="start_date" data-date-Format="yyyy-mm-dd" value="{{ $nowdate }}" placeholder="Start date">
                     </div>
-                </div>
-				<div class="col-sm-2 form-group">
-                    <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <select class="form-select form-select-sm form-control" id="month" name="month">
-						<option>Select Month</option>                           
-						   @foreach(range(1,12) as $month)
-                                <option {{ $start_month==$month? 'selected' : '' }} value="{{ $month }}">
-                                    {{ date("M", mktime(0, 0, 0, $month, 1)) }}
-                                </option>
-                            @endforeach
-                        </select>
+                    <div class="col-sm-3 form-group">
+                        <label class="fw-medium" for="end_date" class="form-label">To</label>
+                        <input class="form-control input_form datepicker-here digits" name="end_date" id="end_date" data-date-Format="yyyy-mm-dd" value="{{ $nowdate }}" placeholder="End date">
                     </div>
-                </div>
-				
-				<div class="col-sm-2 form-group">
-                 <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <select class="form-select form-select-sm form-control" id="year" name="year" >
-                            <option>Select Year</option>
-                            @foreach (range(now()->year - 10, now()->year + 5) as $year)
-                                <option {{ $start_year==$year? 'selected' : '' }} value="{{ $year }}">{{ $year }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
 
-                  <div class="col-sm-4">
+                  <div class="col-sm-2 form-group">
+				  	<label class="fw-medium" for="start_date" class="form-label">Zone</label>
 				    <div class="input-group input-group-sm flex-nowrap">
-                            <select name="zone" id="zone" class="form-select form-select-sm form-control">
+                          <select name="zone" id="zone" class="form-select form-select-sm form-control">
                                 <option value="-1">Select a Zone</option>
                                 @foreach ($zones as $zone)
                                     <option {{ $selectedZone==$zone->id? 'selected' : '' }} value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
@@ -85,7 +57,8 @@
                      </div>
                    </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-2 form-group">
+					<label class="fw-medium" for="start_date" class="form-label">Branch</label>
                         <div class="input-group input-group-sm flex-nowrap">
                             <select class="select2 form-select form-select-sm" id="branch" name="branch">
                                 <option value="-1" selected>Select a Branch</option>
@@ -95,16 +68,17 @@
                             </select>
                         </div>
                     </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
+						  <label class="fw-medium" for="start_date" class="form-label">Category</label>
                             <select name="client_category" id="client_category" class="select2 form-select form-select-sm form-control">
-                                <option value="-1">Select a Client Category</option>
+                                <option value="-1">Select a Category</option>
                                 @foreach ($client_category as $category)
 								<option {{ $selectedcategory==$category->id? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }} </option>
 								</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <button type="button" class="btn btn-sm btn-primary me-2"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Search</button>
                             <a class="btn btn-warning btn-sm text-white me-2" onclick="window.print()"><i class="fa-solid fa-print me-1"></i>Print</a>
                             <a class="btn btn-success btn-sm"><i class="fa-regular fa-file-excel me-1"></i>Excel</a>
@@ -114,30 +88,27 @@
             </form>
 					<div class="px-4 py-1">
                     <h5 class="mb-0 text-center">Millennium Computers And Networking</h5>
-					<h5 class="mb-0 text-center">Daily Bill Collection</h5>
-					<h5 class="mb-0 text-center">For The Date of {{ $start_day}} - {{ $start_month}} - {{ $start_year}}</h5>
+					<h5 class="mb-0 text-center">Discount In Collection</h5>
+					<h5 class="mb-0 text-center">From {{$start_date}} To {{$end_date}}</h5>
                 </div>
 
 
             <div class="QA_table p-3 pb-0 table-responsive">
                 @php
                     $count  = 1;
+					$ttotal= 0;
                 @endphp
 
 
                 <table class="table table-responsive">
                     <thead>
                         <tr>
-						
-			<th> SL.</th>
-		  <th>Client Id </th>
-		  <th>Clients Name </th>
-		  <th> Money Rec. No.</th>
-		  <th> Arrier(BDT)</th>
-		  <th> Current(BDT)</th>
-		  <th> Advanced Rec(BDT)</th>
-		  <th> Total(BDT) </th>
-			  
+			<th>Sl</th>
+        <th>Client ID</th>
+        <th>Client Name</th>
+        <th>Date</th>
+        <th>MR NO</th>
+         <th align="right">Discount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -146,14 +117,21 @@
                             <td>{{ $count++ }}</td>
                            <td>{{ $cust_invoice->user_id }}</td>
                             <td>{{ $cust_invoice->customer_name }}</td>
+                            <td>{{ $cust_invoice->advrec_date }}</td>
                             <td>{{ $cust_invoice->money_receipt }}</td>
-                            <td>{{ $cust_invoice->ccollamnt }}</td>
-                            <td>{{ $cust_invoice->qcollamnt }}</td>
-                            <td>{{ $cust_invoice->ad + $cust_invoice->adnormal }} </td>
-                            <td>{{ $cust_invoice->ccollamnt + $cust_invoice->qcollamnt + $cust_invoice->dcollamnt }}</td>
-                          
-                        </tr>
-                        @endforeach               
+							<td align="right">{{ $cust_invoice->discoun_amnt }}</td>
+                            </tr>
+							@php
+							$ttotal=$cust_invoice->discoun_amnt+$ttotal;
+							
+							@endphp
+				
+                        @endforeach 
+<tr>
+	<td colspan="5" align="right"> <strong>Total</strong></td>
+	<td align="right"> <strong><?php echo number_format($ttotal,2);?></strong></td>
+</tr>
+						
                     </tbody>
                 </table>
             </div>

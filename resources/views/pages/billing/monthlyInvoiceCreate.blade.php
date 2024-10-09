@@ -60,51 +60,56 @@
         <form method="POST" action="{{ route('masinvoice.monthlyinvoicestore') }}">
             @csrf
             <div class="row p-3">
-                <div class="col-sm-3 form-group">
-                    <label for="month" class="fw-medium">Month</label>
-                    <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <select class="form-select form-select-sm form-control" id="month" name="month">
-                            <option value="-1">Please Choose A Month</option>
-                            @foreach(range(01,12) as $month)
-                                <option value="{{ $month }}">
-                                    {{ date("M", mktime(0, 0, 0, $month, 1)) }}
-                                </option>
-                            @endforeach
-                        </select>
+                
+
+                
+                    <div class="col-sm-3 form-group">
+                        <label for="month" class="fw-medium">Month</label>
+                        <div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
+                            <select class="form-select form-select-sm form-control" id="month" name="month">
+                                <option value="-1">Please Choose A Month</option>
+                                @foreach(range(01,12) as $month)
+                                    <option value="{{ $month }}">
+                                        {{ date("M", mktime(0, 0, 0, $month, 1)) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
         
-                <div class="col-sm-3 form-group">
-                    <label for="year" class="fw-medium">Year</label>
-                    <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <select class="form-select form-select-sm form-control" id="year" name="year" >
-                            <option value="-1">Please Choose A Year</option>
-                            @foreach (range(now()->year - 10, now()->year + 5) as $year)
-                                <option value="{{ $year }}">{{ $year }}</option>
-                            @endforeach
-                        </select>
+                    <div class="col-sm-3 form-group">
+                        <label for="year" class="fw-medium">Year</label>
+                        <div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
+                            <select class="form-select form-select-sm form-control" id="year" name="year" >
+                                <option value="-1">Please Choose A Year</option>
+                                @foreach (range(now()->year - 10, now()->year + 5) as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
         
-                <div class="col-sm-4 form-group">
-                    <label for="branch" class="fw-medium">branch</label>
-                    <div class="input-group input-group-sm flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-user"></i></span>
-                        <select class="select2 form-select form-select-sm" id="branch" name="branch">
-                            <option value="-1" selected>Select a Branch</option>
-                            @foreach ($branches as $branch)
-                                <option value="{{ $branch->id }}">{{ $branch->name }} </option>
-                            @endforeach                   
-                        </select>
+                    <div class="col-sm-4 form-group">
+                        <label for="branch" class="fw-medium">branch</label>
+                        <div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-user"></i></span>
+                            <select class="select2 form-select form-select-sm" id="branch" name="branch">
+                                <option value="-1" selected>Select a Branch</option>
+                                @foreach ($branches as $branch)
+                                    <option value="{{ $branch->id }}">{{ $branch->name }} </option>
+                                @endforeach                   
+                            </select>
+                        </div>
+                    </div> 
+        
+                    <div class="col-sm-2 form-group d-flex d-sm-inline justify-content-end">
+                        <br class="d-none d-sm-block">
+                        <button type="button" class="btn btn-sm btn-primary"  onclick="this.disabled=true;this.form.submit();">Generate Invoice</button>
                     </div>
-                </div> 
-        
-                <div class="col-sm-2 form-group d-flex d-sm-inline justify-content-end">
-                    <br class="d-none d-sm-block">
-                    <button type="button" class="btn btn-sm btn-primary"  onclick="this.disabled=true;this.form.submit();">Generate Invoice</button>
-                </div>
+            
+
             </div>
         </form>
     </div>

@@ -47,7 +47,7 @@ class ClientControlController extends Controller
         $status = -1;
         $customer = -1;
         
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $customer_dropdown = Customer::select('customer_name', 'id')->orderBy('customer_name', 'asc')->get();
         $customers = Customer::select(
             'customers.id as customer_id',
@@ -128,7 +128,7 @@ class ClientControlController extends Controller
             LEFT JOIN customers ON customers.id = tbl_client_types.reseller_id 
             AND customers.reseller_id = 0 
             ORDER BY tbl_client_types.id"
-        );
+        ); 
         
         $router_logs = ChangeRouterLog::select(
             'previous_router.router_name as previous',
@@ -194,7 +194,7 @@ class ClientControlController extends Controller
 
     public function search(Request $request)
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
 
         $customer_dropdown = Customer::select('customer_name', 'id')->orderBy('customer_name', 'asc')->get();
 

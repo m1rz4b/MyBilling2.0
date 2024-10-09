@@ -20,7 +20,6 @@
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             line-height: 1.5 !important;
         }
-        
     </style>
     
     <div class="main_content_iner mt-0">
@@ -34,7 +33,7 @@
 
             <form action="{{ route('monthlyinvoices.show') }}" method="post">
                 @csrf
-                <div class="m-3 ">
+                <div class="m-3">
                     <div class="row mb-3">
 					 <div class="col-sm-4 form-group">
                     
@@ -52,7 +51,7 @@
                 </div>
 
 
-                <div class="col-sm-4 form-group ">
+                <div class="col-sm-4 form-group">
                  
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
@@ -64,7 +63,7 @@
                         </select>
                     </div>
                 </div>
-                  <div class="col-sm-4 ">
+                  <div class="col-sm-4">
 				    <div class="input-group input-group-sm flex-nowrap">
                             <select name="zone" id="zone" class="form-select form-select-sm form-control">
                                 <option value="-1">Select a Zone</option>
@@ -75,7 +74,7 @@
                      </div>
                    </div>
 
-                    <div class="col-sm-4 ">
+                    <div class="col-sm-4">
                         <div class="input-group input-group-sm flex-nowrap">
                             <select class="select2 form-select form-select-sm" id="branch" name="branch">
                                 <option value="-1" selected>Select a Branch</option>
@@ -85,7 +84,7 @@
                             </select>
                         </div>
                     </div>
-                        <div class="col-sm-4 ">
+                        <div class="col-sm-4">
                             <select name="client_category" id="client_category" class="select2 form-select form-select-sm form-control">
                                 <option value="-1">Select a Client Category</option>
                                 @foreach ($client_category as $category)
@@ -94,11 +93,14 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-sm-4 ">
+                        <div class="col-sm-4">
                             <button type="submit" name="action" class="btn btn-sm btn-primary me-2" value="search"><i class="fa-solid fa-magnifying-glass me-1"></i>Search</button>
                             <button type="submit" name="action" class="btn btn-danger btn-sm text-white me-2" value="pdf" ><i class="fa-solid fa-file-pdf me-1"></i>PDF</button>
                             <button type="submit" name="action" class="btn btn-success btn-sm text-white me-2" value="excel" ><i class="fa-regular fa-file-excel me-1"></i>Excel</button>
                             
+                            {{-- <button type="button" class="btn btn-sm btn-primary me-2"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Search</button>
+                            <a class="btn btn-warning btn-sm text-white me-2" onclick="window.print()"><i class="fa-solid fa-print me-1"></i>Print</a>
+                            <a class="btn btn-success btn-sm"><i class="fa-regular fa-file-excel me-1"></i>Excel</a> --}}
                         </div>
                     </div>
                 </div>
@@ -112,6 +114,16 @@
             <div class="QA_table p-3 pb-0 table-responsive">
                 @php
                     $count  = 1;
+							$tccur_arrear = 0;
+							$ttotal = 0;
+							$gtotal= 0;
+							$collection= 0;
+							$adjustment= 0;
+							$vatad= 0;
+							$aitad= 0;
+							$discount= 0;
+							$dtimead= 0;
+							$dgtotal= 0;
                 @endphp
 
                 <table class="table table-responsive">
@@ -148,21 +160,49 @@
                             <td>{{ $cust_invoice->srv_name }}</td>
                             <td>{{ $cust_invoice->mobile1 }}</td>
                             <td>{{ $cust_invoice->present_address }}</td>
-                            <td>{{ $cust_invoice->cur_arrear }}</td> 
-                            <td>{{ $cust_invoice->total_bill }}</td>
-							 <td>{{ $cust_invoice->total_bill + $cust_invoice->cur_arrear}}</td>
-                            <td>{{ $cust_invoice->collection_amnt }}</td>
-                            <td>{{ $cust_invoice->other_adjustment }}</td>
-							<td>{{ $cust_invoice->vat_adjust_ment }}</td> 
-							   <td>{{ $cust_invoice->ait_adjustment }}</td> 
-							 <td>{{ $cust_invoice->discount_amnt }}</td>
-							  <td>{{ $cust_invoice->downtimeadjust }}</td>
-							   <td>{{ $cust_invoice->cur_arrear +  $cust_invoice->total_bill - $cust_invoice->collection_amnt - $cust_invoice->other_adjustment - $cust_invoice->vat_adjust_ment - $cust_invoice->ait_adjustment - $cust_invoice->discount_amnt - $cust_invoice->downtimeadjust}}</td> 
-							   
-	
-	
+                            <td align='right'>{{ $cust_invoice->cur_arrear }}</td> 
+                            <td align='right'>{{ $cust_invoice->total_bill }}</td>
+							 <td align='right'>{{ $cust_invoice->total_bill + $cust_invoice->cur_arrear}}</td>
+                            <td align='right'>{{ $cust_invoice->collection_amnt }}</td>
+                            <td align='right'>{{ $cust_invoice->other_adjustment }}</td>
+							<td align='right'>{{ $cust_invoice->vat_adjust_ment }}</td> 
+							   <td align='right'>{{ $cust_invoice->ait_adjustment }}</td> 
+							 <td align='right'>{{ $cust_invoice->discount_amnt }}</td>
+							  <td align='right'>{{ $cust_invoice->downtimeadjust }}</td>
+							   <td align='right'>{{ $cust_invoice->cur_arrear +  $cust_invoice->total_bill - $cust_invoice->collection_amnt - $cust_invoice->other_adjustment - $cust_invoice->vat_adjust_ment - $cust_invoice->ait_adjustment - $cust_invoice->discount_amnt - $cust_invoice->downtimeadjust}}</td> 
                         </tr>
-                        @endforeach               
+						@php
+						
+							$tgtotal=$cust_invoice->cur_arrear +  $cust_invoice->total_bill - $cust_invoice->collection_amnt - $cust_invoice->other_adjustment - $cust_invoice->vat_adjust_ment - $cust_invoice->ait_adjustment - $cust_invoice->discount_amnt - $cust_invoice->downtimeadjust;
+						
+							$tccur_arrear=$cust_invoice->cur_arrear+$tccur_arrear;
+							$ttotal=$cust_invoice->total_bill+$ttotal;
+							$gtotal=$cust_invoice->total_bill + $cust_invoice->cur_arrear+$gtotal;
+							$collection=$cust_invoice->collection_amnt+$collection;
+							$adjustment=$cust_invoice->other_adjustment+$adjustment;
+							$vatad=$cust_invoice->vat_adjust_ment+$vatad;
+							$aitad=$cust_invoice->ait_adjustment+$aitad;
+							$discount=$cust_invoice->discount_amnt+$discount;
+							$dtimead=$cust_invoice->downtimeadjust+$dtimead;
+							$dgtotal=$tgtotal+$dgtotal;
+							
+						@endphp
+                    @endforeach  
+     </tr>
+			<td align='right' colspan='7'> <b>Total Amount  </td>
+			  <td align='right'><b>{{ $tccur_arrear }} </td>
+			  <td align='right'><b>{{ $ttotal }}</td>
+			   <td align='right'><b>{{ $gtotal }}</td>
+			  <td align='right'><b>{{ $collection }}</td>
+			  <td align='right'><b>{{ $adjustment }}</td>
+			  <td align='right'><b>{{ $vatad }}</td>
+			  <td align='right'><b>{{ $aitad }}</td>
+			  <td align='right'><b>{{ $discount }}</td>
+			   <td align='right'><b>{{ $dtimead }}</td>
+			  <td align='right'><b>{{ $dgtotal }}</td>
+
+     </tr>
+			  
                     </tbody>
                 </table>
             </div>

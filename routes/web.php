@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\HrmPayrollAddCompController;
 use App\Http\Controllers\HrmPayrollDeductCompController;
 use App\Http\Controllers\InvoiceTypeController;
@@ -44,19 +45,55 @@ use App\Http\Controllers\HrmAttendanceSummaryController;
 use App\Http\Controllers\HrmIncrementController;
 use App\Http\Controllers\TrnClientsServiceController;
 use App\Http\Controllers\PackagePlanController;
-use App\Http\Controllers\MenuController;
+use App\Http\Controllers\HrmEmpJobHistoryController;
+use App\Http\Controllers\CheckinoutConroller;
+use App\Http\Controllers\HrmEmpMonthlyAddController;
+use App\Http\Controllers\HrmEmpMonthlyDeductController;
+use App\Http\Controllers\TblLeaveController;
+use Illuminate\Support\Facades\Route;
+////////Faruque /
 use App\Http\Controllers\BillReports\MonthlyInvoiceController;
 use App\Http\Controllers\BillReports\ClientLedgerController;
 use App\Http\Controllers\BillReports\DailyBillCollectionController;
 use App\Http\Controllers\BillReports\CollectionSummeryController;
 use App\Http\Controllers\BillReports\RptClientListController;
-use App\Http\Controllers\CheckinoutConroller;
-use App\Http\Controllers\CheckinoutController;
-use App\Http\Controllers\HrmEmpJobHistoryController;
-use App\Http\Controllers\HrmEmpMonthlyAddController;
-use App\Http\Controllers\HrmEmpMonthlyDeductController;
-use App\Http\Controllers\TblLeaveController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BillReports\InvoicePrintController;
+use App\Http\Controllers\BillReports\DueListController;
+use App\Http\Controllers\BillReports\DiscountInCollectionController;
+use App\Http\Controllers\MessageLogController;
+use App\Http\Controllers\BillReports\OnlineCollectionController;
+use App\Http\Controllers\BillReports\DueListDateRangeController;
+use App\Http\Controllers\BillReports\CollectionTypeWiseController;
+use App\Http\Controllers\BillReports\NewBlockClientController;
+use App\Http\Controllers\BillReports\ClientExpiryController;
+use App\Http\Controllers\BillReports\VendorMasterClientController;
+use App\Http\Controllers\Accounts\GenCahsVoucherController;
+use App\Http\Controllers\Accounts\GenChequeVoucherController;
+use App\Http\Controllers\Accounts\GenNagadVoucherController;
+use App\Http\Controllers\Accounts\GenBkashVoucherController;
+use App\Http\Controllers\Accounts\ClientInvoicePostingController;
+use App\Http\Controllers\Accounts\SupplierLedgerController;
+use App\Http\Controllers\Accounts\SupplierAgingReportController;
+use App\Http\Controllers\Accounts\SupplierInvoiceListController;
+use App\Http\Controllers\Accounts\SupplierDueListController;
+use App\Http\Controllers\Accounts\Setup\BankEntryController;
+use App\Http\Controllers\Accounts\Setup\BankAccountController;
+use App\Http\Controllers\Accounts\Setup\DeleteJournalController;
+use App\Http\Controllers\Accounts\ProjectController;
+use App\Http\Controllers\Accounts\TransferVoucherController;
+use App\Http\Controllers\Accounts\OpeningBalanceController;
+use App\Http\Controllers\Accounts\CashBankController;
+use App\Http\Controllers\Accounts\GeneralLedgerController;
+use App\Http\Controllers\Accounts\JournalController;
+use App\Http\Controllers\Accounts\ChartofAccountsController;
+
+
+
+
+
+
+//Fruque End/////////////
+
 
 /*
 |--------------------------------------------------------------------------
@@ -122,7 +159,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('ippool', IpPoolController::class);
     Route::post('importRouter', [IpPoolController::class, 'importRouter'])->name('ippool.importRouter');
-    Route::post('ippool/search', [IpPoolController::class, 'search'])->name('ippool.search');
+    Route::post('ippool/{search}', [IpPoolController::class, 'search'])->name('ippool.search');
     Route::post('otherInv/prodByCategory', [MasInvoiceController::class, 'prodByCategory'])->name('otherInv.prodByCategory');
     Route::post('otherInv/prodDetail', [MasInvoiceController::class, 'prodDetail'])->name('otherInv.prodDetail');
     Route::post('getCustomerByBranch', [CustomerController::class, 'getCustomerByBranch'])->name('getCustomerByBranch');
@@ -141,6 +178,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('accesslog/search', [AccessLogController::class, 'search'])->name('accesslog.search');
     Route::resource('userstatusreport', UserStatusReportController::class);
     Route::get('userstatusreport/show', [UserStatusReportController::class, 'show'])->name('userstatusreport.show');
+	//Faruque
+	Route::resource('messagelog', MessageLogController::class);
+    Route::post('messagelog/search', [MessageLogController::class, 'search'])->name('messagelog.search');
 
 
     // SMS & Email Module
@@ -180,9 +220,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('invoicecollectionhomeshow', [MasInvoiceController::class, 'invoiceCollectionHomeShow'])->name('invoicecollectionhome.show');
     Route::post('invoicecollectionhomestore', [MasInvoiceController::class, 'invoiceCollectionHomeStore'])->name('invoice_collection_home.store');
     Route::get('advanceinformation', [MasInvoiceController::class, 'advanceInformation'])->name('advanceinformation.advanceinformation');
+
     Route::get('renewcustomer', [MasInvoiceController::class, 'renew'])->name('renewcustomer.renew');
     Route::get('otherinvoice', [MasInvoiceController::class, 'otherInv'])->name('otherinvoice.other_inv');
-	
+//Faruque////////////
+	Route::post('advanceinformationstore', [MasInvoiceController::class, 'advanceInformationStore'])->name('advanceinformation.store');
 	Route::resource('monthlyinvoices', MonthlyInvoiceController::class);
     Route::post('monthlyinvoices/show', [MonthlyInvoiceController::class, 'show'])->name('monthlyinvoices.show');
 	Route::resource('clientledger', ClientLedgerController::class);
@@ -193,25 +235,89 @@ Route::middleware(['auth'])->group(function () {
     Route::get('collectionsummery/show', [CollectionSummeryController::class, 'show'])->name('collectionsummery.show');
 	Route::resource('rptclientlist', RptClientListController::class);
     Route::get('rptclientlist/show', [RptClientListController::class, 'show'])->name('rptclientlist.show');
+	
+	Route::resource('invoiceprint', InvoicePrintController::class);
+    Route::get('invoiceprint/show', [InvoicePrintController::class, 'show'])->name('invoiceprint.show');
+	Route::resource('duelist', DueListController::class);
+    Route::get('duelist/show', [DueListController::class, 'show'])->name('duelist.show');
+	Route::resource('discountincollection', DiscountInCollectionController::class);
+    Route::get('discountincollection/show', [DiscountInCollectionController::class, 'show'])->name('onlinecollection.show');
+	Route::resource('onlinecollection', OnlineCollectionController::class);
+    Route::get('onlinecollection/show', [OnlineCollectionController::class, 'show'])->name('onlinecollection.show');
+	Route::resource('duelistdaterange', DueListDateRangeController::class);
+    Route::get('duelistdaterange/show', [DueListDateRangeController::class, 'show'])->name('duelistdaterange.show');
+	Route::resource('collectiontypewise', CollectionTypeWiseController::class);
+    Route::get('collectiontypewise/show', [CollectionTypeWiseController::class, 'show'])->name('collectiontypewise.show');
+	Route::resource('newblockclient', NewBlockClientController::class);
+    Route::get('newblockclient/show', [NewBlockClientController::class, 'show'])->name('newblockclient.show');
+	Route::resource('expiry', ClientExpiryController::class);
+    Route::get('expiry/show', [ClientExpiryController::class, 'show'])->name('expiry.show');
+	Route::resource('vendormasterclient', VendorMasterClientController::class);
+    Route::get('vendormasterclient/show', [VendorMasterClientController::class, 'show'])->name('vendormasterclient.show');
 
+    // Accounts Module
 
+	Route::resource('gencahsvoucher', GenCahsVoucherController::class);
+    Route::get('gencahsvoucher/show', [GenCahsVoucherController::class, 'show'])->name('gencahsvoucher.show');
+	Route::resource('genchequevoucher', GenChequeVoucherController::class);
+    Route::get('genchequevoucher/show', [GenChequeVoucherController::class, 'show'])->name('genchequevoucher.show');
+	Route::resource('gennagadvoucher', GenNagadVoucherController::class);
+    Route::get('gennagadvoucher/show', [GenNagadVoucherController::class, 'show'])->name('gennagadvoucher.show');
+	Route::resource('genbkashvoucher', GenBkashVoucherController::class);
+    Route::get('genbkashvoucher/show', [GenBkashVoucherController::class, 'show'])->name('genbkashvoucher.show');
+	Route::resource('clientinvoiceposting', ClientInvoicePostingController::class);
+    Route::get('clientinvoiceposting/show', [ClientInvoicePostingController::class, 'show'])->name('clientinvoiceposting.show');
+	Route::resource('supplierledger', SupplierLedgerController::class);
+    Route::get('supplierledger/show', [SupplierLedgerController::class, 'show'])->name('supplierledger.show');
+	Route::resource('supplieragingreport', SupplierAgingReportController::class);
+    Route::get('supplieragingreport/show', [SupplierAgingReportController::class, 'show'])->name('supplieragingreport.show');
+	Route::resource('supplierinvoicelist', SupplierInvoiceListController::class);
+    Route::get('supplierinvoicelist/show', [SupplierInvoiceListController::class, 'show'])->name('supplierinvoicelist.show');
+	Route::resource('supplierdueinvoice', SupplierDueListController::class);
+    Route::get('supplierdueinvoice/show', [SupplierDueListController::class, 'show'])->name('supplierdueinvoice.show');
+	
+	// Accounts Setup
+	Route::resource('bankentry', BankEntryController::class);
+	Route::resource('bankaccount', BankAccountController::class);
+	Route::resource('deletejournal', DeleteJournalController::class);
+    Route::get('deletejournal/show', [DeleteJournalController::class, 'show'])->name('deletejournal.show');
+	
+	// Other Transaction
+	Route::resource('project', ProjectController::class);
+	Route::resource('transfervoucher', TransferVoucherController::class);
+    Route::get('transfervoucher/show', [TransferVoucherController::class, 'show'])->name('transfervoucher.show');
+	Route::resource('openingbalance', OpeningBalanceController::class);
+    Route::get('openingbalance/show', [OpeningBalanceController::class, 'show'])->name('openingbalance.show');
+	
+	//Reports
+	Route::resource('cashbank', CashBankController::class);
+    Route::get('cashbank/show', [CashBankController::class, 'show'])->name('cashbank.show');
+	Route::resource('generalledger', GeneralLedgerController::class);
+    Route::get('generalledger/show', [GeneralLedgerController::class, 'show'])->name('generalledger.show');
+	Route::resource('journal', JournalController::class);
+    Route::get('journal/show', [JournalController::class, 'show'])->name('journal.show');
+	Route::resource('chartofaccounts', ChartofAccountsController::class);
+    Route::get('chartofaccounts/show', [ChartofAccountsController::class, 'show'])->name('chartofaccounts.show');
+	
+
+////////////////////////Faruque End /////////////
     // Authentication
     Route::get('permissions', [HomeController::class, 'permission_page']);
     Route::get('users', [HomeController::class, 'user_page']);
     Route::get('roles', [HomeController::class, 'roles_page']);
 
     // HRM Setup
-    Route::resource('leavetype', LeaveTypeController::class);
     Route::resource('holiday', TblHolidayController::class);
     Route::resource('weeklyholiday', TblWeekendController::class);
+    Route::resource('leavetype', LeaveTypeController::class);
     Route::get('empwopin', [MasEmployeeController::class, 'woPin'])->name('empwopin.woPin');
     Route::put('empwopin/{empwopin}', [MasEmployeeController::class, 'woPinUpdate'])->name('empwopin.woPinUpdate');
     Route::resource('shift', TblScheduleController::class);
-    Route::resource('scheduleteam', TblScheduleTeamController::class);
     Route::get('shiftschedule', [TblScheduleController::class, 'shiftschdlIndex'])->name('shiftschedule.shiftschdlIndex');
     Route::post('shiftschedule', [TblScheduleController::class, 'shiftschdlStore'])->name('shiftschedule.shiftschdlStore');
     Route::put('shiftschedule/{shiftschedule}', [TblScheduleController::class, 'shiftschdlUpdate'])->name('shiftschedule.shiftschdlUpdate');
     Route::resource('hrmlevel', HrmLevelController::class);
+    Route::resource('scheduleteam', TblScheduleTeamController::class);
     Route::resource('shiftteam', TblShiftTeamController::class);
     Route::resource('shiftsetup', HrmShiftSetupController::class);
 
@@ -219,8 +325,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('attendancesummary', HrmAttendanceSummaryController::class);
     Route::resource('hrmincrement', HrmIncrementController::class);
     Route::resource('employeeinformation', MasEmployeeController::class);
+    // Route::get('employeepromotion', [MasEmployeeController::class, 'employeePromotionlIndex'])->name('employeepromotion.employeePromotionlIndex');
+    // Route::post('employeepromotion', [MasEmployeeController::class, 'employeePromotionlStore'])->name('employeepromotion.employeePromotionlStore');
+    // Route::post('employeepromotion/{employeepromotion}', [MasEmployeeController::class, 'employeePromotionlUpdate'])->name('employeepromotion.employeePromotionlUpdate');
     Route::resource('employeepromotion', HrmEmpJobHistoryController::class);
-
     Route::resource('additioncomponent', HrmEmpMonthlyAddController::class);
     Route::post('additioncomponent.show', [HrmEmpMonthlyAddController::class, 'show'])->name('additioncomponent.show');
 
@@ -301,10 +409,15 @@ Route::middleware(['auth'])->group(function () {
     //Pdf
     Route::get('monthly_invoices_pdf', [MonthlyInvoiceController::class, 'indexPdf'])->name('monthly_invoices_pdf');
 
+
     //ajax
     Route::post('routerApiCheck/{router}', [TblRouterController::class, 'apiCheckPost'])->name('routerApiCheck');
     Route::post('routerSShCheck/{router}', [TblRouterController::class, 'sshCheckPost'])->name('routerSShCheck');
 });
+
+
+
+
 
 Route::get('routes', function () {
     $routeCollection = Route::getRoutes();

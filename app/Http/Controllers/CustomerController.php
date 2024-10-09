@@ -31,7 +31,6 @@ use App\Models\TblCableType;
 use App\Models\TrnClientsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
 
 
 
@@ -130,7 +129,7 @@ class CustomerController extends Controller
         ->leftJoin('tbl_bill_types', 'tbl_bill_types.id', '=', 'trn_clients_services.tbl_bill_type_id')
         ->leftJoin('tbl_status_types', 'tbl_status_types.id', '=', 'trn_clients_services.tbl_status_type_id')
         ->where('trn_clients_services.srv_type_id', 1)
-        ->paginate(30);
+        ->get();
 
         $customers_dropdown = Customer::select('id as customer_id', 'customer_name')->orderBy('customer_name', 'desc')->get();
         $zones = TblZone::get();
@@ -658,6 +657,22 @@ class CustomerController extends Controller
 
         return redirect('/customers')->with('success', 'Customer updated successfully');
     }
+	
+	 public function getCustomerByBranch(Request $req)
+    {
+        //
+        $response = Customer::where('sub_office_id',$req->branchID)->get();
+
+        //dd($response);
+        if ($response) {
+            return response()->json([
+                "status" => true,
+                "msg" => "",
+                "data" => $response
+            ]);
+        }
+    }
+	
 
     /**
      * Remove the specified resource from storage.

@@ -50,7 +50,7 @@
   </div>
 
   <div class="main_content_iner">
-    <div class="container-fluid p-0 pb-3">
+    <div class="container-fluid p-0">
       <div class="row justify-content-center">
         {{-- Customers header --}}
         <div class="">
@@ -248,11 +248,11 @@
                       </div>
                       <div class="col-sm-4">
                         <div class="mb-2">
-                          <label for="zone_id" class="form-label fw-bold">Zone </label>
+                          <label for="zone_id" class="form-label fw-bold">Zone <span class="text-danger">*</span></label>
                           <select name="zone_id" id="zone_id" class="form-control">
                             <option value="">Select a Zone</option>
                             @foreach ($zones as $zone)
-                                <option value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
+                                <option {{ ($zone->id == "1") ? 'selected' : '' }}  value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
                             @endforeach
                           </select>
                         </div>
@@ -260,6 +260,7 @@
                     </div>
 
                     <div class="row">
+					<!--
                       <div class="col-sm-4">
                         <div class="mb-2">
                           <label for="subzone_id" class="form-label fw-bold">Sub Zone </label>
@@ -271,6 +272,7 @@
                           </select>
                         </div>
                       </div>
+					 -->
                       <div class="col-sm-4">
                         <div class="mb-2">
                           <label for="latitude" class="form-label fw-bold">Latitude </label>
@@ -416,22 +418,25 @@
                       </div>
                       <div class="col-sm-4">
                         <div class="mb-2">
-                          <label for="tbl_client_category_id" class="form-label fw-bold">Client Category</label>
+                          <label for="tbl_client_category_id" class="form-label fw-bold">Client Category<span class="text-danger">*</span></label>
                           <select name="tbl_client_category_id" id="tbl_client_category_id" class="form-control">
                             <option value="">Select a Client Category</option>
                             @foreach ($client_categories as $client_category)
-                                <option value="{{ $client_category->id }}">{{ $client_category->name }}</option>
+                   <option {{ ($client_category->id == "1") ? 'selected' : '' }} value="{{ $client_category->id }}">{{ $client_category->name }}</option>
                             @endforeach
                           </select>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="mb-2">
-                          <label for="sub_office_id" class="form-label fw-bold">Branch</label>
+                          <label for="sub_office_id" class="form-label fw-bold">Branch<span class="text-danger">*</span></label>
                           <select name="sub_office_id" id="sub_office_id" class="form-control">
                             <option value="">Select a Branch</option>
+
                             @foreach ($sub_offices as $sub_office)
-                                <option value="{{ $sub_office->id }}">{{ $sub_office->name }}</option>
+                   <option {{ ($sub_office->id == "1") ? 'selected' : '' }} value="{{ $sub_office->id }}">{{ $sub_office->name }}</option>
+													 
+													 
                             @endforeach
                           </select>
                         </div>
@@ -469,11 +474,11 @@
                         </div>
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="bandwidth_plan_id" class="form-label fw-bold">Connection Type </label>
+                            <label for="bandwidth_plan_id" class="form-label fw-bold">Connection Type <span class="text-danger">*</span></label>
                             <select name="bandwidth_plan_id" id="bandwidth_plan_id" class="form-control">
                               <option value="">Select a Connection Type</option>
                               @foreach ($bandwidth_plans as $bandwidth_plan)
-                                  <option value="{{ $bandwidth_plan->id }}">{{ $bandwidth_plan->bandwidth_plan }}</option>
+                                  <option {{ ($bandwidth_plan->id == "2") ? 'selected' : '' }} value="{{ $bandwidth_plan->id }}">{{ $bandwidth_plan->bandwidth_plan }}</option>
                               @endforeach
                             </select>
                           </div>
@@ -483,7 +488,7 @@
                       <div class="row">
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="installation_date" class="form-label fw-bold">Installation Date </label>
+                            <label for="installation_date" class="form-label fw-bold">Installation Date <span class="text-danger">*</span> </label>
                             <input type="text" class="form-control datepicker-here digits" id="installation_date" name="installation_date" data-date-Format="yyyy-mm-dd">
                           </div>
                         </div>
@@ -597,7 +602,7 @@
                             <select name="tbl_bill_type_id" id="tbl_bill_type_id" class="form-control" required>
                               <option value="">Select a Bill Type</option>
                               @foreach ($bill_types as $bill_type)
-                                  <option value="{{ $bill_type->id }}">{{ $bill_type->bill_type_name }}</option>
+                                  <option {{ ($bill_type->id == "2") ? "selected" : "" }} value="{{ $bill_type->id }}">{{ $bill_type->bill_type_name }}</option>
                               @endforeach
                             </select>
                           </div>
@@ -635,8 +640,8 @@
                         </div>
                         <div class="col-sm-4">
                           <div class="mb-2">
-                            <label for="monthly_bill" class="form-label fw-bold">Monthly Bill </label>
-                            <input type="text" class="form-control" id="monthly_bill" name="monthly_bill">
+                            <label for="rate_amnt" class="form-label fw-bold">Monthly Bill<span class="text-danger">*</span> </label>
+                            <input type="text" class="form-control" id="rate_amnt" name="rate_amnt">
                           </div>
                         </div>
                         {{-- <div class="col-sm-4">
@@ -698,6 +703,38 @@
           <form action="{{ route('customers.search') }}" method="POST" class="p-3">
             @csrf
             <div class="row">
+			
+				<div class="col-md-4">
+				<label for="branch" class="form-label">Branch</label>	
+				  <select name="branch_id" id="branch_id" class="form-select form-select-sm" style="width: 100%">
+                        <option value="-1" selected>Select a Branch</option>
+                                                        @foreach ($sub_offices as $branch)
+                 <option {{ $selectedBranch==$branch->id ? 'selected' : '' }} value="{{ $branch->id }}">{{ $branch->name }}</option>
+            
+														@endforeach 
+											
+                    </select>
+				</div>
+			<div class="col-md-4">
+                    <label for="customer" class="form-label">Customer</label>
+                    <select name="customer_id" id="customer_id" class="form-select form-select-sm" style="width: 100%">
+                    <option value="-1" selected>Select a Customer</option>
+					 @php 
+					 if($selectedCustomer) {
+					@endphp
+					 @foreach ($customers as $customer)
+	<option {{ $selectedCustomer==$customer->customer_id ? 'selected' : '' }} value="{{ $customer->customer_id }}">{{ $customer->customer_name }}</option>
+				@endforeach
+			<!--		<option selected value="{{ $selectedCustomer }}">{{ $selectedCustomer }}</option> -->
+					  @php
+					 }
+					  @endphp                               
+                     </select>
+                </div>
+				
+	
+	
+	<!--		
               <div class="col-sm-4 mb-2">
                 <label for="customer" class="form-label fw-bold">Customer</label>
                 <select class="select2 form-select" id="customer" name="customer">
@@ -707,7 +744,7 @@
                   @endforeach
                 </select>
               </div>
-              
+       -->      
               <div class="col-sm-4 mb-2">
                 <label for="customer_category" class="form-label fw-bold">Customer Category</label>
                 <select class="select2 form-select" id="customer_category" name="customer_category">
@@ -717,7 +754,9 @@
                   @endforeach                      
                 </select>
               </div>
-              
+           </div>
+
+            <div class="row">
               <div class="col-sm-4 mb-2">
                 <label for="customer_status" class="form-label fw-bold">Customer Status</label>
                 <select class="select2 form-select" id="customer_status" name="customer_status">
@@ -727,9 +766,7 @@
                   @endforeach
                 </select>
               </div>    
-            </div>
-
-            <div class="row">
+ 
               <div class="col-sm-4 mb-2">
                 <label for="package" class="form-label fw-bold">Package</label>
                 <select class="select2 form-select" id="package" name="package">
@@ -746,16 +783,6 @@
                   <option value="-1" selected>Select a Zone</option>
                   @foreach ($zones as $zone)
                       <option {{ $selectedZone==$zone->id ? 'selected' : '' }} value="{{ $zone->id }}">{{ $zone->zone_name }}</option>
-                  @endforeach
-                </select>
-              </div>
-              
-              <div class="col-sm-4 mb-2">
-                <label for="subzone" class="form-label fw-bold">Sub Zone</label>
-                <select class="select2 form-select" id="subzone" name="subzone">
-                  <option value="-1" selected>Select a Sub Zone</option>
-                  @foreach ($subzones as $subzone)
-                      <option {{ $selectedSubZone==$subzone->id ? 'selected' : '' }} value="{{ $subzone->id }}">{{ $subzone->subzone_name }}</option>
                   @endforeach
                 </select>
               </div>
@@ -833,7 +860,7 @@
                                 <div class="col-sm-4">
                                   <div class="mb-2">
                                     <label for="customer_name" class="form-label fw-bold">Customer Name <span class="text-danger">*</span> </label>
-                                    <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ $cust->customer_name }}" required>
+                                    <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ $cust->customer_name }}" required readonly>
                                   </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -1008,12 +1035,13 @@
                               <div class="row">
                                 <div class="col-sm-4">
                                   <div class="mb-2">
-                                    <label for="subzone_id" class="form-label fw-bold">Sub Zone </label>
-                                    <select name="subzone_id" id="subzone_id" class="form-control">
-                                      @foreach ($subzones as $subzone)
-                                          <option {{ ($cust->subzone_id == $subzone->id) ? "selected" : "" }} value="{{ $subzone->id }}">{{ $subzone->subzone_name }}</option>
+                                    <label for="branch_id" class="form-label fw-bold">Branch </label>
+                                    <select name="branch_id" id="branch_id" class="form-control">
+                                      @foreach ($sub_offices as $branch)
+                                          <option {{ ($cust->sub_office_id == $branch->id) ? "selected" : "" }} value="{{ $branch->id }}">{{ $branch->name }}</option>
                                       @endforeach
                                     </select>
+									
                                   </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -1194,7 +1222,6 @@
                 @endforeach
               </tbody>
             </table>
-            {!! $customers->links() !!}
           </div>
         </div>
       </div>
@@ -1207,6 +1234,70 @@
             $('.select2').select2({
                 
             });
+		     $("#branch_id").select2({
+     
+			});
+			$("#customer_id").select2({
+   
+			});	
+		$('#branch_id').on('select2:select', function (e) {
+                var data = e.params.data;
+                console.log(data);
+
+                const branchID = data.id;
+
+
+                // Your JSON data
+                const jsonData = { branchID: branchID };
+
+                // Set up options for the fetch request
+                const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(jsonData) // Convert JSON data to a string and set it as the request body
+                };
+
+                // Make the fetch request with the provided options
+                fetch(`{{ url('getCustomerByBranch') }}`, options)
+                .then(response => {
+                    // Check if the request was successful
+                    if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    }
+                    // Parse the response as JSON
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the JSON data
+                    console.log(data);
+                    var select = document.getElementById("customer_id");
+                    select.innerHTML = "";
+                    var option = new Option(data.text, data.id, true, true);
+                    option.text = "Select a Customer";
+                    option.value = -1;
+                    select.append(option);
+                    for(prod of data.data)
+                    {
+                        var option = new Option(data.text, data.id, true, true);
+                        option.text = prod.customer_name;
+                        option.value = prod.id;
+                        var select = document.getElementById("customer_id");
+                        select.append(option);
+                    }
+                    $('#customer_id').val('-1'); 
+                        
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error('Fetch error:', error);
+                });
+
+            });	
+			
+			
         });
 
         const addBroadband = document.getElementById('srv_type_id');
@@ -1230,6 +1321,8 @@
             editServiceInfo.classList.add("d-none");
           }
         });
+		
+
     </script>
   @endpush
 

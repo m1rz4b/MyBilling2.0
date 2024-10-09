@@ -14,7 +14,7 @@ class AreaController extends Controller
     public function index()
     {
         //
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $areas = Area::get();
         return view("pages.setup.area", compact("menus", "areas"));
     }
@@ -63,15 +63,11 @@ class AreaController extends Controller
     public function update(Request $request, Area $area)
     {
         //
-        // $data = $request->validate([
-        //     'area_name' => 'required|unique:areas,area_name',
-        //     'status' => 'required'
-        // ]);
-        $t_area = Area::find($area->id);
-        //dd($t_area);
-        $t_area->status = $area->status;
-        $t_area->save();
-        // $area->update($data);
+        $data = $request->validate([
+            'area_name' => 'required',
+            'status' => 'required'
+        ]);
+        $area->update($data);
         return redirect()->route("area.index") -> with('success', 'Area updated successfully');
     }
 

@@ -14,7 +14,7 @@ class TaskProgressController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $task_progresses = TaskProgress::get();
         return view('pages.setup.taskProgress', compact('menus', 'task_progresses'));
     }

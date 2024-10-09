@@ -14,7 +14,7 @@ class InvoiceTypeController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $invoicetypes  = InvoiceType::get();
         return view("pages.setup.invoiceType", compact("menus", "invoicetypes"));
     }

@@ -381,138 +381,108 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <table id="mytable">
-                                    <thead>
-                                        <th>Category</th>
-                                        <th>Product</th>
-                                        <th>Remain</th>
-                                        <th>Quantity</th>
-                                        <th>Description</th>
-                                        <th>Rate</th>
-                                        <th>Amount</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <select name="txtcat_id[]" id="txtcat_id[]" class="form-control form-control-sm">
-                                                    <option value="-1">Select a Category</option>
-                                                    @foreach ($categories as $cat)
-                                                        <option value={{ $cat->id }}>{{ $cat->cat_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select name="txtprod_id[]" id="txtprod_id[]" class="form-control form-control-sm">
-                                                    <option value="-1">Select Product</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm" id="r_qty" name="r_qty" disabled>
-                                            </td>
-                                            <td>
-                                                <input type="text" onblur="CaclulateCostTotal()" class="form-control form-control-sm" id="qty[]" name="qty[]">
-                                            </td>
-                                            <td>
-                                                <textarea class="form-control form-control-sm" id="" name="sd[]" rows="1"></textarea>
-                                            </td>
-                                            <td>
-                                                <input type="text" onblur="CaclulateCostTotal()" class="form-control form-control-sm" id="pwv[]" name="pwv[]">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control form-control-sm" id="vat[]" name="vat[]">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                {{-- <table>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <div>
-                                                    <label for="totcost1">Sub Total</label>
-                                                    <input type="text" class="form-control form-control-sm" id="totcost1" name="totcost1">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <div>
-                                                    <label for="">Discount</label>
-                                                    <input type="text" class="form-control form-control-sm" id="" name="" value="0">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <div>
-                                                    <label for="">Vat</label>
-                                                    <div class="d-flex gap-3">
-                                                        <input type="number" class="form-control form-control-sm" id="" name="" placeholder="vat %">
-                                                        <input type="number" class="form-control form-control-sm" id="" name="">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <div>
-                                                    <label for="">Total Bill</label>
-                                                    <input type="text" class="form-control form-control-sm" id="" name="">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <div>
-                                                    <label for="">Advance Received</label>
-                                                    <input type="text" class="form-control form-control-sm" id="" name="" value="0">
-                                                </div>
-                                            </td>
-                                        </tr>
 
-                                    </tbody>
-                                </table> --}}
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="mb-2">
+                                            <label for="categoryID" class="form-label">Category</label>
+                                            <select name="categoryID" id="categoryID" class="form-control form-control-sm select2">
+                                                <option value="-1">Select a Category</option>
+                                                @foreach ($categories as $cat)
+                                                    <option value={{ $cat->id }}>{{ $cat->cat_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="mb-2">
+                                            <label for="prodID" class="form-label">Product</label>
+                                            <select name="prodID" id="prodID" class="form-control form-control-sm select2">
+                                                <option value="-1">Select Product</option>
+												
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="mb-1">
+                                            <label for="" class="form-label">Quantity</label>
+                                            <input type="text" class="form-control form-control-sm" id="" name="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="mb-2">
+                                            <label for="" class="form-label">Description</label>
+                                            <textarea class="form-control form-control-sm" id="" name="" rows="1"></textarea>
+                                        </div>
+                                    </div>
+							<!--
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label for="" class="form-label">Billing Period: </label>
+                                            <input type="text" class="form-control form-control-sm" id="" name="">
+                                        </div>
+                                    </div>
+							-->
+                                    <div class="col-md-2">
+                                        <div class="mb-2">
+                                            <label for="" class="form-label">Rate</label>
+                                            <input type="text" class="form-control form-control-sm" id="" name="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="mb-2">
+                                            <label for="" class="form-label">Remain</label>
+                                            <input type="text" class="form-control form-control-sm" id="r_qty" name="r_qty" disabled>
+                                        </div>
+                                    </div>
+									
+						<!--
+                                   <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label for="" class="form-label">Unit: </label>
+                                            <input type="text" class="form-control form-control-sm" id="" name="">
+                                        </div>
+                                    </div>
+							-->
+                                    <div class="col-md-2">
+                                        <div class="mb-2">
+                                            <label for="" class="form-label">Amount</label>
+                                            <input type="text" class="form-control form-control-sm" id="" name="">
+                                        </div>
+                                    </div>
+							</div>
+							 <div class="row">
+							   <div class="col-md-10">
+							   
+							   </div>
+                                    <div class="col-md-2">
+
+                                        <div>
+                                            <label for="">Sub Total</label>
+                                            <input type="text" class="form-control form-control-sm" id="" name="">
+                                        </div>
+                                        <div>
+                                            <label for="">Discount</label>
+                                            <input type="text" class="form-control form-control-sm" id="" name="" value="0">
+                                        </div>
+                                        <div>
+                                            <label for="">Vat</label>
+                                            <div class="d-flex gap-3">
+                                                <input type="number" class="form-control form-control-sm" id="" name="" placeholder="vat %">
+                                                <input type="number" class="form-control form-control-sm" id="" name="">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="">Total Bill</label>
+                                            <input type="text" class="form-control form-control-sm" id="" name="">
+                                        </div>
+                                        <div>
+                                            <label for="">Advance Received</label>
+                                            <input type="text" class="form-control form-control-sm" id="" name="" value="0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
                                 <button class="btn-custom-1 py-1" type="submit" onclick="this.disabled=true;this.form.submit();">Add</button>
@@ -527,329 +497,183 @@
 
     <script>
 
-
-        
-
         
         $(document).ready(function() {
             $('.select2').select2({
                 
             });
-
+            $("#categoryID").select2({
+              dropdownParent: $("#addOtherInvModal")
+            });
             $("#branch_id").select2({
-                dropdownParent: $("#addOtherInvModal")
+              dropdownParent: $("#addOtherInvModal")
             });
             $("#customer_id").select2({
-                dropdownParent: $("#addOtherInvModal")
+              dropdownParent: $("#addOtherInvModal")
+            });
+            $("#prodID").select2({
+              dropdownParent: $("#addOtherInvModal")
+            });
+            $('#branch_id').on('select2:select', function (e) {
+                var data = e.params.data;
+                console.log(data);
+
+                const branchID = data.id;
+
+
+                // Your JSON data
+                const jsonData = { branchID: branchID };
+
+                // Set up options for the fetch request
+                const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(jsonData) // Convert JSON data to a string and set it as the request body
+                };
+
+                // Make the fetch request with the provided options
+                fetch(`{{ url('getCustomerByBranch') }}`, options)
+                .then(response => {
+                    // Check if the request was successful
+                    if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    }
+                    // Parse the response as JSON
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the JSON data
+                    console.log(data);
+                    var select = document.getElementById("customer_id");
+                    select.innerHTML = "";
+                    var option = new Option(data.text, data.id, true, true);
+                    option.text = "Select a Customer";
+                    option.value = -1;
+                    select.append(option);
+                    for(prod of data.data)
+                    {
+                        var option = new Option(data.text, data.id, true, true);
+                        option.text = prod.customer_name;
+                        option.value = prod.id;
+                        var select = document.getElementById("customer_id");
+                        select.append(option);
+                    }
+                    $('#customer_id').val('-1'); 
+                        
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error('Fetch error:', error);
+                });
+
+            });
+            $('#categoryID').on('select2:select', function (e) {
+                var data = e.params.data;
+                console.log(data);
+
+                const catID = data.id;
+
+
+                // Your JSON data
+                const jsonData = { catID: catID };
+
+                // Set up options for the fetch request
+                const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(jsonData) // Convert JSON data to a string and set it as the request body
+                };
+
+                // Make the fetch request with the provided options
+                fetch(`{{ url('otherInv/prodByCategory') }}`, options)
+                .then(response => {
+                    // Check if the request was successful
+                    if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    }
+                    // Parse the response as JSON
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the JSON data
+                    console.log(data);
+
+                    var option = new Option(data.text, data.id, true, true);
+                    option.text = "Select Product";
+                    option.value = -1;
+                    var select = document.getElementById("prodID");
+                    select.innerHTML = "";
+                    select.append(option);
+                    for(prod of data.data)
+                    {
+                        var option = new Option(data.text, data.id, true, true);
+                        option.text = prod.pd_name;
+                        option.value = prod.id;
+                        var select = document.getElementById("prodID");
+                        select.append(option);
+                    }
+                    $('#prodID').val('-1');
+                        
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error('Fetch error:', error);
+                });
+
+            });
+            $('#prodID').on('select2:select', function (e) {
+                var data = e.params.data;
+                console.log(data);
+
+                const prodID = data.id;
+
+
+                // Your JSON data
+                const jsonData = { prodID: prodID };
+
+                // Set up options for the fetch request
+                const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(jsonData) // Convert JSON data to a string and set it as the request body
+                };
+
+                // Make the fetch request with the provided options
+                fetch(`{{ url('otherInv/prodDetail') }}`, options)
+                .then(response => {
+                    // Check if the request was successful
+                    if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    }
+                    // Parse the response as JSON
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the JSON data
+                    console.log(data);
+                    var r_qty = document.getElementById("r_qty");
+                    r_qty.value = data.data.pd_qty;
+                        
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error('Fetch error:', error);
+                });
+
             });
 
+
             
-
-            //new code
-            // row = document.querySelector("#row");
-
-             
             
-
-            // $('#branch_id').on('select2:select', function (e) {
-            //     var data = e.params.data;
-            //     console.log(data);
-
-            //     const branchID = data.id;
-
-
-            //     // Your JSON data
-            //     const jsonData = { branchID: branchID };
-
-            //     // Set up options for the fetch request
-            //     const options = {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            //     },
-            //     body: JSON.stringify(jsonData) // Convert JSON data to a string and set it as the request body
-            //     };
-
-            //     // Make the fetch request with the provided options
-            //     fetch(`{{ url('getCustomerByBranch') }}`, options)
-            //     .then(response => {
-            //         // Check if the request was successful
-            //         if (!response.ok) {
-            //         throw new Error('Network response was not ok');
-            //         }
-            //         // Parse the response as JSON
-            //         return response.json();
-            //     })
-            //     .then(data => {
-            //         // Handle the JSON data
-            //         console.log(data);
-            //         var select = document.getElementById("customer_id");
-            //         select.innerHTML = "";
-            //         var option = new Option(data.text, data.id, true, true);
-            //         option.text = "Select a Customer";
-            //         option.value = -1;
-            //         select.append(option);
-            //         for(prod of data.data)
-            //         {
-            //             var option = new Option(data.text, data.id, true, true);
-            //             option.text = prod.customer_name;
-            //             option.value = prod.id;
-            //             var select = document.getElementById("customer_id");
-            //             select.append(option);
-            //         }
-            //         $('#customer_id').val('-1'); 
-                        
-            //     })
-            //     .catch(error => {
-            //         // Handle any errors that occurred during the fetch
-            //         console.error('Fetch error:', error);
-            //     });
-
-            // });
-            // $('#categoryID').change(function (e) {
-                
-            //     const catID = document.getElementById('categoryID').value;
-            //     console.log(catID);
-
-            //     // Your JSON data
-            //     const jsonData = { catID: catID };
-
-            //     // Set up options for the fetch request
-            //     const options = {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            //     },
-            //     body: JSON.stringify(jsonData) // Convert JSON data to a string and set it as the request body
-            //     };
-
-            //     // Make the fetch request with the provided options
-            //     fetch(`{{ url('otherInv/prodByCategory') }}`, options)
-            //     .then(response => {
-            //         // Check if the request was successful
-            //         if (!response.ok) {
-            //         throw new Error('Network response was not ok');
-            //         }
-            //         // Parse the response as JSON
-            //         return response.json();
-            //     })
-            //     .then(data => {
-            //         // Handle the JSON data
-            //         console.log(data);
-
-            //         var option = new Option(data.text, data.id, true, true);
-            //         option.text = "Select Product";
-            //         option.value = -1;
-            //         var select = document.getElementById("prodID");
-            //         select.innerHTML = "";
-            //         select.append(option);
-            //         for(prod of data.data)
-            //         {
-            //             var option = new Option(data.text, data.id, true, true);
-            //             option.text = prod.pd_name;
-            //             option.value = prod.id;
-            //             var select = document.getElementById("prodID");
-            //             select.append(option);
-            //         }
-            //         $('#prodID').val('-1');
-                        
-            //     })
-            //     .catch(error => {
-            //         // Handle any errors that occurred during the fetch
-            //         console.error('Fetch error:', error);
-            //     });
-
-            // });
-            // $('#prodID').change(function (e) {
-                               
-            //     const prodID = document.getElementById('prodID').value;;
-
-
-            //     // Your JSON data
-            //     const jsonData = { prodID: prodID };
-
-            //     // Set up options for the fetch request
-            //     const options = {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            //     },
-            //     body: JSON.stringify(jsonData) // Convert JSON data to a string and set it as the request body
-            //     };
-
-            //     // Make the fetch request with the provided options
-            //     fetch(`{{ url('otherInv/prodDetail') }}`, options)
-            //     .then(response => {
-            //         // Check if the request was successful
-            //         if (!response.ok) {
-            //         throw new Error('Network response was not ok');
-            //         }
-            //         // Parse the response as JSON
-            //         return response.json();
-            //     })
-            //     .then(data => {
-            //         // Handle the JSON data
-            //         console.log(data);
-            //         var r_qty = document.getElementById("r_qty");
-            //         r_qty.value = data.data.pd_qty;
-                        
-            //     })
-            //     .catch(error => {
-            //         // Handle any errors that occurred during the fetch
-            //         console.error('Fetch error:', error);
-            //     });
-
-            // });
-
-            // CaclulateCostTotal = function() 
-            // {
-            //     var totcost=0;
-            //     $('tr.items').each(function(i, el) {
-            //         var $this = $(this),
-            //             $cost = $this.find('[name="pwv\\[\\]"]'),
-            //             $quant = $this.find('[name="qty\\[\\]"]'),
-            //             c = parseFloat($cost.val()),
-            //             q = parseInt($quant.val(), 10),
-            //             total = c * q || 0;
-            //         $this.find('[name="vat\\[\\]"]').val(total.toFixed(2));
-            //         totcost=totcost+total;
-            //     });
-            //     // alert(totcost);
-            //     $("#totcost1").val(totcost.toFixed(2));
-            // }
-            
-            // $('input[name="qty\[\]"]').blur(function() {
-				
-		    //     $('#row').clone(false).insertAfter('#row').find('input[type="text"]').val("");
-			// 	row = document.querySelector("#row");
-                
-	    
-	        // 	CaclulateCostTotal();
-		
-            //     return false;
-	        // });
         });
-
-
-        //old code
-        $(document).on('change', 'select[name="txtcat_id[]"]', function(){
-                
-                var total = 0;
-                var $nowRow =$(this).closest("tr")[0].rowIndex;
-                console.log($nowRow);
-                $('tr.items').each(function(i, el){
-
-                    var $this = $(this);
-                    if(i==($nowRow-1))
-                    {
-                        console.log("cat changed");
-                        $.ajax({
-                            url: "../AjaxCode/loadajaxcombo.php?options=1&valueColumns=pd_id,pd_name&table=tbl_product&conditions=where cat_id=" +$this.find('select[name="txtcat_id[]"]').val()+" &firstText=Select a Product&selectedValue=" ,
-                            success: function(html){
-                            $this.find('select[name="txtprod_id[]"]').html(html);
-                        }
-                        });
-                    }
-                });
-            });
-
-            $(document).on('change', 'select[name="txtprod_id[]"]', function(){
-                var prod_id = $(this).val();
-                //alert(prod_id);
-                var $nowRow =$(this).closest("tr")[0].rowIndex;
-                $('tr.items').each(function(i, el){
-                    var $this = $(this);
-                    if(i==($nowRow-1))
-                    {
-                        $.ajax({
-                            type:'POST',
-                            url:'load_with_product.php',
-                            data:'prod_id='+prod_id,
-                            success:function(html){
-                                //alert(html)
-                                //$this.find('#r_qty').val(html);
-                                $this.find('input[name="r_qty[]"]').val(html);
-                            }
-                        });
-                    }
-                });
-            });
-
-            $('input[name="qty\[\]"]').blur(function() {
-                             
-                $('#mytable tbody>tr:last').clone(true).insertAfter('#mytable tbody>tr:last').find('input[type="text"]').val("");
-                
-                
-                MyRowId();
-
-                
-                CaclulateCostTotal();
-                
-                return false;
-            });
-            MyRowId = function() {
-				var myid=1;
-				$('tr.items').each(function(i, el) {
-					var $this = $(this);
-					$this.find('[name="id\\[\\]"]').val(myid.toFixed(0));
-					myid++;
-				});
-				
-			};
-            CaclulateCostTotal = function() {
-				var totcost=0;
-				$('tr.items').each(function(i, el) {
-					var $this = $(this),
-						$cost = $this.find('[name="pwv\\[\\]"]'),
-						$quant = $this.find('[name="qty\\[\\]"]'),
-						c = parseFloat($cost.val()),
-						q = parseInt($quant.val(), 10),
-						total = c * q || 0;
-					$this.find('[name="vat\\[\\]"]').val(total.toFixed(2));
-					totcost=totcost+total;
-				});
-				//alert(totcost);
-				$("#totcost1").val(totcost.toFixed(2));
-				
-				
-				
-				//VAT Calculation and Total
-				$cost = $("#totcost1").val();
-				$per = $("#vatper").val();
-				$discount = $("#discount").val();
-				//alert($discount);
-				vatcal = Math.round(($cost-$discount) * $per/100) || 0;
-				//grandtot = Math.round(parseFloat($cost)+parseFloat(($cost * $per/100))-parseFloat($discount) );
-				grandtot = Math.round(parseFloat($cost)+parseFloat((($cost-$discount) * $per/100))-parseFloat($discount) );
-				//grandtot = Math.round(parseFloat($cost)+parseFloat(($cost * $per/100)));
-				
-				$("#vat1").val(vatcal.toFixed(2));
-				//alert(grandtot);
-				$("#gtot").val(grandtot.toFixed(2));
-				
-			};
-            vatcal = function() {
-				
-				$cost = $("#totcost1").val();
-				$per = $("#vatper").val();
-				
-				vatcal = $cost * $per/100 || 0;
-				grandtot = Math.round(parseFloat($cost)+parseFloat(($cost * $per/100)));
-				
-				$("#vat1").val(vatcal.toFixed(2));
-				//c = $cost;
-				//q = parseFloat(vatcal.val());
-				//grandtot =c+q;
-				alert(grandtot);
-				$("#gtot").val(grandtot.toFixed(2));
-				
-			};
-
-        
-
-        
     </script>
 @endsection

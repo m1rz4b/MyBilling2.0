@@ -15,7 +15,7 @@ class PackagePlanController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $client_types = TblClientType::get();
         $customers = Customer::select('id', 'customer_name')
             ->where('tbl_client_category_id', 3)
@@ -38,19 +38,11 @@ class PackagePlanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => [
-                'required',
-                'string',
-                Rule::unique('tbl_client_types')->whereNull('deleted_at')
-            ],
-            'hotspot' => ['required', 'integer'],
-            'unit' => ['required', 'string'],
-            'pcq' => ['required', 'integer'],
-            'days' => ['required', 'integer'],
-            'view_portal' => ['required', 'integer'],
-            'price' => ['required', 'integer'],
-            'share_rate' => ['required', 'integer'],
-            'reseller_id' => ['required', 'integer'],
+            'name' => 'required|string|unique:tbl_client_types,name',
+			'unit' => 'required', 'string',
+   //         'days' => 'integer|nullable',
+            'price' => 'required', 'integer',
+	//		'share_rate' => 'integer|nullable',
         ]);
 
         $user_id = 1; //Replace by Auth later
@@ -59,13 +51,13 @@ class PackagePlanController extends Controller
             'name' => ($request->name == null) ? '' : $request->name,
             'hotspot' => ($request->hotspot == null) ? 0 : $request->hotspot,
             'unit' => ($request->unit == null) ? '' : $request->unit,
-            'pcq' => ($request->pcq == null) ? '' : $request->pcq,
-            'days' => ($request->days == null) ? '' : $request->days,
-            'view_portal' => ($request->view_portal == null) ? '' : $request->view_portal,
-            'price' => ($request->price == null) ? '' : $request->price,
-            'share_rate' => ($request->share_rate == null) ? '' : $request->share_rate,
-            'reseller_id' => ($request->reseller_id == null) ? '' : $request->reseller_id,
-            'status' => ($request->status == null) ? '' : $request->status,
+            'pcq' => ($request->pcq == null) ? '0' : $request->pcq,
+            'days' => ($request->days == null || $request->days <0) ? '0' : $request->days,
+            'view_portal' => ($request->view_portal == null) ? '0' : $request->view_portal,
+            'price' => ($request->price == null || $request->price <0 ) ? '0' : $request->price,
+            'share_rate' => ($request->share_rate == null || $request->share_rate <0) ? '0' : $request->share_rate,
+			'reseller_id' => ($request->reseller_id == null) ? '0' : $request->reseller_id,
+            'status' => ($request->status == null) ? '0' : $request->status,
             'created_by' => $user_id
         ]);
 
@@ -96,31 +88,33 @@ class PackagePlanController extends Controller
         $user_id = 1; //Replace by Auth later
 
         $request->validate([
-            'name' => [
-                'required',
-                'string',
-                Rule::unique('tbl_client_types')->whereNull('deleted_at')
-            ],
-            'hotspot' => ['required', 'integer'],
-            'unit' => ['required', 'string'],
-            'pcq' => ['required', 'integer'],
-            'days' => ['required', 'integer'],
-            'view_portal' => ['required', 'integer'],
+     //       'name' => [
+     //           'required',
+     //           'string',
+      //          Rule::unique('tbl_client_types')->whereNull('deleted_at')
+     //       ],
+        //    'name' => 'required|string|unique:tbl_client_types,name',
+			'unit' => ['required', 'string'],
+        //    'days' => ['integer|nullable'],
             'price' => ['required', 'integer'],
-            'share_rate' => ['required', 'integer'],
-            'reseller_id' => ['required', 'integer'],
+		//	'share_rate' => ['integer|nullable'],
+		//	 'hotspot' => ['required', 'integer'],
+		//	'pcq' => ['required', 'integer'],
+		//    'view_portal' => ['required', 'integer'],
+      //      'reseller_id' => ['required', 'integer'],
         ]);
-
+		
         $client_types = TblClientType::find($clientType);
         $client_types->name = $request->name;
         $client_types->hotspot = $request->hotspot;
         $client_types->unit = $request->unit;
         $client_types->pcq = $request->pcq;
-        $client_types->days = $request->days;
+        $client_types->days = ($request->days == null ||$request->days <0 ) ? '0' : $request->days;
         $client_types->view_portal = $request->view_portal;
-        $client_types->price = $request->price;
-        $client_types->share_rate = $request->share_rate;
-        $client_types->reseller_id = $request->reseller_id;
+        $client_types->price = ($request->price == null || $request->price <0 ) ? '0' : $request->price;
+        $client_types->share_rate = ($request->share_rate == null || $request->share_rate <0 ) ? '0' : $request->share_rate;
+//		$client_types->share_rate = $request->share_rate;
+  //      $client_types->reseller_id = $request->reseller_id;
         $client_types->status = $request->status;
         $client_types->updated_by = $user_id;
         $client_types->save();

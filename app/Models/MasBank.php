@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class MasBank extends Model
 {
     use HasFactory;
+	 protected $fillable = ['bank_name', 'status'] ;
 }

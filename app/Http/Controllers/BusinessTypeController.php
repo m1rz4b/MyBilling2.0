@@ -14,7 +14,7 @@ class BusinessTypeController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $business_types = BusinessType::get();
         return view('pages.setup.businessType', compact('menus', 'business_types'));
     }

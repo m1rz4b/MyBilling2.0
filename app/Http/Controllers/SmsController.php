@@ -22,14 +22,14 @@ class SmsController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $single_sms = TblSmsSetup::orderby('name')->get();
         return view('pages.sms&Email.sendSingleSms', compact('menus', 'single_sms'));
     }
 
     public function bulkSms()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $bulk_sms = TblSmsSetup::get();
         $packages = TblClientType::orderby('name')->get();
         $status_types = TblStatusType::orderby('inv_name')->get();

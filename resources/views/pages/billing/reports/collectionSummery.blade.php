@@ -110,6 +110,10 @@
             <div class="QA_table p-3 pb-0 table-responsive">
                 @php
                     $count  = 1;
+							$ttcc= 0;
+							$ttcq= 0;
+							$ttcd= 0;
+							$tcollamnt= 0;
                 @endphp
 
                 <table class="table table-responsive">
@@ -136,7 +140,33 @@
                             <td align="right">{{ $cust_invoice->tcd }}</td>
                             <td align="right">{{ $cust_invoice->tcc + $cust_invoice->tcq + $cust_invoice->tcd }}</td>
                         </tr>
-                        @endforeach               
+						@php
+							$ttcc=$cust_invoice->tcc+$ttcc;
+							$ttcq=$cust_invoice->tcq+$ttcq;
+							$ttcd=$cust_invoice->tcd+$ttcd;
+							$tcollamnt=$cust_invoice->tcc + $cust_invoice->tcq + $cust_invoice->tcd+$tcollamnt;
+							
+							
+					@endphp
+				
+                        @endforeach  
+<tr>
+			<td align='right' colspan='2'>
+				<b> Total Amount </b> 
+			</td>
+		  	<td align='right'>
+		  		<b><?php echo $ttcc; ?></b>
+		  	</td>
+		  	<td align='right'>
+		  		<b><?php echo $ttcq; ?></b>
+		  	</td>
+		  	<td align='right'>
+		  		<b><?php echo $ttcd; ?></b> 
+		  	</td>
+		  	<td align='right'>
+		  		<b><?php echo $tcollamnt; ?></b>
+		  	</td>
+		</tr>						
                     </tbody>
                 </table>
 				

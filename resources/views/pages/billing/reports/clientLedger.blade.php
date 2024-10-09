@@ -120,6 +120,13 @@
             <div class="QA_table p-3 pb-0 table-responsive">
                 @php
                     $count  = 1;
+					$total_bill=0;
+					$total_collectioin=0;
+					$vat_adjust_ment=0;
+					$ait_adjustment=0;
+					$discoun_amnt=0;
+					$downtimeadjust=0;
+					$total_due=0;
                 @endphp
 
                 <table class="table table-responsive">
@@ -155,15 +162,54 @@
                             <td>	Bandwidth Bill</td>
 							<td>{{ $cust_invoice->collection_remarks }}</td>
                             <td>{{ $cust_invoice->package }}</td>
-                            <td>{{ $cust_invoice->total }}</td>
-                            <td>{{ $cust_invoice->ctotal }}</td>
-							 <td>{{ $cust_invoice->vat_adjust_ment }}</td>
-                            <td>{{ $cust_invoice->ait_adjustment }}</td>
-                            <td>{{ $cust_invoice->discoun_amnt }}</td>
-							<td>{{ $cust_invoice->downtimeadjust }}</td> 
-							<td>{{ $cust_invoice->total }}</td>
+                            <td align='right'>{{ $cust_invoice->total }}</td>
+                            <td align='right'>{{ $cust_invoice->ctotal }}</td>
+							 <td align='right'>{{ $cust_invoice->vat_adjust_ment }}</td>
+                            <td align='right'>{{ $cust_invoice->ait_adjustment }}</td>
+                            <td align='right'>{{ $cust_invoice->discoun_amnt }}</td>
+							<td align='right'>{{ $cust_invoice->downtimeadjust }}</td> 
+							<td align='right'>{{ $cust_invoice->total }}</td>
                         </tr>
-                        @endforeach               
+						
+									
+				@php
+							$total_bill=$cust_invoice->total+$total_bill;
+							$total_collectioin=$cust_invoice->ctotal+$total_collectioin;
+							$vat_adjust_ment=$cust_invoice->vat_adjust_ment+$vat_adjust_ment;
+							$ait_adjustment=$cust_invoice->ait_adjustment+$ait_adjustment;
+							$discoun_amnt=$cust_invoice->discoun_amnt+$discoun_amnt;
+							$downtimeadjust=$cust_invoice->downtimeadjust+$downtimeadjust;
+							$total_due=$cust_invoice->total+$total_due;
+							
+                @endphp
+                        @endforeach   
+		<tr>
+				<td align='right' colspan='8'>
+					<b>Total Amount</b>
+				</td>
+			  	<td align='right'>
+			  		<b><?php echo $total_bill; ?></b> 
+			  	</td>
+			  	<td align='right'>
+			  		<b><?php echo $total_collectioin; ?> </b>
+			  	</td>
+			  	<td align='right'>
+			  		<b><?php echo $vat_adjust_ment; ?> </b>
+			  	</td>
+                <td align='right'>
+			  		<b><?php echo $vat_adjust_ment; ?> </b>
+			  	</td>
+                
+			  	<td align='right'>
+			  		<b><?php echo $discoun_amnt; ?> </b>
+			  	</td>
+                <td align='right'>
+			  		<b><?php echo $downtimeadjust; ?> </b>
+			  	</td>
+			  	<td align='right'>
+			  		<b><?php echo $total_due; ?></b> 
+			  	</td>
+			</tr>						
                     </tbody>
                 </table>
             </div>

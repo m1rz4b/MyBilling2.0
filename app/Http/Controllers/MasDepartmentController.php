@@ -14,7 +14,7 @@ class MasDepartmentController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $departments = MasDepartment::get();
         return view('pages.setup.department', compact('menus', 'departments'));
     }

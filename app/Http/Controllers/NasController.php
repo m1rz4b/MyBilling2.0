@@ -15,7 +15,7 @@ class NasController extends Controller
      */
     public function index()
     {
-        $menus = Menu::get();
+        $menus = Menu::where('status',1)->get();
         $naslist = Nas::get();
 
         $query = TblServercommand::where('name', 'radius')->value('last_restart');

@@ -62,6 +62,7 @@
                     </div>
                 </div>
 				
+				
 				<div class="col-sm-2 form-group">
                  <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
@@ -122,6 +123,10 @@
             <div class="QA_table p-3 pb-0 table-responsive">
                 @php
                     $count  = 1;
+							$tccollamnt = 0;
+							$tqcollamnt = 0;
+							$tdcollamnt = 0;
+							$tcollamnt = 0;
                 @endphp
 
 
@@ -147,13 +152,28 @@
                            <td>{{ $cust_invoice->user_id }}</td>
                             <td>{{ $cust_invoice->customer_name }}</td>
                             <td>{{ $cust_invoice->money_receipt }}</td>
-                            <td>{{ $cust_invoice->ccollamnt }}</td>
-                            <td>{{ $cust_invoice->qcollamnt }}</td>
-                            <td>{{ $cust_invoice->ad + $cust_invoice->adnormal }} </td>
-                            <td>{{ $cust_invoice->ccollamnt + $cust_invoice->qcollamnt + $cust_invoice->dcollamnt }}</td>
+                            <td align='right'>{{ $cust_invoice->ccollamnt }}</td>
+                            <td align='right'>{{ $cust_invoice->qcollamnt }}</td>
+                            <td align='right'>{{ $cust_invoice->ad + $cust_invoice->adnormal }} </td>
+                            <td align='right'>{{ $cust_invoice->ccollamnt + $cust_invoice->qcollamnt + $cust_invoice->dcollamnt }}</td>
                           
                         </tr>
-                        @endforeach               
+					@php
+							$tccollamnt=$cust_invoice->ccollamnt +$tccollamnt;
+							$tqcollamnt=$cust_invoice->qcollamnt +$tqcollamnt;
+							$tdcollamnt=$cust_invoice->ad + $cust_invoice->adnormal +$tdcollamnt;
+							$tcollamnt=$cust_invoice->ccollamnt + $cust_invoice->qcollamnt + $cust_invoice->dcollamn +$tcollamnt;	
+					@endphp
+					
+                        @endforeach 
+
+<tr>
+		  <td align='right' colspan='4'> <b>Total Amount   </td>
+		  <td align='right'><b>{{$tccollamnt }}</td>
+		<td align='right'><b>{{$tqcollamnt }}</td>
+		<td align='right'><b>{{$tdcollamnt }}</td>
+		<td align='right'><b>{{$tcollamnt }}</td>
+		</tr>						
                     </tbody>
                 </table>
             </div>
