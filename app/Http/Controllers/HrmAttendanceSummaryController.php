@@ -207,8 +207,8 @@ class HrmAttendanceSummaryController extends Controller
         $selectedSuboffice = $request->suboffice_id;
         $selectedDepartment = $request->department;
 
-        $hrmAttendances = HrmAttendanceSummary::select('*', 'mas_employees.emp_name', 'mas_employees.emp_no')
-        ->leftJoin('mas_employees', 'mas_employees.emp_no', '=', 'hrm_attendance_summary.employee_id')
+        $hrmAttendances = HrmAttendanceSummary::select('*')
+        ->leftJoin('mas_employees', 'mas_employees.id', '=', 'hrm_attendance_summary.employee_id')
         ->orderBy('mas_employees.id')
         ->where('hrm_attendance_summary.date', $selectedDate);
         if ($selectedSuboffice>-1) {

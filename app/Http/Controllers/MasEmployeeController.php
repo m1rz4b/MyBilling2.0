@@ -522,6 +522,79 @@ class MasEmployeeController extends Controller
         ));
     }
 
+    //Attendance Time Sheet
+    public function attendanceTimeSheetIndex()
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $employeeStatus = EmployeeStatus::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDesignations = Designation::select('id', 'designation')->orderBy('designation', 'asc')->get();
+        $hrmSalaryStatus = HrmSalaryStatus::select('id', 'description')->orderBy('description', 'asc')->get();
+
+        $selectedYear= '';
+        $selectedMonth= '';
+        $selectedSuboffice = '';
+        $selectedEmployeeStatus = '';
+        $selectedDepartment = '';
+        $selectedDesignation = '';
+        $selectedSalaryStatus = '';
+        $masEmployees = [];
+
+        return view('pages.hrm.reports.attendanceTimeSheet', compact(
+            'menus', 
+            'suboffices', 
+            'employeeStatus', 
+            'masDepartments', 
+            'masDesignations', 
+            'hrmSalaryStatus', 
+            'selectedYear',
+            'selectedMonth',
+            'selectedSuboffice', 
+            'selectedEmployeeStatus', 
+            'selectedDepartment', 
+            'selectedDesignation',
+            'selectedSalaryStatus',
+            'masEmployees' 
+        ));
+    }
+
+    public function attendanceTimeSheetShow(Request $request)
+    {
+        $menus = Menu::get();
+
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
+        $employeeStatus = EmployeeStatus::select('id', 'name')->orderBy('name', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDesignations = Designation::select('id', 'designation')->orderBy('designation', 'asc')->get();
+        $hrmSalaryStatus = HrmSalaryStatus::select('id', 'description')->orderBy('description', 'asc')->get();
+
+        $selectedSuboffice = $request->suboffice_id;
+        $selectedEmployeeStatus = $request->status_id;
+        $selectedDepartment = $request->department;
+        $selectedDesignation = $request->designation;
+        $selectedSalaryStatus = $request->salary_status;
+        $masEmployees = [];
+
+        return view('pages.hrm.reports.attendanceTimeSheet', compact(
+            'menus', 
+            'suboffices', 
+            'employeeStatus', 
+            'masDepartments', 
+            'masDesignations',
+            'hrmSalaryStatus',
+            'selectedYear',
+            'selectedMonth', 
+            'selectedSuboffice', 
+            'selectedEmployeeStatus', 
+            'selectedDepartment', 
+            'selectedDesignation',
+            'selectedSalaryStatus',
+            'masEmployees' 
+        ));
+    }
+
     //Late In Report
     public function lateInIndex()
     {

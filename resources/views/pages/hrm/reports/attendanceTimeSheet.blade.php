@@ -53,11 +53,11 @@
     <div class="container-fluid p-0 pb-3 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0" style="color: white;">Performance Report</h5>
+                <h5 class="mb-0" style="color: white;">Attendance Time-Sheet Report</h5>
             </div>
         </div>
 
-        <form action="{{route('performance-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('attendance-time-sheet.show')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">
@@ -170,12 +170,16 @@
                 @php
                     $count  = 1;
                 @endphp
-
-                <table class="table table-bordered table-condenced" cellpadding='0' cellspacing='0' width='90%' align='center' id="tableheadfixer">
+                
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>Employee</th>
-                            <th>{{ $count++ }}</th>
+                            <th scope="col">Sl</th>
+                            <th>Employee Name</th>
+                            <th>Promotion Date</th>
+                            <th>New Designation</th>
+                            <th>Previous Promotion Date</th>                                        
+                            <th>Previous Designation</th>
                         </tr>
                     </thead>
 

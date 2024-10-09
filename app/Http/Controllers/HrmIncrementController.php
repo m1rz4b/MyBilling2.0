@@ -12,6 +12,34 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class HrmIncrementController extends Controller
 {
+    private function getMonth($m)
+    {
+        if ($m == 1) {
+            return "January";
+        } else if ($m == 2) {
+            return "February";
+        } else if ($m == 3) {
+            return "March";
+        } else if ($m == 4) {
+            return "April";
+        } else if ($m == 5) {
+            return "May";
+        } else if ($m == 6) {
+            return "June";
+        } else if ($m == 7) {
+            return "July";
+        } else if ($m == 8) {
+            return "August";
+        } else if ($m == 9) {
+            return "September";
+        } else if ($m == 10) {
+            return "October";
+        } else if ($m == 11) {
+            return "November";
+        } else if ($m == 12) {
+            return "December";
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -149,7 +177,17 @@ class HrmIncrementController extends Controller
         if ($selectedIncrementType>-1) {
             $hrm_increments->where('hrm_increments.increment_type',$selectedIncrementType);
         }
+        foreach ($hrm_increments as $hrm_increment) {
+            $hrm_increment->month = $this->getMonth($hrm_increment->month);
+
+            $hrm_increment->push(['extra_column' => 1]);
+        }
         $hrm_increments = $hrm_increments->get();
+
+        
+
+        dd($hrm_increments);
+        
 
         $tprevious_gross=0;
         $tincrement_amount=0;
@@ -163,6 +201,12 @@ class HrmIncrementController extends Controller
         $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
         $mas_employees = MasEmployee::select('id', 'emp_name')->get();
         $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'asc')->get();
+
+        foreach ($hrm_increments as $hrm_increment) {
+            $hrm_increment['month'] = $this->getMonth($hrm_increment->month);
+        }
+
+        dd($hrm_increments);
 
         if($request->action == 'show'){
             return view('pages.hrm.reports.employeeIncrement', compact(

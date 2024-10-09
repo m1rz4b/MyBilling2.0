@@ -259,6 +259,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('performance-report', [MasEmployeeController::class, 'performanceReportIndex'])->name('performance-report.index');
     Route::post('performance-report.show', [MasEmployeeController::class, 'performanceReportShow'])->name('performance-report.show');
 
+    Route::get('attendance-time-sheet', [MasEmployeeController::class, 'attendanceTimeSheetIndex'])->name('attendance-time-sheet.index');
+    Route::post('attendance-time-sheet.show', [MasEmployeeController::class, 'attendanceTimeSheetShow'])->name('attendance-time-sheet.show');
+
     Route::get('daily-attendance-report', [HrmAttendanceSummaryController::class, 'dailyAttendanceReportIndex'])->name('daily-attendance-report.index');
     Route::post('daily-attendance-report.show', [HrmAttendanceSummaryController::class, 'dailyAttendanceReportShow'])->name('daily-attendance-report.show');
     
