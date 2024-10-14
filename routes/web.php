@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CheckinoutController;
+use App\Http\Controllers\HrmEmpMonthlySalaryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\HrmPayrollAddCompController;
 use App\Http\Controllers\HrmPayrollDeductCompController;
@@ -405,6 +407,11 @@ Route::middleware(['auth'])->group(function () {
     // HRM Payroll Setup
     Route::resource('payrolladdcomponent', HrmPayrollAddCompController::class);
     Route::resource('payrolldeductcomponent', HrmPayrollDeductCompController::class);
+    
+    // HRM Payroll Entry Form
+    Route::get('salaryreporttemp', [HrmEmpMonthlySalaryController::class, 'empsalarytemp'])->name('salaryreporttemp.empsalarytemp');
+    Route::post('salaryreporttemp.show', [HrmEmpMonthlySalaryController::class, 'show'])->name('salaryreporttemp.show');
+
 
     //Pdf
     Route::get('monthly_invoices_pdf', [MonthlyInvoiceController::class, 'indexPdf'])->name('monthly_invoices_pdf');
