@@ -1,7 +1,12 @@
 <?php
 
-use App\Http\Controllers\CheckinoutController;
+// use App\Http\Controllers\CheckinoutController;
+use App\Http\Controllers\HrmApproveSalaryController;
+use App\Http\Controllers\HrmBonusGenerationController;
 use App\Http\Controllers\HrmEmpMonthlySalaryController;
+use App\Http\Controllers\HrmGenerateSalaryController;
+use App\Http\Controllers\HrmSalaryAdvancedController;
+use App\Http\Controllers\HrmTblEmploanController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\HrmPayrollAddCompController;
 use App\Http\Controllers\HrmPayrollDeductCompController;
@@ -408,6 +413,16 @@ Route::middleware(['auth'])->group(function () {
     // HRM Payroll Entry Form
     Route::get('salaryreporttemp', [HrmEmpMonthlySalaryController::class, 'empsalarytemp'])->name('salaryreporttemp.empsalarytemp');
     Route::post('salaryreporttemp.show', [HrmEmpMonthlySalaryController::class, 'show'])->name('salaryreporttemp.show');
+    
+    Route::resource('generate-salary', HrmGenerateSalaryController::class);
+
+    Route::resource('approve-salary', HrmApproveSalaryController::class);
+
+    Route::resource('emp-loan', HrmTblEmploanController::class);
+
+    Route::resource('salary-advanced', HrmSalaryAdvancedController::class);
+
+    Route::resource('bonus-generation', HrmBonusGenerationController::class);
 
 
     //Pdf
