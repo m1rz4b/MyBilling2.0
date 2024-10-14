@@ -75,6 +75,15 @@
                                             <input type="text" class="form-control" id="lan_interface" name="lan_interface">
                                         </div>
                                         <div class="mb-2">
+                                            <label for="suboffice_id" class="form-label">Suboffice</label>
+                                            <select class="form-select form-control" id="suboffice_id" name="suboffice_id">
+                                                <option>Select a Suboffice</option>
+                                                @foreach ($subOffices as $subOffice)
+                                                    <option value="{{ $subOffice->id }}">{{ $subOffice->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-2">
                                             <label for="status" class="form-label">Status: </label>
                                             <select name="status" id="status" class="p-2 form-control">
                                                 <option value="1">Active</option>
@@ -112,6 +121,15 @@
                                             <label for="r_secret" class="form-label">Radius Secret: </label>
                                             <input type="text" class="form-control" id="r_secret" name="r_secret">
                                         </div>
+                                        <div class="mb-2">
+                                            <label for="radius_server_id" class="form-label">Radius Server</label>
+                                            <select class="form-select form-control" id="radius_server_id" name="radius_server_id">
+                                                <option>Select a Radius Server</option>
+                                                @foreach ($radiusServers as $radiusServer)
+                                                    <option value="{{ $radiusServer->id }}">{{ $radiusServer->server_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -124,8 +142,8 @@
                 </div>
             </div>
 
-            <div class="QA_table p-3 pb-0">
-                <table class="table">
+            <div class="QA_table p-3 pb-0 table-responsive">
+                <table class="table table-sm">
                     <thead>
                         <tr>
                             <th scope="col">Router ID</th>
@@ -214,6 +232,15 @@
                                                             <input type="text" class="form-control" id="lan_interface" name="lan_interface" value="{{ $router->lan_interface }}">
                                                         </div>
                                                         <div class="mb-2">
+                                                            <label for="suboffice_id" class="form-label">Suboffice</label>
+                                                            <select class="form-select form-control" id="suboffice_id" name="suboffice_id">
+                                                                <option>Select a Suboffice</option>
+                                                                @foreach ($subOffices as $subOffice)
+                                                                    <option {{$router->suboffice_id==$subOffice->id?'selected':''}} value="{{ $subOffice->id }}">{{ $subOffice->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
                                                             <label for="status" class="form-label">Status: </label>
                                                             <select name="status" id="status" class="p-2 form-control">
                                                                 <option {{ ($router->status == "1") ? "selected" : "" }} value="1">Active</option>
@@ -250,6 +277,15 @@
                                                         <div class="mb-2">
                                                             <label for="r_secret" class="form-label">Radius Secret: </label>
                                                             <input type="text" class="form-control" id="r_secret" name="r_secret" value="{{ $router->r_secret }}">
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label for="radius_server_id" class="form-label">Radius Server</label>
+                                                            <select class="form-select form-control" id="radius_server_id" name="radius_server_id">
+                                                                <option>Select a Radius Server</option>
+                                                                @foreach ($radiusServers as $radiusServer)
+                                                                    <option {{$router->radius_server_id==$radiusServer->id?'selected':''}} value="{{ $radiusServer->id }}">{{ $radiusServer->server_name }}</option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>

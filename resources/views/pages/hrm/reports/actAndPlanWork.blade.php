@@ -62,26 +62,26 @@
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">
-                    <label for="from_date" class="fw-medium">From Date</label>
+                    <label for="from_date" class="fw-medium">From Date <span class="text-danger">*</span></label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedFromDate}}" name="from_date" data-date-Format="yyyy-mm-dd" id="from_date">
+                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedFromDate}}" name="from_date" data-date-Format="yyyy-mm-dd" id="from_date" required>
                     </div>
                 </div>
 
                 <div class="col-sm-3 form-group">
-                    <label for="to_date" class="fw-medium">To Date</label>
+                    <label for="to_date" class="fw-medium">To Date <span class="text-danger">*</span></label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedToDate}}" name="to_date" data-date-Format="yyyy-mm-dd" id="to_date">
+                        <input type="text" class="form-control form-control-sm datepicker-here digits" value="{{$selectedToDate}}" name="to_date" data-date-Format="yyyy-mm-dd" id="to_date" required>
                     </div>
                 </div>
 
                 <div class="col-sm-3 form-group">
-                    <label for="employee" class="fw-medium">Employee</label>
+                    <label for="employee" class="fw-medium">Employee <span class="text-danger">*</span></label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-user"></i></span>
-                        <select class="select2 form-select form-select-sm" id="employee" name="employee">
+                        <select class="select2 form-select form-select-sm" id="employee" name="employee" required>
                             <option value="-1">Select an Employee</option>
                             @foreach ($employees as $employee)
                                 <option {{ $selectedEmployee==$employee->id ? 'selected' : '' }} value="{{ $employee->id }}">{{ $employee->emp_name }}</option>
@@ -108,6 +108,8 @@
             <div>
                 @php
                     $count  = 1;
+                    $tw = '';
+                    $td = '';
                 @endphp
                 
                 <table class="table">
@@ -127,7 +129,47 @@
                     <tbody>
                         @foreach ($attendanceData as $attendance)
                         <tr>
-                            <td>{{ $count++ }}</td>
+                            <td>{{ $attendance->empdate }}</td>
+                            <td>{{ date('g:i a', strtotime($plannedin)) }}</td>
+                            <td>{{ date('g:i a', strtotime($attendance->min_checktime)) }}</td>
+                            <td>{{ date('g:i a', strtotime($plannedout)) }}</td>
+                            <td>{{ date('g:i a', strtotime($attendance->max_checktime)) }}</td>
+                            <td>
+                                @php
+                                    $work=(strtotime($plannedout)-strtotime($plannedin));  
+                                    $tw=$tw+$work;	
+                                    $hours2 = floor($work / 60 / 60);
+                                    $minutes2 = round(($work - ($hours2 * 60 * 60)) / 60);
+                                    echo $hours2.' H, '.$minutes2 .' M';
+                                @endphp
+                            </td>
+                            <td>
+                                @php
+                                    $do=(strtotime($attendance->max_checktime)-strtotime($attendance->min_checktime)); 
+                                    $td=$td+$do;
+                                    $hours = floor($do / 60 / 60);
+                                    $minutes = round(($do - ($hours * 60 * 60)) / 60);
+                                    echo $hours.' H, '.$minutes .' M';
+                                @endphp
+                            </td>
+                            <td>
+                                @php
+                                    $total=$work-$do;
+                                    $tt=$tt+$total;
+                                    if($total < 0){
+                                        $a_total = -$total;
+                                        $hours1 = floor($a_total / 60 / 60);
+                                        $minutes1 = round(($a_total - ($hours1 * 60 * 60)) / 60); 
+                                        echo $hours1.' H, '.$minutes1 .' M (Over time)';
+                                    }
+                                    else{
+                                        $a_total=$total;
+                                        $hours1      = floor($a_total / 60 / 60);
+                                        $minutes1    = round(($a_total - ($hours1 * 60 * 60)) / 60); 
+                                        echo $hours1.' H, '.$minutes1 .' M (Less Work)';		 
+                                    }
+                                @endphp
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

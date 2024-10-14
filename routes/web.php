@@ -46,7 +46,6 @@ use App\Http\Controllers\HrmIncrementController;
 use App\Http\Controllers\TrnClientsServiceController;
 use App\Http\Controllers\PackagePlanController;
 use App\Http\Controllers\HrmEmpJobHistoryController;
-use App\Http\Controllers\CheckinoutConroller;
 use App\Http\Controllers\HrmEmpMonthlyAddController;
 use App\Http\Controllers\HrmEmpMonthlyDeductController;
 use App\Http\Controllers\TblLeaveController;
@@ -86,11 +85,8 @@ use App\Http\Controllers\Accounts\CashBankController;
 use App\Http\Controllers\Accounts\GeneralLedgerController;
 use App\Http\Controllers\Accounts\JournalController;
 use App\Http\Controllers\Accounts\ChartofAccountsController;
-
-
-
-
-
+use App\Http\Controllers\CheckinoutController;
+use App\Http\Controllers\RadiusServerController;
 
 //Fruque End/////////////
 
@@ -156,6 +152,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('clientcontrol/{uniqueclientcontrol}/updaterouter', [ClientControlController::class, 'updateRouter'])->name('clientcontrol.updaterouter');
     Route::post('clientcontrol/search', [ClientControlController::class, 'search'])->name('clientcontrol.search');
     Route::get('servicelog', [ClientControlController::class, 'serviceLog'])->name('clientcontrol.servicelog');
+    Route::resource('radius-server', RadiusServerController::class);
 
     Route::resource('ippool', IpPoolController::class);
     Route::post('importRouter', [IpPoolController::class, 'importRouter'])->name('ippool.importRouter');

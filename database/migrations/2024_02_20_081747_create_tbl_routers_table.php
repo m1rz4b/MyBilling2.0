@@ -33,6 +33,8 @@ return new class extends Migration
             $table->text('dns2');
             $table->string('active', 6)->nullable();
             $table->string('router_type', 2)->nullable();
+            $table->string('suboffice_id')->nullable();
+            $table->string('radius_server_id')->nullable();
 
             $table->integer('status')->default(1);
             $table->string('created_by')->nullable();

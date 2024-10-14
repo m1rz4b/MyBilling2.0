@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\Nas;
+use App\Models\RadiusServer;
 use App\Models\TblRouter;
+use App\Models\TblSuboffice;
 use Illuminate\Http\Request;
 use App\Providers\RouterOsProvider;
 use App\Providers\RouterOsProvider\RouterOsProvider as RouterOsProviderRouterOsProvider;
@@ -20,10 +22,11 @@ class TblRouterController extends Controller
      */
     public function index()
     {
-        //
         $menus = Menu::get();
         $routers = TblRouter::get();
-        return view("pages.radius.router", compact("menus", "routers"));
+        $subOffices = TblSuboffice::select('name', 'id')->orderBy('name', 'asc')->get();
+        $radiusServers = RadiusServer::select('server_name', 'id')->orderBy('server_name', 'asc')->get();
+        return view("pages.radius.router", compact("menus", "routers", "subOffices", "radiusServers"));
     }
 
     /**
@@ -50,9 +53,11 @@ class TblRouterController extends Controller
             'port' => 'required',
             'dns1' => 'required',
             'lan_interface' => 'required',
+            'suboffice_id' => 'required',
             'radius_auth' => 'required',
             'dns2' => 'required',
             'r_secret' => 'required',
+            'radius_server_id' => 'required',
             'radius_acct' => 'required',
             'status' => 'required'
         ]);
@@ -68,9 +73,11 @@ class TblRouterController extends Controller
             'port' => $request->port ?? '',
             'dns1' => $request->dns1 ?? '',
             'lan_interface' => $request->lan_interface ?? '',
+            'suboffice_id' => $request->suboffice_id ?? '',
             'radius_auth' => $request->radius_auth ?? '',
             'dns2' => $request->dns2 ?? '',
             'r_secret' => $request->r_secret ?? '',
+            'radius_server_id' => $request->radius_server_id ?? '',
             'radius_acct' => $request->radius_acct ?? '',
             'status' => $request->status ?? '',
         ]);
@@ -84,6 +91,8 @@ class TblRouterController extends Controller
             'secret' => $request->r_secret ?? '',
             'description' => $request->description ?? '',
             'tbl_router_id' => $routerId,
+            'suboffice_id' => $request->suboffice_id ?? '',
+            'radius_server_id' => $request->radius_server_id ?? '',
         ]);
 
         return redirect() -> route("router.index");
@@ -121,9 +130,11 @@ class TblRouterController extends Controller
             'port' => 'required',
             'dns1' => 'required',
             'lan_interface' => 'required',
+            'suboffice_id' => 'required',
             'radius_auth' => 'required',
             'dns2' => 'required',
             'r_secret' => 'required',
+            'radius_server_id' => 'required',
             'radius_acct' => 'required',
             'status' => 'required'
         ]);
@@ -143,6 +154,8 @@ class TblRouterController extends Controller
         $router->dns2 = $request->dns2;
         $router->r_secret = $request->r_secret;
         $router->radius_acct = $request->radius_acct;
+        $router->suboffice_id = $request->suboffice_id;
+        $router->radius_server_id = $request->radius_server_id;
         $router -> save();
 
         $routerId = $router->id;
@@ -161,7 +174,6 @@ class TblRouterController extends Controller
      */
     public function destroy(TblRouter $router)
     {
-        //
         $drouter = TblRouter::find($router -> id);
         $drouter->delete();
         return redirect() -> route("router.index");
@@ -170,11 +182,7 @@ class TblRouterController extends Controller
     public function apiCheckPost(int $router)
     {
         $router = TblRouter::where('id',$router)->first();
-        //dd($router);
 
-        
-
-        //dd($router);
         try {
             $client = new Client([
                 'host' => $router->router_ip,
@@ -195,19 +203,13 @@ class TblRouterController extends Controller
                 ]);
             }
            
-        } catch (\Exception $e) {
-            //throw $th;
-           
-                return response()->json([
-                    "status" => false,
-                    "msg" => $e->getMessage(),
-                    "data" => "\nConnection Failed! ".$router->router_ip."\nPort: ".$router->port."\nUser: ".$router->router_username."\nPass: ".$router->router_password
-                ]);
-            
-            
+        } catch (\Exception $e) {           
+            return response()->json([
+                "status" => false,
+                "msg" => $e->getMessage(),
+                "data" => "\nConnection Failed! ".$router->router_ip."\nPort: ".$router->port."\nUser: ".$router->router_username."\nPass: ".$router->router_password
+            ]);
         }
-        
-        //dd("test");
 
         
 

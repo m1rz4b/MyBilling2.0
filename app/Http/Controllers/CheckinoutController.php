@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Checkinout;
 use App\Models\MasEmployee;
 use App\Models\Menu;
+use App\Models\TblSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -107,16 +108,18 @@ class CheckinoutController extends Controller
             DB::raw("MIN(CAST(checkinout.checktime AS CHAR)) as min_checktime"),
             'mas_employees.emp_name'
         )
-        ->leftJoin('mas_employees', 'mas_employees.emp_no', '=', 'checkinout.userid')
+        ->leftJoin('mas_employees', 'mas_employees.id', '=', 'checkinout.userid')
         ->groupBy(DB::raw('DAY(checkinout.checktime)'), 'checkinout.checktime', 'mas_employees.emp_name')
         ->orderBy('checkinout.checktime', 'ASC')
-        ->get();
-        // dd($attendanceData);
+        ->where('checkinout.checktime', '>=', $selectedFromDate)
+        ->where('checkinout.checktime', '<=', $selectedToDate);
+        if ($selectedEmployee>-1) {
+            $attendanceData->where('mas_employees.id',$selectedEmployee);
+        }
+        $attendanceData = $attendanceData->get();
 
-        // if ($selectedEmployee>-1) {
-        //     $attendanceData->where('mas_employees.suboffice_id',$selectedEmployee);
-        // }
-        // $attendanceData = $attendanceData->get();
+        $plannedin = TblSchedule::where('id', 1)->value('start_time');
+        $plannedout = TblSchedule::where('id', 1)->value('end_time');
 
         return view('pages.hrm.reports.actAndPlanWork', compact(
             'menus', 
@@ -124,7 +127,9 @@ class CheckinoutController extends Controller
             'selectedFromDate',
             'selectedToDate',
             'selectedEmployee',
-            'attendanceData' 
+            'attendanceData',
+            'plannedin',
+            'plannedout',
         ));
     }
 }
