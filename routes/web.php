@@ -87,7 +87,6 @@ use App\Http\Controllers\Accounts\CashBankController;
 use App\Http\Controllers\Accounts\GeneralLedgerController;
 use App\Http\Controllers\Accounts\JournalController;
 use App\Http\Controllers\Accounts\ChartofAccountsController;
-use App\Http\Controllers\CheckinoutController;
 use App\Http\Controllers\RadiusServerController;
 
 //Fruque End/////////////

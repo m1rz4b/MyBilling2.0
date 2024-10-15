@@ -306,7 +306,7 @@ class HrmAttendanceSummaryController extends Controller
 
         $selectedOfficeName = '';
 
-        return view('pages.hrm.reports.rawCheckInOutReport', compact(
+        return view('pages.hrm.reports.holidayAllowanceReport', compact(
             'menus', 
             'suboffices', 
             'masDepartments', 
@@ -335,7 +335,7 @@ class HrmAttendanceSummaryController extends Controller
 
         $selectedOfficeName = TblSuboffice::select('id', 'name')->where('id', $selectedSuboffice)->first();
 
-        return view('pages.hrm.reports.rawCheckInOutReport', compact(
+        return view('pages.hrm.reports.holidayAllowanceReport', compact(
             'menus', 
             'suboffices', 
             'masDepartments', 

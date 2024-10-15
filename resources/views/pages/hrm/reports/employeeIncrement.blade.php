@@ -176,7 +176,7 @@
                             <td><strong></strong></td>
                             <td><strong>{{ number_format($tincrement_amount, 2) }}</strong></td>
                             <td><strong>{{ number_format($tcurrent_gross, 2) }}</strong></td>
-                            <td colspan="2"></td>
+                            <td colspan="3"></td>
                         </tr>
                     </tbody>
                 </table>

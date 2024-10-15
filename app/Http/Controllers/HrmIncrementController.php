@@ -182,12 +182,7 @@ class HrmIncrementController extends Controller
 
             $hrm_increment->push(['extra_column' => 1]);
         }
-        $hrm_increments = $hrm_increments->get();
-
-        
-
-        dd($hrm_increments);
-        
+        $hrm_increments = $hrm_increments->get();        
 
         $tprevious_gross=0;
         $tincrement_amount=0;
@@ -205,8 +200,6 @@ class HrmIncrementController extends Controller
         foreach ($hrm_increments as $hrm_increment) {
             $hrm_increment['month'] = $this->getMonth($hrm_increment->month);
         }
-
-        dd($hrm_increments);
 
         if($request->action == 'show'){
             return view('pages.hrm.reports.employeeIncrement', compact(

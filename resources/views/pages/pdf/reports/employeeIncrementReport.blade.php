@@ -13,7 +13,7 @@
     <div class="container-fluid p-0 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="mb-0 text-black text-center" style="color: black; text-align: center;">Employee Increment Report</h2>
+                <h2 class="mb-0" style="color: black; text-align: center;">Employee Increment Report</h2>
             </div>
         </div>
 
