@@ -3,9 +3,12 @@
 // use App\Http\Controllers\CheckinoutController;
 use App\Http\Controllers\HrmApproveSalaryController;
 use App\Http\Controllers\HrmBonusGenerationController;
+use App\Http\Controllers\HrmBonusReportController;
 use App\Http\Controllers\HrmEmpMonthlySalaryController;
 use App\Http\Controllers\HrmGenerateSalaryController;
+use App\Http\Controllers\HrmPaySlipController;
 use App\Http\Controllers\HrmSalaryAdvancedController;
+use App\Http\Controllers\HrmSalaryBankForwardingController;
 use App\Http\Controllers\HrmTblEmploanController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\HrmPayrollAddCompController;
@@ -422,6 +425,19 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('salary-advanced', HrmSalaryAdvancedController::class);
 
     Route::resource('bonus-generation', HrmBonusGenerationController::class);
+    
+    // HRM Payroll Report
+    Route::get('rpt-add-comp', [HrmPayrollAddCompController::class, 'addcompreport'])->name('rpt-add-comp.addcompreport');
+    
+    Route::get('rpt-deduct-comp', [HrmPayrollDeductCompController::class, 'deductcompreport'])->name('rpt-deduct-comp.deductcompreport');
+
+    Route::get('salary-report', [HrmEmpMonthlySalaryController::class, 'salaryreport'])->name('salaryreporttemp.salaryreport');
+
+    Route::resource('payslip', HrmPaySlipController::class);
+
+    Route::resource('bank-forwarding', HrmSalaryBankForwardingController::class);
+
+    Route::resource('bonus-report', HrmBonusReportController::class);
 
 
     //Pdf

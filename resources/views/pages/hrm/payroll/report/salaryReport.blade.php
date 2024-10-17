@@ -26,7 +26,7 @@
     <div class="main_content_iner">
         <div class="container-fluid p-0 sm_padding_15px">
             <div class="px-4 py-1 theme_bg_1 d-flex justify-content-between">
-                <h5 class="mb-0 text-white text-center">Salary Report For Verification</h5>
+                <h5 class="mb-0 text-white text-center">Salary Report</h5>
             </div>
 
             <form method="POST" action="{{ route('salaryreporttemp.show') }}" enctype="multipart/form-data">
@@ -89,7 +89,8 @@
 
                     <div class="col-sm-4 form-group d-flex d-sm-inline justify-content-end">
                         <br class="d-none d-sm-block">
-                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa-solid fa-magnifying-glass me-1"></i>Show</button>
+                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa-solid fa-magnifying-glass me-1"></i>Show Report</button>
+                        <button type="submit" class="btn btn-sm btn-warning"><i class="fa-solid fa-magnifying-glass me-1"></i>Print</button>
                     </div>
                 </div>
             </form>
@@ -109,6 +110,7 @@
                             <th scope="col" class="text-center">Conveyance</th>
                             <th scope="col" class="text-center">Gross Salary</th>
                             <th scope="col" class="text-center">Advanced Salary</th>
+                            <th scope="col" class="text-center">AB</th>
                             <th scope="col" class="text-center">Absent</th>
                             <th scope="col" class="text-center">Late (days/3)</th>
                             <th scope="col" class="text-center">Total Absent Deduct</th>
@@ -126,7 +128,7 @@
                         @php 
                             $slNumber = 1 
                         @endphp
-                        @foreach ($salarytemps as $salarytemp)
+                        {{-- @foreach ($salarytemps as $salarytemp)
                             @php
                                 $gross_salary = $salarytemp->basic + $salarytemp->h_rent + $salarytemp->med + $salarytemp->food + $salarytemp->conv;
                                 $net_salary = ( $gross_salary + $salarytemp->tot_add ) - ( $salarytemp->tot_deduct + $salarytemp->salary_advanced + $salarytemp->leave_deduct );
@@ -143,6 +145,7 @@
                                 <td class="text-center">{{ $salarytemp->conv }}</td>
                                 <td class="text-center">{{ $gross_salary }}</td>
                                 <td class="text-center">{{ $salarytemp->salary_advanced }}</td>
+                                <td class="text-center">{{ $salarytemp-> }}</td>
                                 <td class="text-center">{{ $salarytemp->abcent_days }}</td>
                                 <td class="text-center">{{ $salarytemp->late_days }}</td>
                                 <td class="text-center">{{ $salarytemp->leave_deduct }}</td>
@@ -155,7 +158,7 @@
                                 <td class="text-center text-nowrap">{{ $net_salary }}</td>
                             </tr>
 
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
