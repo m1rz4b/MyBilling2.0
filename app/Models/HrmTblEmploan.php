@@ -12,4 +12,15 @@ class HrmTblEmploan extends Model
     use SoftDeletes;
     
     protected $table = 'hrm_tbl_emploan';
+
+    protected $fillable = [
+        'emp_id',
+        'sanction_date',
+        'start_date',
+        'amnt',
+        'interest',
+        'no_of_installment',
+        'emi',
+        'status'
+    ];
 }

@@ -420,7 +420,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('approve-salary', HrmApproveSalaryController::class);
 
-    Route::resource('emp-loan', HrmTblEmploanController::class);
+    Route::resource('emploan', HrmTblEmploanController::class);
 
     Route::resource('salary-advanced', HrmSalaryAdvancedController::class);
 

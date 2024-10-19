@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('hrm_tbl_emploan', function (Blueprint $table) {
             $table->id();
             $table->integer('emp_id');
-            $table->dateTime('sanction_date');
-            $table->dateTime('start_date');
+            $table->date('sanction_date');
+            $table->date('start_date');
             $table->double('amnt');
             $table->double('interest');
             $table->integer('no_of_installment');
