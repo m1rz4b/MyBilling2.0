@@ -87,7 +87,7 @@ class HrmTblEmploanController extends Controller
         ]);
 
         $emploan->update($data);
-        return redirect()->route('emploan.index') -> with('success', 'Employee Loan created successfully');
+        return redirect()->route('emploan.index') -> with('success', 'Employee Loan updated successfully');
 
     }
 

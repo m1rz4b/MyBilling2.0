@@ -1,6 +1,7 @@
 <?php
 
 // use App\Http\Controllers\CheckinoutController;
+use App\Http\Controllers\CategoryTypeController;
 use App\Http\Controllers\HrmApproveSalaryController;
 use App\Http\Controllers\HrmBonusGenerationController;
 use App\Http\Controllers\HrmBonusReportController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\HrmShiftSetupController;
 use App\Http\Controllers\IpPoolController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\MicrotikGraphController;
+use App\Http\Controllers\TblBrandController;
 use App\Http\Controllers\TblRouterController;
 use App\Http\Controllers\TblScheduleController;
 use App\Http\Controllers\TblScheduleTeamController;
@@ -59,6 +61,7 @@ use App\Http\Controllers\HrmEmpJobHistoryController;
 use App\Http\Controllers\HrmEmpMonthlyAddController;
 use App\Http\Controllers\HrmEmpMonthlyDeductController;
 use App\Http\Controllers\TblLeaveController;
+use App\Http\Controllers\VendorInfoController;
 use Illuminate\Support\Facades\Route;
 ////////Faruque /
 use App\Http\Controllers\BillReports\MonthlyInvoiceController;
@@ -438,6 +441,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('bank-forwarding', HrmSalaryBankForwardingController::class);
 
     Route::resource('bonus-report', HrmBonusReportController::class);
+
+
+    // Invenrory
+    Route::resource('brand', TblBrandController::class);
+    Route::resource('vendorinfo', VendorInfoController::class);
+    Route::resource('categorytype', CategoryTypeController::class);
 
 
     //Pdf

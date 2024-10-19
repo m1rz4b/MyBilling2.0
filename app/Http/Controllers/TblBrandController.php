@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use App\Models\TblBrand;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,9 @@ class TblBrandController extends Controller
     public function index()
     {
         //
+        $menus = Menu::get();
+        $tblbrands = TblBrand::get();
+        return view('pages.inventory.setup.brand', compact('menus', 'tblbrands'));
     }
 
     /**
@@ -29,12 +33,24 @@ class TblBrandController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->validate([
+            'brand_display' => 'required',
+            'brand_detail' => 'required',
+            'brand_remarks' => 'required',
+            'brand_user' => 'required',
+            'brand_pass' => 'required',
+            'identefire_code_brand' => 'required',
+            'status' => 'required'
+        ]);
+
+        $brand = TblBrand::create($data);
+        return redirect()->route('brand.index') -> with('success', 'Brand created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(TblBrand $tblBrand)
+    public function show(TblBrand $brand)
     {
         //
     }
@@ -42,7 +58,7 @@ class TblBrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TblBrand $tblBrand)
+    public function edit(TblBrand $brand)
     {
         //
     }
@@ -50,15 +66,24 @@ class TblBrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TblBrand $tblBrand)
+    public function update(Request $request, TblBrand $brand)
     {
         //
+        $data = $request->validate([
+            'brand_display' => 'required',
+            'brand_detail' => 'required',
+            'identefire_code_brand' => 'required',
+            'status' => 'required'
+        ]);
+
+        $brand->update($data);
+        return redirect()->route('brand.index') -> with('success', 'Brand updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TblBrand $tblBrand)
+    public function destroy(TblBrand $brand)
     {
         //
     }
