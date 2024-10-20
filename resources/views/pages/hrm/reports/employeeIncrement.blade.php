@@ -65,6 +65,8 @@
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                         <select class="form-select form-select-sm form-control" id="year" name="year" >
+                            <option value="{{ now()->year }}">{{ now()->year }}</option>
+                            {{-- <option value="-1">Select a Year</option> --}}
                             @foreach (range(now()->year - 15, now()->year + 5) as $year)
                                 <option value="{{ $year }}" {{ $selectedYear==$year ? 'selected' : '' }}>
                                     {{ $year }}
@@ -79,6 +81,8 @@
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                         <select class="form-select form-select-sm form-control" id="month" name="month">
+                            <option value="{{ now()->format('M') }}">{{ now()->format('M') }}</option>
+                            {{-- <option value="-1">Select a Month</option> --}}
                             @foreach(range(1,12) as $month)
                                 <option value="{{ $month }}" {{ $selectedMonth == $month ? 'selected' : '' }}>
                                     {{ date("M", mktime(0, 0, 0, $month, 1)) }}
@@ -132,7 +136,15 @@
         @if ($hrm_increments)
         <h4 class="text-center">Millennium Computers and Networking</h4>
         <p class="text-center text-dark fw-bold">Increment Report</p>
-        <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
+        @if ($selectedMonth && $selectedYear)
+            <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
+        @endif
+        @if ($departmentName)
+            <p class="text-center text-dark fw-medium">Department: {{ $departmentName->department }}</p>
+        @endif
+        @if ($incrementTypeName)
+            <p class="text-center text-dark fw-medium">Increment Type: {{ $incrementTypeName->name }}</p>
+        @endif
         <div class="QA_table px-3">
             <div>
                 @php
@@ -180,7 +192,6 @@
                         </tr>
                     </tbody>
                 </table>
-                {{-- {!! $hrm_increments->links() !!} --}}
             </div>
         </div>
         @endif
@@ -236,8 +247,8 @@
         }
 
         //Convert number into month name for table header
-        let munthNumber = timePeriod.innerText;
-        let monthName = getMonth(munthNumber);
+        let monthNumber = timePeriod.innerText;
+        let monthName = getMonth(monthNumber);
         timePeriod.innerText = monthName;
     });
 </script>

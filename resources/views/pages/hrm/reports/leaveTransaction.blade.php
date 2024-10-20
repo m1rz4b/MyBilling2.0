@@ -61,7 +61,7 @@
         <div class="QA_table px-3">
             <div>
                 @php
-                    $count  = 1;
+                    $count = ($leaves->currentPage() - 1) * $leaves->perPage() + 1;
                 @endphp
                 
                 <table class="table">
@@ -81,10 +81,23 @@
                         @foreach ($leaves as $leave)
                         <tr>
                             <td>{{ $count++ }}</td>
+                            <td>{{ $leave->emp_name }}</td>
+                            <td>
+                                @if ($leave->approved_time != '0000/00/00')
+                                    {{ $leave->approved_time }}
+                                @else
+                                    {{ "Not Approve Yet" }}
+                                @endif
+                            </td>
+                            <td>{{ $leave->leavetype_name }}</td>
+                            <td>{{ $leave->days }}</td>
+                            <td>{{ $leave->from_date }}</td>
+                            <td>{{ $leave->to_date }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {!! $leaves->links() !!}
             </div>
         </div>
     </div>

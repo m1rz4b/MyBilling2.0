@@ -235,8 +235,8 @@ class HrmAttendanceSummaryController extends Controller
     {
         $menus = Menu::get();
 
-        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
-        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('id', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('id', 'asc')->get();
 
         $selectedFromDate= '';
         $selectedToDate= '';
@@ -264,8 +264,8 @@ class HrmAttendanceSummaryController extends Controller
     {
         $menus = Menu::get();
 
-        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
-        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('id', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('id', 'asc')->get();
 
         $selectedFromDate = $request->from_date;
         $selectedToDate = $request->to_date;
@@ -294,8 +294,8 @@ class HrmAttendanceSummaryController extends Controller
     {
         $menus = Menu::get();
 
-        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
-        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('id', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('id', 'asc')->get();
 
         $selectedFromDate= '';
         $selectedToDate= '';
@@ -323,8 +323,8 @@ class HrmAttendanceSummaryController extends Controller
     {
         $menus = Menu::get();
 
-        $suboffices = TblSuboffice::select('id', 'name')->orderBy('name', 'asc')->get();
-        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $suboffices = TblSuboffice::select('id', 'name')->orderBy('id', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('id', 'asc')->get();
 
         $selectedFromDate = $request->from_date;
         $selectedToDate = $request->to_date;

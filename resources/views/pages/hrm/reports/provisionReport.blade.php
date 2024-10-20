@@ -53,11 +53,11 @@
     <div class="container-fluid p-0 pb-3 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0" style="color: white;">Provision Report</h5>
+                <h5 class="mb-0" style="color: white;">Employee List</h5>
             </div>
         </div>
 
-        <form action="{{route('provision-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('provision-report.show')}}" method="get" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">
@@ -65,8 +65,10 @@
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                         <select class="form-select form-select-sm form-control" id="month" name="month">
+                            {{-- <option value="{{ now()->format('M') }}">{{ now()->format('M') }}</option> --}}
+                            <option value="-1">Select a Month</option>
                             @foreach(range(1,12) as $month)
-                                <option value="{{ $month }}" {{ (now()->format('n') == $month) ? 'selected' : ($selectedMonth == $month ? 'selected' : '') }}>
+                                <option value="{{ $month }}" {{ ($selectedMonth == $month ? 'selected' : '') }}>
                                     {{ date("M", mktime(0, 0, 0, $month, 1)) }}
                                 </option>
                             @endforeach
@@ -79,8 +81,10 @@
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                         <select class="form-select form-select-sm form-control" id="year" name="year" >
+                            {{-- <option value="{{ now()->year }}">{{ now()->year }}</option> --}}
+                            <option value="-1">Select a Year</option>
                             @foreach (range(now()->year - 15, now()->year + 5) as $year)
-                                <option value="{{ $year }}" {{ (now()->year == $year) ? 'selected' : ($selectedYear==$year? 'selected' : '') }}>{{ $year }}</option>
+                               <option value="{{ $year }}" {{ ($selectedYear==$year? 'selected' : '') }}>{{ $year }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -136,20 +140,30 @@
                 <div class="col-sm-3 d-flex d-sm-inline justify-content-end">
                     <br class="d-none d-sm-block">
                     <div class="d-flex">
-                        <button type="button" class="btn btn-sm btn-primary me-4"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Show Report</button>
-<button type="button" class="btn btn-sm btn-danger text-white"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-file-pdf me-1"></i>Pdf</button>                    </div>
+                        <button type="submit" class="btn btn-sm btn-primary me-4" name="action" value="show"><i class="fa-solid fa-magnifying-glass me-1"></i>Show Report</button>
+                        <button type="submit" class="btn btn-sm btn-danger text-white" name="action" value="pdf"><i class="fa-solid fa-file-pdf me-1"></i>Pdf</button>
+                    </div>
                 </div>
             </div>
         </form>
 
         @if ($masEmployees)
         <h4 class="text-center">Millennium Computers and Networking</h4>
-        <p class="text-center text-dark fw-bold">Promotion Report</p>
-        <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
+        <p class="text-center text-dark fw-bold">Employee List</p>
+        <p class="text-center text-dark fw-medium">Printing Date: {{ \Carbon\Carbon::now()->setTimezone('Asia/Dhaka')->format('d M Y h:i a') }}</p>
+        @if ($subofficeName)
+            <p class="text-center text-dark fw-medium">Office: {{ $subofficeName->name }}</p>
+        @endif
+        @if ($departmentName)
+            <p class="text-center text-dark fw-medium">Department: {{ $departmentName->department }}</p>
+        @endif
+        @if ($designationName)
+            <p class="text-center text-dark fw-medium">Designation: {{ $designationName->designation }}</p>
+        @endif
         <div class="QA_table px-3">
             <div>
                 @php
-                    $count  = 1;
+                    $count = ($masEmployees->currentPage() - 1) * $masEmployees->perPage() + 1;
                 @endphp
                 
                 <table class="table">
@@ -157,27 +171,33 @@
                         <tr>
                             <th scope="col">Sl</th>
                             <th>Employee Name</th>
-                            <th>Promotion Date</th>
-                            <th>New Designation</th>
-                            <th>Previous Promotion Date</th>                                        
-                            <th>Previous Designation</th>
+                            <th>Employee No</th>
+                            <th>Date of Joining</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Provision preiod end</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($hrmEmpJobHistory as $jobHistory)
+                        @foreach ($masEmployees as $employee)
                         <tr>
                             <td>{{ $count++ }}</td>
-                            <td>{{ $jobHistory->emp_name }}</td>
-                            <td>{{ $jobHistory->pro_date }}</td>
-                            <td>{{ $jobHistory->prodes }}</td>
-                            <td>{{ $jobHistory->pre_pro_date }}</td>
-                            <td>{{ $jobHistory->predes }}</td>
+                            <td>{{ $employee->emp_name }}</td>
+                            <td>{{ $employee->emp_no }}</td>
+                            <td>{{ $employee->date_of_joining }}</td>
+                            <td>{{ $employee->department }}</td>
+                            <td>{{ $employee->designation }}</td>
+                            <td>{{ $employee->mobile }}</td>
+                            <td>{{ $employee->email }}</td>
+                            <td>{{ $employee->provision_days }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{-- {!! $hrmEmpJobHistory->links() !!} --}}
+                {!! $masEmployees->links() !!}
             </div>
         </div>
         @endif
@@ -190,41 +210,6 @@
         $('.select2').select2({
             
         });
-
-        const timePeriod = document.getElementById('time_period');
-        
-        function getMonth(m){
-            if(m==1){
-                return "January";
-            }else if(m==2){
-                return "February";
-            }else if(m==3){
-                return "March";
-            }else if(m==4){
-                return "April";
-            }else if(m==5){
-                return "May";
-            }else if(m==6){
-                return "June";
-            }else if(m==7){
-                return "July";
-            }else if(m==8){
-                return "August";
-            }else if(m==9){
-                return "September";
-            }else if(m==10){
-                return "October";
-            }else if(m==11){
-                return "November";
-            }else if(m==12){
-                return "December";
-            }
-        }
-
-        //Convert number into month name for table header
-        let munthNumber = timePeriod.innerText;
-        let monthName = getMonth(munthNumber);
-        timePeriod.innerText = monthName;
     });
 </script>
 

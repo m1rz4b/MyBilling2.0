@@ -50,14 +50,14 @@
 </div>
 
 <div class="main_content_iner">
-    <div class="container-fluid p-0 sm_padding_15px">
+    <div class="container-fluid p-0 pb-3 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0" style="color: white;">Employee List</h5>
             </div>
         </div>
 
-        <form action="{{route('employee-list-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('employee-list-report.show')}}" method="get" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-4 form-group">
@@ -133,13 +133,20 @@
         @if ($masEmployees)
         <h4 class="text-center">Millennium Computers and Networking</h4>
         <p class="text-center fw-bold text-dark">Employee List</p>
-        <p class="text-center fw-medium text-dark">Office: {{$selectedOfficeName->name}}</p>
+        @if ($subofficeName)
+            <p class="text-center text-dark fw-medium">Office: {{ $subofficeName->name }}</p>
+        @endif
+        @if ($employeeStatusName)
+            <p class="text-center text-dark fw-medium">Employee Status: {{ $employeeStatusName->name }}</p>
+        @endif
+        @if ($departmentName)
+            <p class="text-center text-dark fw-medium">Department: {{ $departmentName->department }}</p>
+        @endif
+        @if ($designationName)
+            <p class="text-center text-dark fw-medium">Designation: {{ $designationName->designation }}</p>
+        @endif
         <div class="QA_table px-3">
-            <div>
-                @php
-                    $count  = 1;
-                @endphp
-                
+            <div>                
                 <table class="table">
                     <thead>
                         <tr>

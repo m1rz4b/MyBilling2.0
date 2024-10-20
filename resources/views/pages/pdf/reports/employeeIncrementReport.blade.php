@@ -20,7 +20,15 @@
         @if ($hrm_increments)
         <h4 class="text-center">Millennium Computers and Networking</h4>
         <p class="text-center text-dark fw-bold">Increment Report</p>
-        <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
+        @if ($selectedMonth && $selectedYear)
+            <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
+        @endif
+        @if ($departmentName)
+            <p class="text-center text-dark fw-medium">Department: {{ $departmentName->department }}</p>
+        @endif
+        @if ($incrementTypeName)
+            <p class="text-center text-dark fw-medium">Increment Type: {{ $incrementTypeName->name }}</p>
+        @endif
         <div class="QA_table px-3">
             <div>
                 @php
@@ -68,60 +76,8 @@
                         </tr>
                     </tbody>
                 </table>
-                {{-- {!! $hrm_increments->links() !!} --}}
             </div>
         </div>
         @endif
     </div>
 </div>
-
-@push('select2')
-<script>
-    $(document).ready(function() {
-        const month = document.getElementsByClassName('month');
-        const timePeriod = document.getElementById('time_period');
-        
-        function getMonth(m){
-            if(m==1){
-                return "January";
-            }else if(m==2){
-                return "February";
-            }else if(m==3){
-                return "March";
-            }else if(m==4){
-                return "April";
-            }else if(m==5){
-                return "May";
-            }else if(m==6){
-                return "June";
-            }else if(m==7){
-                return "July";
-            }else if(m==8){
-                return "August";
-            }else if(m==9){
-                return "September";
-            }else if(m==10){
-                return "October";
-            }else if(m==11){
-                return "November";
-            }else if(m==12){
-                return "December";
-            }
-        }
-
-        //Convert number into month name for table data
-        for(mon of month){
-            let res = mon.innerText;
-            let result = res.split(',')[0];
-            let monthName = getMonth(result);
-            result = monthName.concat(',',res.split(',')[1]);
-            mon.innerText = result;
-        }
-
-        //Convert number into month name for table header
-        let munthNumber = timePeriod.innerText;
-        let monthName = getMonth(munthNumber);
-        timePeriod.innerText = monthName;
-    });
-</script>
-@endpush

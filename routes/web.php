@@ -1,6 +1,6 @@
 <?php
 
-// use App\Http\Controllers\CheckinoutController;
+use App\Http\Controllers\CheckinoutController;
 use App\Http\Controllers\HrmApproveSalaryController;
 use App\Http\Controllers\HrmBonusGenerationController;
 use App\Http\Controllers\HrmEmpMonthlySalaryController;
@@ -362,10 +362,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('employee-increment-report.show', [HrmIncrementController::class, 'employeeIncrementShow'])->name('employee-increment-report.show');
 
     Route::get('employee-promotion-report', [HrmEmpJobHistoryController::class, 'employeePromotionIndex'])->name('employee-promotion-report.index');
-    Route::post('employee-promotion-report.show', [HrmEmpJobHistoryController::class, 'employeePromotionShow'])->name('employee-promotion-report.show');
+    Route::get('employee-promotion-report.show', [HrmEmpJobHistoryController::class, 'employeePromotionShow'])->name('employee-promotion-report.show');
 
     Route::get('employee-list-report', [MasEmployeeController::class, 'employeeListIndex'])->name('employee-list-report.index');
-    Route::post('employee-list-report.show', [MasEmployeeController::class, 'employeeListShow'])->name('employee-list-report.show');
+    Route::get('employee-list-report.show', [MasEmployeeController::class, 'employeeListShow'])->name('employee-list-report.show');
 
     Route::get('performance-report', [MasEmployeeController::class, 'performanceReportIndex'])->name('performance-report.index');
     Route::post('performance-report.show', [MasEmployeeController::class, 'performanceReportShow'])->name('performance-report.show');
@@ -377,13 +377,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('daily-attendance-report.show', [HrmAttendanceSummaryController::class, 'dailyAttendanceReportShow'])->name('daily-attendance-report.show');
     
     Route::get('act-and-plan-work-report', [CheckinoutController::class, 'actAndPlanWorkIndex'])->name('act-and-plan-work-report.index');
-    Route::post('act-and-plan-work-report.show', [CheckinoutController::class, 'actAndPlanWorkShow'])->name('act-and-plan-work-report.show');
+    Route::get('act-and-plan-work-report.show', [CheckinoutController::class, 'actAndPlanWorkShow'])->name('act-and-plan-work-report.show');
 
     Route::get('late-in-report', [MasEmployeeController::class, 'lateInIndex'])->name('late-in-report.index');
-    Route::post('late-in-report.show', [MasEmployeeController::class, 'lateInShow'])->name('late-in-report.show');
+    Route::get('late-in-report.show', [MasEmployeeController::class, 'lateInShow'])->name('late-in-report.show');
 
     Route::get('absent-report', [MasEmployeeController::class, 'absentIndex'])->name('absent-report.index');
-    Route::post('absent-report.show', [MasEmployeeController::class, 'absentShow'])->name('absent-report.show');
+    Route::get('absent-report.show', [MasEmployeeController::class, 'absentShow'])->name('absent-report.show');
 
     Route::get('night-allowance-report', [HrmAttendanceSummaryController::class, 'nightAllowanceIndex'])->name('night-allowance-report.index');
     Route::post('night-allowance-report.show', [HrmAttendanceSummaryController::class, 'nightAllowanceShow'])->name('night-allowance-report.show');
@@ -392,18 +392,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('early-out-report.show', [MasEmployeeController::class, 'earlyOutShow'])->name('early-out-report.show');
 
     Route::get('provision-report', [MasEmployeeController::class, 'provisionReportIndex'])->name('provision-report.index');
-    Route::post('provision-report.show', [MasEmployeeController::class, 'provisionReportShow'])->name('provision-report.show');
+    Route::get('provision-report.show', [MasEmployeeController::class, 'provisionReportShow'])->name('provision-report.show');
 
     Route::get('holiday-allowance-report', [HrmAttendanceSummaryController::class, 'holidayAllowanceIndex'])->name('holiday-allowance-report.index');
     Route::post('holiday-allowance-report.show', [HrmAttendanceSummaryController::class, 'holidayAllowanceShow'])->name('holiday-allowance-report.show');
 
     Route::get('raw-check-in-out-report', [MasEmployeeController::class, 'rawCheckInOutIndex'])->name('raw-check-in-out-report.index');
-    Route::post('raw-check-in-out-report.show', [MasEmployeeController::class, 'rawCheckInOutShow'])->name('raw-check-in-out-report.show');
+    Route::get('raw-check-in-out-report.show', [MasEmployeeController::class, 'rawCheckInOutShow'])->name('raw-check-in-out-report.show');
 
     Route::get('leave-transaction-report', [TblLeaveController::class, 'leaveTransactionIndex'])->name('leave-transaction-report.index');
 
     Route::get('leave-register-report', [MasEmployeeController::class, 'leaveRegisterReportIndex'])->name('leave-register-report.index');
-    Route::post('leave-register-report.show', [MasEmployeeController::class, 'leaveRegisterReportShow'])->name('leave-register-report.show');
+    Route::get('leave-register-report.show', [MasEmployeeController::class, 'leaveRegisterReportShow'])->name('leave-register-report.show');
 
     // HRM Payroll Setup
     Route::resource('payrolladdcomponent', HrmPayrollAddCompController::class);

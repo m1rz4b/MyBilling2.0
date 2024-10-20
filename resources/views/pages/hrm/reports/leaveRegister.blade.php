@@ -51,14 +51,14 @@
 </div>
 
 <div class="main_content_iner">
-    <div class="container-fluid p-0 sm_padding_15px">
+    <div class="container-fluid p-0 pb-3 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0" style="color: white;">Leave Register Report</h5>
             </div>
         </div>
 
-        <form action="{{route('leave-register-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('leave-register-report.show')}}" method="get" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">
@@ -66,8 +66,10 @@
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                         <select class="form-select form-select-sm form-control" id="year" name="year" >
+                            {{-- <option value="{{ now()->year }}">{{ now()->year }}</option> --}}
+                            <option value="-1">Select a Year</option>
                             @foreach (range(now()->year - 15, now()->year + 5) as $year)
-                                <option value="{{ $year }}" {{ (now()->year == $year) ? 'selected' : ($selectedYear==$year? 'selected' : '') }}>{{ $year }}</option>
+                                <option value="{{ $year }}" {{ ($selectedYear==$year? 'selected' : '') }}>{{ $year }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -90,7 +92,7 @@
                     <label for="employee" class="fw-medium">Employee</label>
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-building"></i></span>
-                        <select class="form-select form-select-sm form-control" id="employee" name="employee">
+                        <select class="select2 form-select form-select-sm form-control" id="employee" name="employee">
                             <option value="-1">Select an Employee</option>
                             @foreach ($employees as $emp)
                                 <option {{ $selectedEmployee==$emp->id ? 'selected' : '' }} value="{{ $emp->id }}">{{ $emp->emp_name }}</option>
@@ -101,9 +103,9 @@
 
                 <div class="col-sm-3 d-flex d-sm-inline justify-content-start">
                     <br class="d-none d-sm-block">
-                    <div class="d-flex">
-                        <button type="button" class="btn btn-sm btn-primary me-4"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-magnifying-glass me-1"></i>Show Report</button>
-                        <button type="button" class="btn btn-sm btn-danger text-white"  onclick="this.disabled=true;this.form.submit();"><i class="fa-solid fa-file-pdf me-1"></i>Pdf</button>                    
+                    <div class="d-flex">                        
+                        <button type="submit" class="btn btn-sm btn-primary me-4" name="action" value="show"><i class="fa-solid fa-magnifying-glass me-1"></i>Show Report</button>
+                        <button type="submit" class="btn btn-sm btn-danger text-white" name="action" value="pdf"><i class="fa-solid fa-file-pdf me-1"></i>Pdf</button>
                     </div>
                 </div>
             </div>
@@ -111,37 +113,52 @@
 
         @if ($masEmployees)
         <h4 class="text-center">Millennium Computers and Networking</h4>
-        <p class="text-center text-dark fw-medium">For the period of: {{$selectedFromDate}}, {{$selectedToDate}}</p>
-        <p class="text-center fw-medium text-dark">Office: {{$selectedOfficeName->name}}</p>
+        <p class="text-center text-dark fw-semibold">Leave Register Report</p>
+        @if ($selectedYear>-1)
+            <p class="text-center text-dark fw-medium">For the year: {{$selectedYear}}</p>
+        @endif
+        @if ($departmentName)
+            <p class="text-center text-dark fw-medium">Department: {{ $departmentName->department }}</p>
+        @endif
+        @if ($employeenName)
+            <p class="text-center text-dark fw-medium">Employee: {{ $employeenName->emp_name }}</p>
+        @endif
         <div class="QA_table px-3">
-            <div>
-                @php
-                    $count  = 1;
-                @endphp
-                
+            <div>                
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Planned In</th>
-                            <th>Actual In</th>
-                            <th>Planned Out</th>
-                            <th>Actual Out</th>
-                            <th>Planned Work</th>
-                            <th>Actual Work</th>
-                            <th>Difference</th>
+                            <th>Type</th>
+                            <th>Allowed</th>
+                            <th>Taken</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($attendanceData as $attendance)
-                        <tr>
-                            <td>{{ $count++ }}</td>
-                        </tr>
+                        @php
+                            $nemp = null;
+                        @endphp
+                        @foreach ($masEmployees as $employees)
+                            @if ($nemp != $employees->emp_name)
+                                <tr>
+                                    <td colspan="4"><strong>Employee: {{ $employees->emp_name }}</strong></td>
+                                </tr>
+                            @endif
+                            <tr>
+                                <td>{{ $employees->name }}</td>
+                                <td>{{ $employees->total }}</td>
+                                <td>{{ $employees->consumed }}</td>
+                                <td>{{ $employees->allowed - $employees->consumed }}</td>
+                            </tr>
+                            
+                            @php
+                                $nemp = $employees->emp_name;
+                            @endphp
                         @endforeach
                     </tbody>
                 </table>
-                {!! $attendanceData->links() !!}
+                {!! $masEmployees->links() !!}
             </div>
         </div>
         @endif

@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Helpers;
-
 function getMonth($m){
     if($m==1){
         return "January";

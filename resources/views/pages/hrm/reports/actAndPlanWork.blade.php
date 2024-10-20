@@ -58,7 +58,7 @@
             </div>
         </div>
 
-        <form action="{{route('act-and-plan-work-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('act-and-plan-work-report.show')}}" method="get" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">
@@ -102,12 +102,16 @@
 
         @if ($attendanceData)
         <h4 class="text-center">Millennium Computers and Networking</h4>
-        <p class="text-center fw-bold text-dark">Actual And Planned Work Times ({{$selectedFromDate}} to {{$selectedToDate}})</p>
-        <p class="text-center fw-bold text-dark">Employee: {{$selectedEmployee}}</p>
+        @if ($selectedFromDate && $selectedToDate)
+            <p class="text-center fw-bold text-dark">Actual And Planned Work Times ({{$selectedFromDate}} to {{$selectedToDate}})</p>
+        @endif
+        @if ($employeeName)
+            <p class="text-center fw-bold text-dark">Employee: {{$employeeName->emp_name}}</p>
+        @endif
         <div class="QA_table px-3">
             <div>
                 @php
-                    $count  = 1;
+                    $count = ($attendanceData->currentPage() - 1) * $attendanceData->perPage() + 1;
                     $tw = 0;
                     $td = 0;
                     $tt = 0;
@@ -119,6 +123,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>Sl</th>
                             <th>Date</th>
                             <th>Planned In</th>
                             <th>Actual In</th>
@@ -133,11 +138,12 @@
                     <tbody>
                         @foreach ($attendanceData as $attendance)
                         <tr>
+                            <td>{{ $count++ }}</td>
                             <td>{{ $attendance->empdate }}</td>
                             <td>{{ date('g:i a', strtotime($plannedin)) }}</td>
-                            <td>{{ date('g:i a', strtotime($attendance->min_checktime)) }}</td>
+                            <td>{{ $min ?? '' }}</td>
                             <td>{{ date('g:i a', strtotime($plannedout)) }}</td>
-                            <td>{{ date('g:i a', strtotime($attendance->max_checktime)) }}</td>
+                            <td>{{ $max ?? '' }}</td>
                             <td>
                                 @php
                                     $work=(strtotime($plannedout)-strtotime($plannedin));  
@@ -178,7 +184,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{-- {!! $attendanceData->links() !!} --}}
+                {!! $attendanceData->links() !!}
             </div>
         </div>
         @endif

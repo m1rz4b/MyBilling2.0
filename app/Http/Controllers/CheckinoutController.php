@@ -73,7 +73,7 @@ class CheckinoutController extends Controller
     {
         $menus = Menu::get();
 
-        $employees = MasEmployee::select('id', 'emp_name')->orderBy('emp_name', 'asc')->get();
+        $employees = MasEmployee::select('id', 'emp_name')->orderBy('id', 'asc')->get();
 
         $selectedFromDate = '';
         $selectedToDate = '';
@@ -93,31 +93,43 @@ class CheckinoutController extends Controller
     public function actAndPlanWorkShow(Request $request)
     {
         $menus = Menu::get();
-        $employees = MasEmployee::select('id', 'emp_name')->get();
+        $employees = MasEmployee::select('id', 'emp_name')->orderBy('id', 'asc')->get();
 
         $selectedFromDate = $request->from_date;
         $selectedToDate = $request->to_date;
         $selectedEmployee = $request->employee;
 
         $attendanceData = Checkinout::select(
-            DB::raw("DATE_FORMAT(checkinout.checktime, '%Y-%d-%m') as empdate"),   // Format checktime
+            DB::raw("DATE_FORMAT(checkinout.checktime, '%Y-%m-%d') as empdate"),   // Format checktime
             DB::raw("DAY(checkinout.checktime) as day"),                           // Extract the day
             DB::raw("MAX(CAST(checkinout.checktime AS CHAR)) as max_checktime"),   // Get the latest checktime
             DB::raw("MIN(CAST(checkinout.checktime AS CHAR)) as min_checktime"),   // Get the earliest checktime
             DB::raw("MAX(mas_employees.emp_name) as emp_name")                     // Aggregate employee name
         )
         ->leftJoin('mas_employees', 'mas_employees.id', '=', 'checkinout.userid')
-        ->groupBy(DB::raw("DATE_FORMAT(checkinout.checktime, '%Y-%d-%m')"), DB::raw('DAY(checkinout.checktime)'))  // Group by both date format and day
-        ->orderBy(DB::raw("DATE_FORMAT(checkinout.checktime, '%Y-%d-%m')"), 'ASC') // Order by formatted date
+        ->groupBy(DB::raw("DATE_FORMAT(checkinout.checktime, '%Y-%m-%d')"), DB::raw('DAY(checkinout.checktime)'))  // Group by both date format and day
+        ->orderBy(DB::raw("DATE_FORMAT(checkinout.checktime, '%Y-%m-%d')"), 'ASC') // Order by formatted date
         ->where('checkinout.checktime', '>=', $selectedFromDate.' 00:00:00')
         ->where('checkinout.checktime', '<=', $selectedToDate. ' 23:59:59');
         if ($selectedEmployee > -1) {
             $attendanceData->where('mas_employees.id', $selectedEmployee);
         }
-        $attendanceData = $attendanceData->get();
+        $attendanceData = $attendanceData->paginate(30)->withQueryString();
 
         $plannedin = TblSchedule::where('id', 1)->value('start_time');
         $plannedout = TblSchedule::where('id', 1)->value('end_time');
+
+        foreach ($attendanceData as $attendance) {
+            $max = $attendance->max_checktime;
+            $max1 = explode(" ", $max);
+            $max = date('g:i a', strtotime($max1[1]));
+
+            $min = $attendance->min_checktime;
+            $min1 = explode(" ", $min);
+            $min = date('g:i a', strtotime($min1[1]));
+        }
+
+        $employeeName = MasEmployee::select('id', 'emp_name')->where('id', $selectedEmployee)->first();
 
         if($request->action == 'show'){
             return view('pages.hrm.reports.actAndPlanWork', compact(
@@ -128,7 +140,10 @@ class CheckinoutController extends Controller
                 'selectedEmployee',
                 'attendanceData',
                 'plannedin',
-                'plannedout'
+                'plannedout',
+                'max',
+                'min',
+                'employeeName'
             ));
         }else if($request->action == 'pdf'){
             $pdf = Pdf::loadView('pages.pdf.reports.actAndPlanWorkReport', compact(
@@ -138,6 +153,9 @@ class CheckinoutController extends Controller
                 'attendanceData',
                 'plannedin',
                 'plannedout',
+                'max',
+                'min',
+                'employeeName'
             ))->setPaper('a4', 'potrait');
             return $pdf->download('invoices.pdf');
         }

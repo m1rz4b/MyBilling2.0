@@ -37,7 +37,8 @@
         },
         "files": [
             "app/Helpers/FolderHelper.php",
-            "app/Helpers/DbHelper.php"
+            "app/Helpers/DbHelper.php",
+            "app/Helpers/Utilities.php"
         ]
     },
     "autoload-dev": {

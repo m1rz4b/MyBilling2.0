@@ -115,7 +115,7 @@ class HrmEmpJobHistoryController extends Controller
         $selectedDepartment = '';
         $hrmEmpJobHistory = [];
 
-        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('id', 'asc')->get();
         return view('pages.hrm.reports.employeePromotion', compact('menus', 'selectedYear', 'selectedMonth', 'selectedDepartment', 'hrmEmpJobHistory', 'masDepartments'));
     }
 
@@ -144,9 +144,10 @@ class HrmEmpJobHistoryController extends Controller
         if ($selectedDepartment>-1) {
             $hrmEmpJobHistory->where('mas_employees.department',$selectedDepartment);
         }
-        $hrmEmpJobHistory = $hrmEmpJobHistory->get();
+        $hrmEmpJobHistory = $hrmEmpJobHistory->paginate(20)->withQueryString();
 
-        $masDepartments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
+        $masDepartments = MasDepartment::select('id', 'department')->orderBy('id', 'asc')->get();
+        $departmentName = MasDepartment::select('id', 'department')->where('id', $selectedDepartment)->first();
 
         if($request->action == 'show'){
             return view('pages.hrm.reports.employeePromotion', compact(
@@ -155,13 +156,15 @@ class HrmEmpJobHistoryController extends Controller
                 'selectedMonth', 
                 'selectedDepartment', 
                 'hrmEmpJobHistory', 
-                'masDepartments'
+                'masDepartments',
+                'departmentName'
             ));
         } else if($request->action == 'pdf'){
             $pdf = Pdf::loadView('pages.pdf.reports.employeePromotionReport', compact(
                 'selectedYear', 
                 'selectedMonth', 
-                'hrmEmpJobHistory'
+                'hrmEmpJobHistory',
+                'departmentName'
             ))->setPaper('a4', 'portrait');
             return $pdf->download('invoices.pdf');
         }

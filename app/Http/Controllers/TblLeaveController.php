@@ -273,7 +273,24 @@ class TblLeaveController extends Controller
     {
         $menus = Menu::get();
         
-        $leaves = [];
+        $leaves = TblLeave::leftJoin('mas_employees', 'mas_employees.id', '=', 'tbl_leave.employee_id')
+        ->leftJoin('tbl_leavetype', 'tbl_leavetype.id', '=', 'tbl_leave.leavetype_id')
+        ->leftJoin('leave_status', 'leave_status.id', '=', 'tbl_leave.status')
+        ->select(
+            'tbl_leave.id',
+            'tbl_leave.employee_id',
+            DB::raw("DATE_FORMAT(tbl_leave.from_date, '%d/%m/%Y') AS from_date"),
+            DB::raw("DATE_FORMAT(tbl_leave.to_date, '%d/%m/%Y') AS to_date"),
+            DB::raw("DATE_FORMAT(tbl_leave.approved_time, '%d/%m/%Y') AS approved_time"),
+            'tbl_leave.leavetype_id',
+            'tbl_leave.remarks',
+            'tbl_leave.status',
+            'tbl_leave.days',
+            'mas_employees.emp_name',
+            'tbl_leavetype.name AS leavetype_name',
+            'leave_status.status AS leave_status'
+        )
+        ->paginate(50);
 
         return view('pages.hrm.reports.leaveTransaction', compact(
             'menus', 

@@ -50,7 +50,7 @@
 </div>
 
 <div class="main_content_iner">
-    <div class="container-fluid p-0 pb-3 sm_padding_15px">
+    <div class="coattendance-time-sheet.showntainer-fluid p-0 pb-3 sm_padding_15px">
         <div class="px-4 py-1 theme_bg_1">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0" style="color: white;">Attendance Time-Sheet Report</h5>
@@ -168,35 +168,152 @@
         <div class="QA_table px-3">
             <div>
                 @php
-                    $count  = 1;
+                    $i  = 1;
                 @endphp
                 
-                <table class="table">
+                <table class="table table-bordered table-condenced" cellpadding='0' cellspacing='0' width='90%' align='center' id="tableheadfixer">
                     <thead>
                         <tr>
-                            <th scope="col">Sl</th>
-                            <th>Employee Name</th>
-                            <th>Promotion Date</th>
-                            <th>New Designation</th>
-                            <th>Previous Promotion Date</th>                                        
-                            <th>Previous Designation</th>
+                            <th>Employee</th>
+                            @for ($x = 1; $x <= $d; $x++)
+                                <th width="28">{{ $x }}</th>
+                            @endfor
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($hrmEmpJobHistory as $jobHistory)
-                        <tr>
-                            <td>{{ $count++ }}</td>
-                            <td>{{ $jobHistory->emp_name }}</td>
-                            <td>{{ $jobHistory->pro_date }}</td>
-                            <td>{{ $jobHistory->prodes }}</td>
-                            <td>{{ $jobHistory->pre_pro_date }}</td>
-                            <td>{{ $jobHistory->predes }}</td>
-                        </tr>
+                        @foreach ($masEmployees as $employees) {
+                            @php
+                                $r_month = getMonth($employees->month);
+
+                                $array = [];
+                                $maxtm = [];
+                                $mintm = [];
+                                $emp_id =  $employees->id;
+                                $emp_no =  $employees->emp_no;
+
+                                if($emp_no != ''){
+                                    $empid = $employees->id;
+                                }else{
+                                    $empid=0;
+                                }
+
+                                $mtext='';
+
+                                $attendances = HrmAttendanceSummary::select([
+                                    'id',
+                                    'employee_id',
+                                    'shift_id',
+                                    DB::raw('DAY(date) AS date'),
+                                    'start_date',
+                                    'end_date',
+                                    'total_time',
+                                    'over_time',
+                                    'late_mark',
+                                    'early_mark',
+                                    'leave_mark',
+                                    'leave_type',
+                                    'gov_holiday',
+                                    'weekly_holiday',
+                                    'absent',
+                                    'administrative',
+                                    'entry_by',
+                                    'entry_date',
+                                    'update_by',
+                                    'update_date',
+                                ])
+                                ->where('employee_id', $emp_id)
+                                ->whereMonth('date', $selectedMonth)
+                                ->whereYear('date', $selectedYear)
+                                ->orderBy('employee_id')
+                                ->orderBy('date', 'ASC')
+                                ->get();
+
+                                $p_date_array = [];
+                                $p_type_array = [];
+                                $late_mark_array = [];
+                                $early_mark_array = [];
+                                $leave_mark_array = [];
+                                $leave_type_array = [];
+                                $gov_holiday_array = [];
+                                $weekly_holiday_array = [];
+                                $absent_array = [];
+                                $a = 1;
+
+                                foreach ($attendances as $attendance) {
+                                    $array[$a] = $attendance->day;
+
+                                    $max = date('H:i', strtotime(explode(" ", $attendance->end_date)[1]));
+                                    $min = date('H:i', strtotime(explode(" ", $attendance->start_date)[1]));
+                                    
+                                    $maxtm[$attendance->date] = $max;
+                                    $mintm[$attendance->date] = $min;
+
+                                    $p_date[$attendance->date] = $attendance->date;
+                                    $late_mark_array[$attendance->date] = $attendance->late_mark;
+                                    $early_mark_array[$attendance->date] = $attendance->early_mark;
+                                    $leave_mark_array[$attendance->date] = $attendance->leave_mark;
+                                    $leave_type_array[$attendance->date] = $attendance->leave_type;
+                                    $gov_holiday_array[$attendance->date] = $attendance->gov_holiday;
+                                    $weekly_holiday_array[$attendance->date] = $attendance->weekly_holiday;
+                                    $absent_array[$attendance->date] = $attendance->absent;
+                                    $start_time[$attendance->date] = strtotime($attendance->start_date);
+
+                                    $a++;
+                                }
+
+                                $t = 1;
+                                $u = 1;
+                                $l = '';
+                                $e = '';
+
+                                for ($j=1; $j <=$d ; $j++) {
+                                    if ($p_date[$t] == $j) {
+                                        $mtext='';
+                                        $bgcolor='';
+                                        $clr='';
+                                        $l='';
+                                        $ls='';
+                                        if ($start_time[$t] > 0) {
+                                            $ls = ($late_mark_array[$t] == 1) ? 'color:red' : 'color:green';
+                                            $e = ($early_mark_array[$t] == 1) ? 'color:red' : 'color:green';
+
+                                            if ($mintm[$t] == $maxtm[$t]) {
+                                                $maxtm[$t] = '-';
+                                            }
+
+                                            $bgcolor = 'style="background:#fff;"';
+
+                                            $mtext = "<span style='" . $ls . "'>" . $mintm[$t] . "</span> <br> <span style='" . $e . "'>" . $maxtm[$t] . "</span>";
+                                        }
+                                        
+                                        if($weekly_holiday_array[$t]==1){
+                                            $mtext .='W';
+                                            $clr = "white";
+                                            $bgcolor='style="background:#FF0000;"';
+                                            $wh++;
+                                        }
+                                        if($gov_holiday_array[$t]==1){
+                                            $mtext .='H';
+                                            $clr = "white";
+                                            $bgcolor='style="background:#FF0000;"';
+                                            $gh++;
+                                        }	
+                                        if($absent_array[$t]==1 && $mtext==''){
+                                            $mtext="<span style='color:red;'>A</span>";
+                                            $ta++;
+                                        }
+                                        echo "<td ".$bgcolor."> <span style='color:".$clr."'>".$mtext.$l."</span></td>";	
+                                        $t++;
+                                    }	
+                                }
+                                $i++;
+                            @endphp
+                        }
                         @endforeach
                     </tbody>
                 </table>
-                {{-- {!! $hrmEmpJobHistory->links() !!} --}}
+                <p style="color:red; font-size:11px"> <span>P : Present</span>, <span>A : Absent</span>,<span>L: Leave</span>, <span>H : Holyday</span>,<span>W : Weekend</span>, <span>LD : Late Days</span> <span>(L) : Late</span></p>
             </div>
         </div>
         @endif

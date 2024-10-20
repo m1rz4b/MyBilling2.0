@@ -129,8 +129,8 @@ class HrmIncrementController extends Controller
         $selectedIncrementType = '';
         $hrm_increments = [];
 
-        $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
-        $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'asc')->get();
+        $mas_departments = MasDepartment::select('id', 'department')->orderBy('id', 'asc')->get();
+        $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('id', 'asc')->get();
         return view('pages.hrm.reports.employeeIncrement', compact('menus', 'selectedYear', 'selectedMonth', 'selectedIgnoreMonth', 'selectedDepartment', 'selectedIncrementType', 'mas_departments', 'hrm_increment_types', 'hrm_increments'));
     }
 
@@ -193,13 +193,15 @@ class HrmIncrementController extends Controller
             $tcurrent_gross = $tcurrent_gross + $hrm_increment->current_gross;
         }
 
-        $mas_departments = MasDepartment::select('id', 'department')->orderBy('department', 'asc')->get();
-        $mas_employees = MasEmployee::select('id', 'emp_name')->get();
-        $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('name', 'asc')->get();
+        $mas_departments = MasDepartment::select('id', 'department')->orderBy('id', 'asc')->get();
+        $hrm_increment_types = HrmIncrementType::select('id', 'name')->orderBy('id', 'asc')->get();
 
         foreach ($hrm_increments as $hrm_increment) {
             $hrm_increment['month'] = $this->getMonth($hrm_increment->month);
         }
+
+        $departmentName = MasDepartment::select('id', 'department')->where('id', $selectedDepartment)->first();
+        $incrementTypeName = HrmIncrementType::select('id', 'name')->where('id', $selectedIncrementType)->first();
 
         if($request->action == 'show'){
             return view('pages.hrm.reports.employeeIncrement', compact(
@@ -210,12 +212,13 @@ class HrmIncrementController extends Controller
                 'selectedDepartment', 
                 'selectedIncrementType', 
                 'hrm_increments', 
-                'mas_departments', 
-                'mas_employees', 
+                'mas_departments',
                 'hrm_increment_types', 
                 'tprevious_gross', 
                 'tincrement_amount', 
-                'tcurrent_gross'
+                'tcurrent_gross',
+                'departmentName',
+                'incrementTypeName'
             ));
         }else if($request->action == 'pdf'){
             $pdf = Pdf::loadView('pages.pdf.reports.employeeIncrementReport', compact(
@@ -224,8 +227,10 @@ class HrmIncrementController extends Controller
                 'hrm_increments', 
                 'tprevious_gross', 
                 'tincrement_amount', 
-                'tcurrent_gross'
-            ))->setPaper('a4', 'portrait');
+                'tcurrent_gross',
+                'departmentName',
+                'incrementTypeName'
+            ))->setPaper('a4', 'landscape');
             return $pdf->download('invoices.pdf');
         }
     }

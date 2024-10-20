@@ -20,6 +20,19 @@
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             line-height: 1.5 !important;
         }
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        td, th {
+            white-space: wrap;    /* Prevent wrapping if needed (can be removed if wrapping is preferred) */
+        }
+
+        td {
+            word-wrap: break-word; /* Break long words */
+        }
     </style>
     
     <div class="main_content_iner mt-0">

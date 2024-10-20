@@ -163,8 +163,26 @@
 
         @if ($masEmployees)
         <h4 class="text-center">Millennium Computers and Networking</h4>
-        <p class="text-center text-dark fw-bold">Promotion Report</p>
-        <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
+        <p class="text-center text-dark fw-bold">Performance Report</p>
+        @if ($selectedMonth && $selectedYear)
+            <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
+        @endif
+        @if ($subofficeName)
+            <p class="text-center text-dark fw-medium">Office: {{ $subofficeName->name }}</p>
+        @endif
+        @if ($departmentName)
+            <p class="text-center text-dark fw-medium">Department: {{ $departmentName->department }}</p>
+        @endif
+        @if ($employeeStatusName)
+            <p class="text-center text-dark fw-medium">Employee Status: {{ $employeeStatusName->name }}</p>
+        @endif
+        @if ($designationName)
+            <p class="text-center text-dark fw-medium">Designation: {{ $designationName->designation }}</p>
+        @endif
+        @if ($salaryStatusName)
+            <p class="text-center text-dark fw-medium">Salary Status: {{ $salaryStatusName->description }}</p>
+        @endif
+        <p class="text-right fw-bold">Total Working Day = {{ ($diffday - $govholy) + $chw }} </p>
         <div class="QA_table px-3">
             <div>
                 @php
@@ -175,24 +193,31 @@
                     <thead>
                         <tr>
                             <th>Employee</th>
-                            <th>{{ $count++ }}</th>
+                            @for ($x = 1; $x <= $d; $x++)
+                                <th width="28">{{ $x }}</th>
+                            @endfor
+                            <th>TP</th>
+                            <th>TL</th>
+                            <th>TA</th>
+                            <th>LD</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($hrmEmpJobHistory as $jobHistory)
+                        @foreach ($masEmployees as $employees)
                         <tr>
-                            <td>{{ $count++ }}</td>
-                            <td>{{ $jobHistory->emp_name }}</td>
-                            <td>{{ $jobHistory->pro_date }}</td>
-                            <td>{{ $jobHistory->prodes }}</td>
-                            <td>{{ $jobHistory->pre_pro_date }}</td>
-                            <td>{{ $jobHistory->predes }}</td>
+                            <td>{{ $employees->emp_name . ' (' . $employees->emp_no . ')' }}</td>
+                            
+                            <td class="fw-bold">{{  $tot_precent }}</td>
+                            <td class="fw-bold">{{  $tot_leave }}</td>
+                            <td class="fw-bold">{{  $ta }}</td>
+                            <td class="text-danger fw-bold">{{  $tot_late }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{-- {!! $hrmEmpJobHistory->links() !!} --}}
+                <p style="color:red; font-size:11px"><span>TP: Total Present</span>, <span>TL: Total Leave</span>, <span>TA : Total Absent</span>, <span>P : Present</span>, <span>A : Absent</span>,<span>PW: Present In weekend</span><span>PH: Present In Holyday</span>
+                <span>L: Leave</span>, <span>H : Holyday</span>,<span>W : Weekend</span>, <span>LD : Late Days</span> <span>(L) : Late</span></p>
             </div>
         </div>
         @endif

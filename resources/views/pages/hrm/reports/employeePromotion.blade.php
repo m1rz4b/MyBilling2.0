@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <form action="{{route('employee-promotion-report.show')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('employee-promotion-report.show')}}" method="get" enctype="multipart/form-data">
             @csrf
             <div class="row p-3">
                 <div class="col-sm-3 form-group">
@@ -65,8 +65,9 @@
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                         <select class="form-select form-select-sm form-control" id="year" name="year" >
+                            <option value="{{ now()->year }}">{{ now()->year }}</option>
                             @foreach (range(now()->year - 15, now()->year + 5) as $year)
-                                <option value="{{ $year }}" {{ (now()->year == $year) ? 'selected' : ($selectedYear==$year? 'selected' : '') }}>{{ $year }}</option>
+                                <option value="{{ $year }}" {{ ($selectedYear==$year? 'selected' : '') }}>{{ $year }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -77,8 +78,9 @@
                     <div class="input-group input-group-sm flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
                         <select class="form-select form-select-sm form-control" id="month" name="month">
+                            <option value="{{ now()->format('M') }}">{{ now()->format('M') }}</option>
                             @foreach(range(1,12) as $month)
-                                <option value="{{ $month }}" {{ (now()->format('n') == $month) ? 'selected' : ($selectedMonth == $month ? 'selected' : '') }}>
+                                <option value="{{ $month }}" {{ ($selectedMonth == $month ? 'selected' : '') }}>
                                     {{ date("M", mktime(0, 0, 0, $month, 1)) }}
                                 </option>
                             @endforeach
@@ -112,11 +114,16 @@
         @if ($hrmEmpJobHistory)
         <h4 class="text-center">Millennium Computers and Networking</h4>
         <p class="text-center text-dark fw-bold">Promotion Report</p>
-        <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
+        @if ($selectedMonth && $selectedYear) 
+            <p class="text-center text-dark fw-medium">For the period of <span id="time_period">{{$selectedMonth}}</span>, {{$selectedYear}}</p>
+        @endif
+        @if ($departmentName)
+            <p class="text-center text-dark fw-medium">Department: {{ $departmentName->department }}</p>
+        @endif
         <div class="QA_table px-3">
             <div>
                 @php
-                    $count  = 1;
+                    $count = ($hrmEmpJobHistory->currentPage() - 1) * $hrmEmpJobHistory->perPage() + 1;
                 @endphp
                 
                 <table class="table">
@@ -144,7 +151,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{-- {!! $hrmEmpJobHistory->links() !!} --}}
+                {!! $hrmEmpJobHistory->links() !!}
             </div>
         </div>
         @endif
@@ -189,8 +196,8 @@
         }
 
         //Convert number into month name for table header
-        let munthNumber = timePeriod.innerText;
-        let monthName = getMonth(munthNumber);
+        let monthNumber = timePeriod.innerText;
+        let monthName = getMonth(monthNumber);
         timePeriod.innerText = monthName;
     });
 </script>
