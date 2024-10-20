@@ -38,6 +38,19 @@ class HrmTblEmploanController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->validate([
+            'emp_id' => 'required',
+            'sanction_date' => 'required',
+            'start_date' => 'required',
+            'amnt' => 'required',
+            'interest' => 'required',
+            'no_of_installment' => 'required',
+            'emi' => 'required',
+            'status' => 'required'
+        ]);
+
+        $emploan = HrmTblEmploan::create($data);
+        return redirect()->route('emploan.index') -> with('success', 'Employee Loan created successfully');
     }
 
     /**
@@ -59,9 +72,23 @@ class HrmTblEmploanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, HrmTblEmploan $hrmTblEmploan)
+    public function update(Request $request, HrmTblEmploan $emploan)
     {
         //
+        $data = $request->validate([
+            'emp_id' => 'required',
+            'sanction_date' => 'required',
+            'start_date' => 'required',
+            'amnt' => 'required',
+            'interest' => 'required',
+            'no_of_installment' => 'required',
+            'emi' => 'required',
+            'status' => 'required'
+        ]);
+
+        $emploan->update($data);
+        return redirect()->route('emploan.index') -> with('success', 'Employee Loan updated successfully');
+
     }
 
     /**

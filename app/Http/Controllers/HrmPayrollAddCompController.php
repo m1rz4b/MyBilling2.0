@@ -24,6 +24,16 @@ class HrmPayrollAddCompController extends Controller
         return view('pages.hrm.payroll.setup.payrollAdditionComponent', compact('menus', 'addcomps', 'comptypes', 'masgls'));
     }
 
+    public function addcompreport()
+    {
+        $menus = Menu::get();
+        $addcomps = HrmAddComp::get();
+        $selectedYear = '';
+        $selectedMonth = '';
+        $selectedAddComp = '';
+        return view('pages.hrm.payroll.report.additionComponent', compact('menus', 'addcomps', 'selectedYear', 'selectedMonth', 'selectedAddComp'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

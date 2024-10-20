@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
-use App\Models\TblCapacity;
 use Illuminate\Http\Request;
 
-class TblCapacityController extends Controller
+class ModelInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class TblCapacityController extends Controller
     {
         //
         $menus = Menu::get();
-        return view('pages.inventory.setup.capacity', compact('menus'));
+        return view('pages.inventory.setup.modelinfo', compact('menus'));
     }
 
     /**
@@ -37,7 +36,7 @@ class TblCapacityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TblCapacity $tblCapacity)
+    public function show(string $id)
     {
         //
     }
@@ -45,7 +44,7 @@ class TblCapacityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TblCapacity $tblCapacity)
+    public function edit(string $id)
     {
         //
     }
@@ -53,7 +52,7 @@ class TblCapacityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TblCapacity $tblCapacity)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -61,7 +60,7 @@ class TblCapacityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TblCapacity $tblCapacity)
+    public function destroy(string $id)
     {
         //
     }

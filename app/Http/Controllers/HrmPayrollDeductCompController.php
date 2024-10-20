@@ -24,6 +24,16 @@ class HrmPayrollDeductCompController extends Controller
         return view('pages.hrm.payroll.setup.payrollDeductionComponent', compact('menus', 'deductcomps', 'comptypes', 'masgls'));
     }
 
+    public function deductcompreport()
+    {
+        $menus = Menu::get();
+        $deductcomps = HrmDeductComp::get();
+        $selectedYear = '';
+        $selectedMonth = '';
+        $selectedDeductComp = '';
+        return view('pages.hrm.payroll.report.deductionComponent', compact('menus', 'deductcomps', 'selectedYear', 'selectedMonth', 'selectedDeductComp'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

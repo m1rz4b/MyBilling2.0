@@ -25,8 +25,8 @@
     <div class="main_content_iner">
         <div class="container-fluid p-0 sm_padding_15px">
             <div class="px-4 py-1 theme_bg_1 d-flex justify-content-between">
-                <h5 class="mb-0 text-white text-center">Type Information</h5>
-                <a class="btn-custom-1" data-bs-toggle="modal" data-bs-target="#addCategoryTypeModal">Add</a>
+                <h5 class="mb-0 text-white text-center">Capacity Information</h5>
+                <a class="btn-custom-1" data-bs-toggle="modal" data-bs-target="#addCapacityModal">Add</a>
             </div>
 
             {{-- action="{{ route('generate-salary.show') }}"  --}}
@@ -55,11 +55,11 @@
             </form>
 
             <!-- Add Modal -->
-            <div class="modal fade" id="addCategoryTypeModal" tabindex="-1" aria-labelledby="addCategoryTypeModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addCapacityModal" tabindex="-1" aria-labelledby="addCapacityModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header theme_bg_1">
-                            <h1 class="modal-title fs-5 text-white" id="addCategoryTypeModalLabel">Add Type</h1>
+                            <h1 class="modal-title fs-5 text-white" id="addCapacityModalLabel">Add Capacity</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(100%);"></button>
                         </div>
                         {{-- action="{{ route('brand.store') }}"  --}}
@@ -76,7 +76,7 @@
                                     </select>
                                 </div>
                                 <div class="mb-2">
-                                    <label for="identefire_code_brand" class="form-label">Type Name: </label>
+                                    <label for="identefire_code_brand" class="form-label">Capacity Name: </label>
                                     <input type="text" class="form-control" id="identefire_code_brand" name="identefire_code_brand">
                                 </div>
                                 <div class="mb-2">
@@ -103,7 +103,7 @@
                         <tr>
                             <th scope="col">#Sl</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Type Name</th>
+                            <th scope="col">Capacity Name</th>
                             <th scope="col">Short Code</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
@@ -121,16 +121,16 @@
                                 <td></td>
                                 <td></td>
                                 <td width='10%'>
-                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editCategoryTypeModal">Edit</button>
+                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editCapacityModal">Edit</button>
                                 </td>
                             </tr>
 
                             <!-- Edit Modal -->
-                            <div class="modal fade" id="editCategoryTypeModal" tabindex="-1" aria-labelledby="editCategoryTypeModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="editCapacityModal" tabindex="-1" aria-labelledby="editCapacityModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header theme_bg_1">
-                                            <h1 class="modal-title fs-5 text-white" id="editCategoryTypeModalLabel">Edit Type</h1>
+                                            <h1 class="modal-title fs-5 text-white" id="editCapacityModalLabel">Edit Capacity</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(100%);"></button>
                                         </div>
                                         {{-- action="{{ route('brand.update', ['brand' => $tblbrand]) }}"  --}}
@@ -148,7 +148,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="mb-2">
-                                                    <label for="identefire_code_brand" class="form-label">Type Name: </label>
+                                                    <label for="identefire_code_brand" class="form-label">Capacity Name: </label>
                                                     <input type="text" class="form-control" id="identefire_code_brand" name="identefire_code_brand" value="">
                                                 </div>
                                                 <div class="mb-2">

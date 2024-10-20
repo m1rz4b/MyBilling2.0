@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use App\Models\TblProduct;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,8 @@ class TblProductController extends Controller
     public function index()
     {
         //
+        $menus = Menu::get();
+        return view('pages.inventory.setup.item-product', compact('menus'));
     }
 
     /**

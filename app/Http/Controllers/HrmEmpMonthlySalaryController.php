@@ -36,6 +36,21 @@ class HrmEmpMonthlySalaryController extends Controller
         return view('pages.hrm.payroll.entryForm.salaryReportTemp', compact('menus', 'salarytemps', 'selectedYear', 'selectedMonth', 'selectedDepartment', 'selectedPaymentMode', 'departments', 'paymentmodes'));
     }
 
+    public function salaryreport()
+    {
+        //
+        $menus = Menu::get();
+        $salarytemps = [];
+        $selectedYear = '';
+        $selectedMonth = '';
+        $selectedDepartment = '';
+        $selectedPaymentMode = '';
+        $departments = MasDepartment::get();
+        $paymentmodes = EmpPaymentMode::get();
+        
+        return view('pages.hrm.payroll.report.salaryReport', compact('menus', 'salarytemps', 'selectedYear', 'selectedMonth', 'selectedDepartment', 'selectedPaymentMode', 'departments', 'paymentmodes'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

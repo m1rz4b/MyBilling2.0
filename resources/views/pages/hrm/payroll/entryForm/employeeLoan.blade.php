@@ -38,14 +38,14 @@
                             <h1 class="modal-title fs-5 text-white" id="addEmploanModalLabel">Add Employee Loan</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(100%);"></button>
                         </div>
-                        <form method="POST" action="{{ route('emp-loan.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('emploan.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-2">
-                                            <label for="empname" class="form-label">Employee: </label>
-                                            <select name="empname" id="empname" class="form-select">
+                                            <label for="emp_id" class="form-label">Employee: </label>
+                                            <select name="emp_id" id="emp_id" class="form-select">
                                                 <option value="">Select an Employee</option>
                                                 @foreach ($employees as $employee)
                                                     <option value="{{ $employee->id }}">{{ $employee->emp_name }}</option>
@@ -53,12 +53,12 @@
                                             </select>
                                         </div>
                                         <div class="mb-2">
-                                            <label for="sanctiondate" class="form-label">Sanction Date: </label>
-                                            <input type="date" class="form-control datepicker-here" id="sanctiondate" name="sanctiondate">
+                                            <label for="sanction_date" class="form-label">Sanction Date: </label>
+                                            <input type="date" class="form-control datepicker-here" id="sanction_date" name="sanction_date">
                                         </div>
                                         <div class="mb-2">
-                                            <label for="startdate" class="form-label">Start Date: </label>
-                                            <input type="date" class="form-control datepicker-here" id="startdate" name="startdate">
+                                            <label for="start_date" class="form-label">Start Date: </label>
+                                            <input type="date" class="form-control datepicker-here" id="start_date" name="start_date">
                                         </div>
                                         <div class="mb-2">
                                             <label for="emi" class="form-label">EMI: </label>
@@ -67,20 +67,20 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-2">
-                                            <label for="amount" class="form-label">Amount: </label>
-                                            <input type="text" class="form-control" id="amount" name="amount">
+                                            <label for="amnt" class="form-label">Amount: </label>
+                                            <input type="text" class="form-control" id="amnt" name="amnt">
                                         </div>
                                         <div class="mb-2">
                                             <label for="interest" class="form-label">Interest % : </label>
                                             <input type="text" class="form-control" id="interest" name="interest">
                                         </div>
                                         <div class="mb-2">
-                                            <label for="installments" class="form-label">No. of Installment: </label>
-                                            <input type="text" class="form-control" id="installments" name="installments">
+                                            <label for="no_of_installment" class="form-label">No. of Installment: </label>
+                                            <input type="text" class="form-control" id="no_of_installment" name="no_of_installment">
                                         </div>
                                         <div class="mb-2">
-                                            <label for="loanstatus" class="form-label">Loan Status </label>
-                                            <select name="loanstatus" id="loanstatus" class="form-select">
+                                            <label for="status" class="form-label">Loan Status </label>
+                                            <select name="status" id="status" class="form-select">
                                                 <option value="">Select a Status</option>
                                                 @foreach ($hrmloanstatuses as $hrmloanstatus)
                                                     <option value="{{ $hrmloanstatus->id }}">{{ $hrmloanstatus->name }}</option>
@@ -134,7 +134,12 @@
                                 <td>{{ $tblemploan->interest }} %</td>
                                 <td>{{ $tblemploan->no_of_installment }}</td>
                                 <td>{{ $tblemploan->emi }}</td>
-                                <td>{{ $tblemploan->status }}</td>
+                                @foreach ($hrmloanstatuses as $hrmloanstatus)
+                                    @if ($hrmloanstatus->id == $tblemploan->status)
+                                        <td>{{ $hrmloanstatus->name }}</td>
+                                    @endif
+                                @endforeach
+                                
                                 <td>
                                     <button href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewEmploanModal{{ $tblemploan->id }}">
                                         View EMI
@@ -153,26 +158,27 @@
                                             <h1 class="modal-title fs-5 text-white" id="editEmploanModalLabel{{ $tblemploan->id }}">Edit Employee Loan</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(100%);"></button>
                                         </div>
-                                        <form method="POST" action="{{ route('emp-loan.store') }}" enctype="multipart/form-data">
+                                        <form method="POST" action="{{ route('emploan.update', ['emploan' => $tblemploan]) }}" enctype="multipart/form-data">
                                             @csrf
+                                            @method('PUT')
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="mb-2">
-                                                            <label for="empname" class="form-label">Employee: </label>
-                                                            <select name="empname" id="empname" class="form-select">
+                                                            <label for="emp_id" class="form-label">Employee: </label>
+                                                            <select name="emp_id" id="emp_id" class="form-select">
                                                                 @foreach ($employees as $employee)
                                                                     <option {{ $employee->emp_id == $tblemploan->id ? 'selected' : '' }} value="{{ $employee->id }}">{{ $employee->emp_name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label for="sanctiondate" class="form-label">Sanction Date: </label>
-                                                            <input type="date" class="form-control datepicker-here" id="sanctiondate" name="sanctiondate" value="{{ $tblemploan->sanction_date }}">
+                                                            <label for="sanction_date" class="form-label">Sanction Date: </label>
+                                                            <input type="date" class="form-control datepicker-here" id="sanction_date" name="sanction_date" value="{{ $tblemploan->sanction_date }}">
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label for="startdate" class="form-label">Start Date: </label>
-                                                            <input type="date" class="form-control datepicker-here" id="startdate" name="startdate" value="{{ $tblemploan->start_date }}">
+                                                            <label for="start_date" class="form-label">Start Date: </label>
+                                                            <input type="date" class="form-control datepicker-here" id="start_date" name="start_date" value="{{ $tblemploan->start_date }}">
                                                         </div>
                                                         <div class="mb-2">
                                                             <label for="emi" class="form-label">EMI: </label>
@@ -181,20 +187,20 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="mb-2">
-                                                            <label for="amount" class="form-label">Amount: </label>
-                                                            <input type="text" class="form-control" id="amount" name="amount" value="{{ $tblemploan->amnt }}">
+                                                            <label for="amnt" class="form-label">Amount: </label>
+                                                            <input type="text" class="form-control" id="amnt" name="amnt" value="{{ $tblemploan->amnt }}">
                                                         </div>
                                                         <div class="mb-2">
                                                             <label for="interest" class="form-label">Interest % : </label>
                                                             <input type="text" class="form-control" id="interest" name="interest" value="{{ $tblemploan->interest }}">
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label for="installments" class="form-label">No. of Installment: </label>
-                                                            <input type="text" class="form-control" id="installments" name="installments" value="{{ $tblemploan->no_of_installment }}">
+                                                            <label for="no_of_installment" class="form-label">No. of Installment: </label>
+                                                            <input type="text" class="form-control" id="no_of_installment" name="no_of_installment" value="{{ $tblemploan->no_of_installment }}">
                                                         </div>
                                                         <div class="mb-2">
-                                                            <label for="loanstatus" class="form-label">Loan Status </label>
-                                                            <select name="loanstatus" id="loanstatus" class="form-select">
+                                                            <label for="status" class="form-label">Loan Status </label>
+                                                            <select name="status" id="status" class="form-select">
                                                                 <option value="">Select a Status</option>
                                                                 @foreach ($hrmloanstatuses as $hrmloanstatus)
                                                                     <option {{ $tblemploan->status == $hrmloanstatus->id ? 'selected' : '' }} value="{{ $hrmloanstatus->id }}">{{ $hrmloanstatus->name }}</option>
