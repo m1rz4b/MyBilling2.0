@@ -25,8 +25,8 @@
     <div class="main_content_iner">
         <div class="container-fluid p-0 sm_padding_15px">
             <div class="px-4 py-1 theme_bg_1 d-flex justify-content-between">
-                <h5 class="mb-0 text-white text-center">Type Information</h5>
-                <a class="btn-custom-1" data-bs-toggle="modal" data-bs-target="#addCategoryTypeModal">Add</a>
+                <h5 class="mb-0 text-white text-center">Model Information</h5>
+                <a class="btn-custom-1" data-bs-toggle="modal" data-bs-target="#addModelModal">Add</a>
             </div>
 
             {{-- action="{{ route('generate-salary.show') }}"  --}}
@@ -35,12 +35,25 @@
                 @method('POST')
                 <div class="row p-3">
                     <div class="col-sm-4 form-group">
-                        <label for="category" class="fw-medium">Category</label>
+                        <label for="year" class="fw-medium">Category</label>
                         <div class="input-group input-group-sm flex-nowrap">
                             <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
-                            <select class="form-select form-select-sm form-control" id="category" name="category" >
+                            <select class="form-select form-select-sm form-control" id="year" name="year" >
                                 <option>Select a Category</option>
                                 {{-- @foreach () --}}
+                                    <option value=""></option>
+                                {{-- @endforeach --}}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="col-sm-4 form-group">
+                        <label for="brand" class="fw-medium">Brand</label>
+                        <div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-calendar-days"></i></span>
+                            <select class="form-select form-select-sm form-control" id="brand" name="brand">
+                                <option>Select a Brand</option>
+                                {{-- @foreach() --}}
                                     <option value=""></option>
                                 {{-- @endforeach --}}
                             </select>
@@ -49,17 +62,17 @@
 
                     <div class="col-sm-4 form-group d-flex d-sm-inline justify-content-end">
                         <br class="d-none d-sm-block">
-                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-sm btn-primary"></i>Submit</button>
                     </div>
                 </div>
             </form>
 
             <!-- Add Modal -->
-            <div class="modal fade" id="addCategoryTypeModal" tabindex="-1" aria-labelledby="addCategoryTypeModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addModelModal" tabindex="-1" aria-labelledby="addModelModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header theme_bg_1">
-                            <h1 class="modal-title fs-5 text-white" id="addCategoryTypeModalLabel">Add Type</h1>
+                            <h1 class="modal-title fs-5 text-white" id="addModelModalLabel">Add Model</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(100%);"></button>
                         </div>
                         {{-- action="{{ route('brand.store') }}"  --}}
@@ -67,7 +80,7 @@
                             @csrf
                             <div class="modal-body">
                                 <div class="mb-2">
-                                    <label for="category" class="form-label">Category: </label>
+                                    <label for="brand_display" class="form-label">Category: </label>
                                     <select class="form-select form-select-sm form-control" id="category" name="category" >
                                         <option>Select a Category</option>
                                         {{-- @foreach () --}}
@@ -76,7 +89,16 @@
                                     </select>
                                 </div>
                                 <div class="mb-2">
-                                    <label for="identefire_code_brand" class="form-label">Type Name: </label>
+                                    <label for="brand_display" class="form-label">Brand: </label>
+                                    <select class="form-select form-select-sm form-control" id="category" name="category" >
+                                        <option>Select a Brand</option>
+                                        {{-- @foreach () --}}
+                                            <option value=""></option>
+                                        {{-- @endforeach --}}
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="identefire_code_brand" class="form-label">Model Name: </label>
                                     <input type="text" class="form-control" id="identefire_code_brand" name="identefire_code_brand">
                                 </div>
                                 <div class="mb-2">
@@ -103,7 +125,8 @@
                         <tr>
                             <th scope="col">#Sl</th>
                             <th scope="col">Category</th>
-                            <th scope="col">Type Name</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Model Name</th>
                             <th scope="col">Short Code</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
@@ -120,17 +143,18 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td width='10%'>
-                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editCategoryTypeModal">Edit</button>
+                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editModelModal">Edit</button>
                                 </td>
                             </tr>
 
                             <!-- Edit Modal -->
-                            <div class="modal fade" id="editCategoryTypeModal" tabindex="-1" aria-labelledby="editCategoryTypeModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="editModelModal" tabindex="-1" aria-labelledby="editModelModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header theme_bg_1">
-                                            <h1 class="modal-title fs-5 text-white" id="editCategoryTypeModalLabel">Edit Type</h1>
+                                            <h1 class="modal-title fs-5 text-white" id="editModelModalLabel">Edit Model</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(100%);"></button>
                                         </div>
                                         {{-- action="{{ route('brand.update', ['brand' => $tblbrand]) }}"  --}}
@@ -148,7 +172,16 @@
                                                     </select>
                                                 </div>
                                                 <div class="mb-2">
-                                                    <label for="identefire_code_brand" class="form-label">Type Name: </label>
+                                                    <label for="brand_display" class="form-label">Brand: </label>
+                                                    <select class="form-select form-select-sm form-control" id="category" name="category" >
+                                                        <option>Select a Brand</option>
+                                                        {{-- @foreach () --}}
+                                                            <option value=""></option>
+                                                        {{-- @endforeach --}}
+                                                    </select>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label for="identefire_code_brand" class="form-label">Model Name: </label>
                                                     <input type="text" class="form-control" id="identefire_code_brand" name="identefire_code_brand" value="">
                                                 </div>
                                                 <div class="mb-2">

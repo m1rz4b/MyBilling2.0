@@ -25,7 +25,10 @@ use App\Http\Controllers\HrmShiftSetupController;
 use App\Http\Controllers\IpPoolController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\MicrotikGraphController;
+use App\Http\Controllers\ModelInfoController;
 use App\Http\Controllers\TblBrandController;
+use App\Http\Controllers\TblCapacityController;
+use App\Http\Controllers\TblProductController;
 use App\Http\Controllers\TblRouterController;
 use App\Http\Controllers\TblScheduleController;
 use App\Http\Controllers\TblScheduleTeamController;
@@ -447,6 +450,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('brand', TblBrandController::class);
     Route::resource('vendorinfo', VendorInfoController::class);
     Route::resource('categorytype', CategoryTypeController::class);
+    Route::resource('modelinfo', ModelInfoController::class);
+    Route::resource('capacity', TblCapacityController::class);
+    Route::resource('product', TblProductController::class);
 
 
     //Pdf
