@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Inventory\Setup;
 
+use App\Http\Controllers\Controller;
 use App\Models\Menu;
+use App\Models\TblProduct;
 use Illuminate\Http\Request;
 
-class CategoryTypeController extends Controller
+class TblProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,7 @@ class CategoryTypeController extends Controller
     {
         //
         $menus = Menu::get();
-        return view('pages.inventory.setup.categoryType', compact('menus'));
+        return view('pages.inventory.setup.item-product', compact('menus'));
     }
 
     /**
@@ -36,7 +38,7 @@ class CategoryTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(TblProduct $tblProduct)
     {
         //
     }
@@ -44,7 +46,7 @@ class CategoryTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(TblProduct $tblProduct)
     {
         //
     }
@@ -52,7 +54,7 @@ class CategoryTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, TblProduct $tblProduct)
     {
         //
     }
@@ -60,7 +62,7 @@ class CategoryTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(TblProduct $tblProduct)
     {
         //
     }

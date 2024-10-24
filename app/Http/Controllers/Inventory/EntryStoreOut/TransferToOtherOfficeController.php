@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Inventory\EntryStoreOut;
 
-use App\Models\MasSupplier;
+use App\Http\Controllers\Controller;
 use App\Models\Menu;
+use App\Models\TblSuboffice;
 use Illuminate\Http\Request;
 
-class VendorInfoController extends Controller
+class TransferToOtherOfficeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,8 @@ class VendorInfoController extends Controller
     {
         //
         $menus = Menu::get();
-        $mas_suppliers = MasSupplier::get();
-        return view('pages.inventory.setup.vendorInfo', compact('menus', 'mas_suppliers'));
+        $suboffices = TblSuboffice::get();
+        return view('pages.inventory.entryStoreOut.transfer', compact('menus', 'suboffices'));
     }
 
     /**

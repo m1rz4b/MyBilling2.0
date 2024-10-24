@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Inventory\Setup;
 
-use App\Models\MasPurchaseReturn;
+use App\Http\Controllers\Controller;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 
-class MasPurchaseReturnController extends Controller
+class ModelInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,6 +14,8 @@ class MasPurchaseReturnController extends Controller
     public function index()
     {
         //
+        $menus = Menu::get();
+        return view('pages.inventory.setup.modelinfo', compact('menus'));
     }
 
     /**
@@ -34,7 +37,7 @@ class MasPurchaseReturnController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MasPurchaseReturn $masPurchaseReturn)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +45,7 @@ class MasPurchaseReturnController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MasPurchaseReturn $masPurchaseReturn)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +53,7 @@ class MasPurchaseReturnController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MasPurchaseReturn $masPurchaseReturn)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +61,7 @@ class MasPurchaseReturnController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MasPurchaseReturn $masPurchaseReturn)
+    public function destroy(string $id)
     {
         //
     }

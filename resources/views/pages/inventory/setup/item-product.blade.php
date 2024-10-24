@@ -62,7 +62,7 @@
 
                     <div class="col-sm-4 form-group d-flex d-sm-inline justify-content-end">
                         <br class="d-none d-sm-block">
-                        <button type="submit" class="btn btn-sm btn-primary"></i>Submit</button>
+                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
                     </div>
                 </div>
             </form>

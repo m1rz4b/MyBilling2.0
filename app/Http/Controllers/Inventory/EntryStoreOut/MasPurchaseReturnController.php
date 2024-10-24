@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Inventory\EntryStoreOut;
 
+use App\Http\Controllers\Controller;
+use App\Models\MasPurchaseReturn;
+use App\Models\MasSupplier;
 use App\Models\Menu;
-use App\Models\TblProduct;
 use Illuminate\Http\Request;
 
-class TblProductController extends Controller
+class MasPurchaseReturnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +17,9 @@ class TblProductController extends Controller
     {
         //
         $menus = Menu::get();
-        return view('pages.inventory.setup.item-product', compact('menus'));
+        $purchaseReturns = MasPurchaseReturn::get();
+        $suppliers = MasSupplier::get();
+        return view('pages.inventory.entryStoreOut.purchaseReturn', compact('menus', 'purchaseReturns', 'suppliers'));
     }
 
     /**
@@ -37,7 +41,7 @@ class TblProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TblProduct $tblProduct)
+    public function show(MasPurchaseReturn $masPurchaseReturn)
     {
         //
     }
@@ -45,7 +49,7 @@ class TblProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TblProduct $tblProduct)
+    public function edit(MasPurchaseReturn $masPurchaseReturn)
     {
         //
     }
@@ -53,7 +57,7 @@ class TblProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TblProduct $tblProduct)
+    public function update(Request $request, MasPurchaseReturn $masPurchaseReturn)
     {
         //
     }
@@ -61,7 +65,7 @@ class TblProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TblProduct $tblProduct)
+    public function destroy(MasPurchaseReturn $masPurchaseReturn)
     {
         //
     }

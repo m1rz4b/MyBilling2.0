@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Inventory\Setup;
 
+use App\Http\Controllers\Controller;
+use App\Models\MasSupplier;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 
-class ModelInfoController extends Controller
+class VendorInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,8 @@ class ModelInfoController extends Controller
     {
         //
         $menus = Menu::get();
-        return view('pages.inventory.setup.modelinfo', compact('menus'));
+        $mas_suppliers = MasSupplier::get();
+        return view('pages.inventory.setup.vendorInfo', compact('menus', 'mas_suppliers'));
     }
 
     /**

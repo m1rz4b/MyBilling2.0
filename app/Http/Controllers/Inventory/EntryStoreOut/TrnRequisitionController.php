@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Inventory\EntryStoreOut;
 
+use App\Http\Controllers\Controller;
 use App\Models\Menu;
-use App\Models\TblCapacity;
+use App\Models\TblCategory;
 use Illuminate\Http\Request;
 
-class TblCapacityController extends Controller
+class TrnRequisitionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,8 @@ class TblCapacityController extends Controller
     {
         //
         $menus = Menu::get();
-        return view('pages.inventory.setup.capacity', compact('menus'));
+        $categories = TblCategory::get();
+        return view('pages.inventory.entryStoreOut.requisition', compact('menus', 'categories'));
     }
 
     /**
@@ -37,7 +39,7 @@ class TblCapacityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TblCapacity $tblCapacity)
+    public function show(string $id)
     {
         //
     }
@@ -45,7 +47,7 @@ class TblCapacityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TblCapacity $tblCapacity)
+    public function edit(string $id)
     {
         //
     }
@@ -53,7 +55,7 @@ class TblCapacityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TblCapacity $tblCapacity)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -61,7 +63,7 @@ class TblCapacityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TblCapacity $tblCapacity)
+    public function destroy(string $id)
     {
         //
     }
